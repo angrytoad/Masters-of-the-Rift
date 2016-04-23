@@ -7,8 +7,6 @@ var io = require('socket.io')(server);
 io.on('connection', function(socket)
 {
 
-
-
     socket.on('connectionAttemptEvent', function(data)
     {
         //Function forchecking server connectivity
