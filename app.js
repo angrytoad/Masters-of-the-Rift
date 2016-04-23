@@ -5,6 +5,12 @@ var io = require('socket.io')(server);
 
 var clients = {};
 
+app.use("/assets", express.static(__dirname + '/app/assets'));
+app.use("/components", express.static(__dirname + '/app/components'));
+app.use("/scripts", express.static(__dirname + '/app/scripts'));
+app.use("/styles", express.static(__dirname + '/app/styles'));
+
+
 server.listen(80);
 
 app.get('/', function(req, res) {

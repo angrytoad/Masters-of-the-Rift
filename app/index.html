@@ -3,8 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <!-- Required For React -->
+    <script src="/scripts/react-with-addons.min.js"></script>
+    <script src="/scripts/react-dom.min.js"></script>
+    <script src="/scripts/jsx-transformer.js"></script>
+
+    <!-- Socket IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/scripts/sockets.js"></script>
+
+    <!-- Top Level Components -->
+    <script type="text/jsx" src="/components/Main/main.js"></script>
 </head>
 <body>
-    <h1>WORKING BRAH!</h1>
+    <div id="main">
+
+    </div>
+    <script type="text/jsx">
+        /** @jsx React.DOM **/
+        React.render(<Main />,document.getElementById('main'));
+    </script>
 </body>
 </html>
