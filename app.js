@@ -11,7 +11,8 @@ var API = require("./api");
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var assert = require('assert');
-var dburl = 'mongodb://localhost:27017';
+var dburl = 'mongodb://localhost:27017/local';
+
 MongoClient.connect(dburl, function(err, db) {
   assert.equal(null, err);
   console.log("Connected correctly to database server.");
