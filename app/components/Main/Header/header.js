@@ -9,7 +9,7 @@ var Header = React.createClass({
     },
 
     componentDidMount: function(){
-
+        $('#header').slideToggle(400);
     },
 
     render: function(){
@@ -20,7 +20,7 @@ var Header = React.createClass({
                     <div className="logo">
                         <img title="Masters of the Rift" src="/assets/images/logo.png" />
                     </div>
-                    <div className="title">
+                    <div className="title no-select">
                         <span className="masters">Masters</span> of the <span className="rift">Rift</span>
                     </div>
                 </div>

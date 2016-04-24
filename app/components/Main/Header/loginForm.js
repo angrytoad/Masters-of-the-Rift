@@ -32,7 +32,6 @@ var LoginForm = React.createClass({
         if(counter == 3){
             socket.emit('loginRequest',{login:requestObject});
         }else{
-
             $('#login-form-main').trigger('startRumble');
             var rumbleTimeout = setTimeout(function(){$('#login-form-main').trigger('stopRumble');}, 200)
         }
