@@ -79,6 +79,7 @@ module.exports = function(io, Models) {
             // Check to see if a user of that name exists in the database
 
             console.log('Checking if user is in DB!');
+            var $dbUser = null;
             $id = data.login.region + '-' + data.login.summoner;
             Models.Users.findOne({loginId: $id}, 'loginId region summonerName password salt', function(err, user) {
                 if (err) {
@@ -86,7 +87,7 @@ module.exports = function(io, Models) {
                     socket.emit(loginErrorEvent, {error: err});
                 }  else {
                     console.log(user + ' :)');
-                    var $dbUser = user;
+                    $dbUser = user;
                 }
             });
             if ($dbUser === null) {
