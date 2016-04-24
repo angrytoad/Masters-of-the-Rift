@@ -8,6 +8,10 @@ var Header = React.createClass({
         })
     },
 
+    componentDidMount: function(){
+
+    },
+
     render: function(){
         return(
             <div id="header" className="row">
@@ -17,7 +21,7 @@ var Header = React.createClass({
                         <img title="Masters of the Rift" src="/assets/images/logo.png" />
                     </div>
                     <div className="title">
-                        Masters of the Rift
+                        <span className="masters">Masters</span> of the <span className="rift">Rift</span>
                     </div>
                 </div>
                 {(

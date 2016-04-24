@@ -1,3 +1,15 @@
+@font-face {
+    font-family: 'autumn';
+    src: url('/styles/fonts/colors-of-autumn/colors_of_autumn-webfont.eot');
+    src: url('/styles/fonts/colors-of-autumn/colors_of_autumn-webfont.eot?#iefix') format('embedded-opentype'),
+    url('/styles/fonts/colors-of-autumn/colors_of_autumn-webfont.woff2') format('woff2'),
+    url('/styles/fonts/colors-of-autumn/colors_of_autumn-webfont.woff') format('woff'),
+    url('/styles/fonts/colors-of-autumn/colors_of_autumn-webfont.ttf') format('truetype'),
+    url('/styles/fonts/colors-of-autumn/colors_of_autumn-webfont.svg#colors_of_autumnregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body{
     background-color:#0D2635;
 }
@@ -25,8 +37,17 @@ body{
     display: table-cell;
     vertical-align: middle;
     padding-left: 15px;
-    font-size: 2em;
+    font-size: 3em;
     font-style: italic;
+    font-family: 'autumn';
+}
+
+.title .masters{
+    color:#A23D97
+}
+
+.title .rift{
+    color:#1FBDE2
 }
 
 .logo img{
@@ -42,10 +63,14 @@ body{
 
 .login-btn{
     margin-right:10px;
+    margin-top: 7px;
+    vertical-align: top;
 }
 
 .register-btn{
     opacity: 0.5;
+    vertical-align: top;
+    margin-top: 24px;
 }
 
 .background-music-control{
