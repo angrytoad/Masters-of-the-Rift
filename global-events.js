@@ -90,27 +90,26 @@ module.exports = function(io, Models) {
                 }  else {
                     console.log(user + ' :)');
                     $dbUser = user;
+                    if ($dbUser === null) {
+                        // User does not already exist
+                        $loginId = data.login.region + '-' + data.login.summoner;
+                        $salt = bcrypt.genSaltSync(10);
+                        $hash = bcrypt.hashSync(data.login.password, $salt);
+                        var $newUser = new Models.Users({loginId: $loginId, summonerName: data.login.summoner, region: data.login.region, password: $hash, salt: $salt});
+                        $newUser.save(function (err, $newUser) {
+                            if (err) {
+                                console.log(err + ' :(');
+                                socket.emit('registrationFailedEvent', {error: err});
+                            } else {
+                                socket.emit('registrationSuccessfulEvent', {summonerName: data.login.summonerName});
+                            }
+                        });
+
+                    } else {
+                        socket.emit('registrationFailedEvent', {error: 'User already exists.'});
+                    }
                 }
             });
-            if ($dbUser === null) {
-                // User does not already exist
-                $loginId = data.login.region + '-' + data.login.summoner;
-                $salt = bcrypt.genSaltSync(10);
-                $hash = bcrypt.hashSync(data.login.password, $salt);
-                var $newUser = new Models.Users({loginId: $loginId, summonerName: data.login.summoner, region: data.login.region, password: $hash, salt: $salt});
-                $newUser.save(function (err, $newUser) {
-                    if (err) {
-                        console.log(err + ' :(');
-                        socket.emit('registrationFailedEvent', {error: err});
-                    } else {
-                        socket.emit('registrationSucessfulEvent', {summonerName: data.login.summonerName});
-                    }
-                });
-
-            } else {
-                socket.emit('registrationFailedEvent', {error: 'User already exists.'});
-            }
-
 
         });
 
