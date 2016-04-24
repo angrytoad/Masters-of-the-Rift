@@ -1,2 +1,21 @@
 // db.js created by Salam
-// A helper to shield you from the pain that is mongoloid syntax
+// Schema/Models for mongodb records
+
+module.exports = function (mongoose) {
+
+	$userSchema = new mongoose.Schema({
+
+		loginId: String,
+		summonerName: String,
+		password: String,
+		salt: String,
+		region: String
+
+	});
+	$users = mongoose.model('User', $userSchema);
+
+	this.Users = $users
+
+
+
+}
