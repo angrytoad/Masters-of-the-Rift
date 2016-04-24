@@ -15,7 +15,7 @@ var Header = React.createClass({
     render: function(){
         return(
             <div id="header" className="row">
-                <div className="logo-title" className="col s6">
+                <div className="col s6 logo-title">
                     <BackgroundMusicControl />
                     <div className="logo">
                         <img title="Masters of the Rift" src="/assets/images/logo.png" />

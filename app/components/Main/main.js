@@ -5,6 +5,7 @@ var Main = React.createClass({
     getInitialState: function(){
         return({
             inGame:false,
+            loggedIn:false
         })
     },
 
@@ -16,12 +17,14 @@ var Main = React.createClass({
 
 
         venti.on('changePlayState',this.changePlayState);
+        venti.on('changeLoggedState',this.changeLoggedState);
     },
 
     componentWillUnmount: function(){
         socket.removeListener('connectedEvent')
 
         venti.off('changePlayState',this.changePlayState);
+        venti.off('changeLoggedState',this.changeLoggedState);
     },
 
     changePlayState: function(data){
@@ -35,10 +38,14 @@ var Main = React.createClass({
 
     },
 
+    changeLoggedState: function(data){
+        this.setState({loggedIn:data.loggedIn});
+    },
+
     render: function(){
         return(
             <div>
-                <Header />
+                <Header loggedIn={this.state.loggedIn} />
                 {(this.state.inGame ? <GameContent /> : <HomepageContent />)}
             </div>
         )

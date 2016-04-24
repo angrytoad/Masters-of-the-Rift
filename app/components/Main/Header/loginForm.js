@@ -7,9 +7,48 @@ var LoginForm = React.createClass({
             $('select').material_select();
             $('#login-form-main').jrumble();
         });
+
+
+        socket.on('loginErrorEvent',this.loginErrorEvent);
+        socket.on('noUserFoundEvent',this.noUserFoundEvent);
+        socket.on('loginFailedEvent',this.loginFailedEvent);
+        socket.on('loginSuccessEvent', this.loginSuccessfulEvent);
+    },
+
+    componentWillUnmount: function(){
+        socket.removeListener('loginErrorEvent');
+        socket.removeListener('noUserFoundEvent');
+        socket.removeListener('loginFailedEvent');
+        socket.removeListener('loginSuccessEvent');
+    },
+
+    getInitialState: function(){
+        return({
+            error:''
+        })
+    },
+
+    loginErrorEvent: function(data){
+        this.setState({error:data.error});
+        this.rumbleForm();
+    },
+
+    noUserFoundEvent: function(data){
+        this.setState({error:'Bad username/password combination.'});
+        this.rumbleForm();
+    },
+
+    loginFailedEvent: function(data){
+        this.setState({error:data.error});
+        this.rumbleForm();
+    },
+    
+    loginSuccessfulEvent: function(data){
+        venti.trigger('changeLoggedState',{loggedIn:true});
     },
 
     loginRequest: function(){
+        this.setState({error:''});
         var data = $('#login-form-main').serializeArray();
         var validated = false;
         var counter = 0;
@@ -20,7 +59,6 @@ var LoginForm = React.createClass({
             if(!data.hasOwnProperty(key)) continue;
 
             var input = data[key];
-            console.log(input);
             if(input["value"].length > 0){
                 counter++;
                 requestObject[input["name"]] = input["value"];
@@ -32,10 +70,15 @@ var LoginForm = React.createClass({
         if(counter == 3){
             socket.emit('loginRequest',{login:requestObject});
         }else{
-            $('#login-form-main').trigger('startRumble');
-            var rumbleTimeout = setTimeout(function(){$('#login-form-main').trigger('stopRumble');}, 200)
+            this.setState({error:'Please fill out the required fields.'});
+            this.rumbleForm();
         }
 
+    },
+
+    rumbleForm: function(){
+        $('#login-form-main').trigger('startRumble');
+        var rumbleTimeout = setTimeout(function(){$('#login-form-main').trigger('stopRumble');}, 200)
     },
 
     render: function(){
@@ -68,9 +111,13 @@ var LoginForm = React.createClass({
                         <input placeholder="Password" name="password" id="password" type="password" className="validate" />
                         <label className="active" for="password">Password</label>
                     </div>
+                    <div className="col s12">
+                        <span className="red-text left-align">{this.state.error}</span>
+                    </div>
                     <a className="waves-effect waves-light btn-large blue-grey login-btn" onClick={this.loginRequest}>Login</a>
                     <a className="waves-effect waves-light btn blue-grey darken-2 register-btn">Register</a>
                 </form>
+
             </div>
         )
     }
