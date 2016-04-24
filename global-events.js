@@ -56,16 +56,16 @@ module.exports = function(io, Models) {
                 // Attempt login / password auth
                 if (bcrypt.compareSync(data.login.password, $dbUser.password)) {
                     //Login Sucessful
-                    socket.emit('loginSucessEvent', {summonerName: user.summonerName});
+                    socket.emit('loginSucessEvent', {summonerName: user.summonerName, loginId: user.loginId});
                 } else {
                     // Login Failed
-                    socket.emit('loginFailedEvent', {err: 'Bad Password.'});
+                    socket.emit('loginFailedEvent', {error: 'Bad Password.'});
                 }
             }
 
         });
 
-        socket.on('resisterRequest', function(data) {
+        socket.on('registerRequest', function(data) {
 
             // Validate Input data
             // var $filterRegEx = '/[a-z]|[A-Z]|[0-9]| ';
@@ -82,16 +82,32 @@ module.exports = function(io, Models) {
             $id = data.login.region + '-' + data.login.summoner;
             Models.Users.findOne({loginId: $id}, 'loginId region summonerName password salt', function(err, user) {
                 if (err) {
-                    console.log(err + ':(');
+                    console.log(err + ' :(');
                     socket.emit(loginErrorEvent, {error: err});
                 }  else {
-                    console.log(user + ':)');
+                    console.log(user + ' :)');
                     var $dbUser = user;
                 }
             });
             if ($dbUser === null) {
-                socket.emit('noUserFoundEvent', {});
-            } 
+                // User does not already exist
+                $loginId = data.login.region + '-' + data.login.summoner;
+                $salt = bcrypt.genSaltSync(10);
+                $hash = bcrypt.hashSync(data.login.password, $salt);
+                var $newUser = new Models.Users({loginId: $loginId, summonerName: data.login.summoner, region: data.login.region, password: $hash, salt: $salt});
+                $newUser.save(function (err, $newUser) {
+                    if (err) {
+                        console.log(err + ' :(');
+                        socket.emit('registrationFailedEvent', {error: err});
+                    } else {
+                        socket.emit('registrationSucessfulEvent', {summonerName: data.login.summonerName});
+                    }
+                });
+
+            } else {
+                socket.emit('registrationFailedEvent', {error: 'User already exists.'});
+            }
+
 
         });
 
