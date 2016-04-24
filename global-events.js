@@ -56,7 +56,7 @@ module.exports = function(io, Models) {
                         console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
                         if (bcrypt.compareSync($hash, $dbUser.password)) {
                             //Login Sucessful
-                            socket.emit('loginSucessEvent', {summonerName: user.summonerName, loginId: user.loginId});
+                            socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId});
                         } else {
                             // Login Failed
                             socket.emit('loginFailedEvent', {error: 'Bad Password.'});
@@ -101,7 +101,7 @@ module.exports = function(io, Models) {
                                 console.log(err + ' :(');
                                 socket.emit('registrationFailedEvent', {error: err});
                             } else {
-                                socket.emit('registrationSuccessfulEvent', {summonerName: data.login.summonerName});
+                                socket.emit('registrationSuccessEvent', {summonerName: data.login.summonerName});
                             }
                         });
 
