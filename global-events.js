@@ -55,6 +55,7 @@ module.exports = function(io, Models) {
 
                 // Attempt login / password auth
                 $hash = bcrypt.hashSync(data.login.password, $dbUser.salt);
+                console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
                 if (bcrypt.compareSync($hash, $dbUser.password)) {
                     //Login Sucessful
                     socket.emit('loginSucessEvent', {summonerName: user.summonerName, loginId: user.loginId});
