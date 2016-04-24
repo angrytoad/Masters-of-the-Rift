@@ -47,23 +47,23 @@ module.exports = function(io, Models) {
                 }  else {
                     console.log(user + ':)');
                     $dbUser = user;
+                    if ($dbUser === null) {
+                        socket.emit('noUserFoundEvent', {});
+                    } else {
+
+                        // Attempt login / password auth
+                        $hash = bcrypt.hashSync(data.login.password, $dbUser.salt);
+                        console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
+                        if (bcrypt.compareSync($hash, $dbUser.password)) {
+                            //Login Sucessful
+                            socket.emit('loginSucessEvent', {summonerName: user.summonerName, loginId: user.loginId});
+                        } else {
+                            // Login Failed
+                            socket.emit('loginFailedEvent', {error: 'Bad Password.'});
+                        }
+                    }
                 }
             });
-            if ($dbUser === null) {
-                socket.emit('noUserFoundEvent', {});
-            } else {
-
-                // Attempt login / password auth
-                $hash = bcrypt.hashSync(data.login.password, $dbUser.salt);
-                console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
-                if (bcrypt.compareSync($hash, $dbUser.password)) {
-                    //Login Sucessful
-                    socket.emit('loginSucessEvent', {summonerName: user.summonerName, loginId: user.loginId});
-                } else {
-                    // Login Failed
-                    socket.emit('loginFailedEvent', {error: 'Bad Password.'});
-                }
-            }
 
         });
 
