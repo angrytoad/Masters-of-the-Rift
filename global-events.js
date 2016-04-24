@@ -48,7 +48,7 @@ module.exports = function(io, Models) {
                     var $dbUser = user;
                 }
             });
-            if ($dbUser === null) {
+            if (typeof $dbUser == 'undefined' || $dbUser === null) {
                 socket.emit('noUserFoundEvent', {});
             } else {
 
