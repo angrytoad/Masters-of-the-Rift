@@ -26,6 +26,9 @@
     <!-- Venti -->
     <script src="/scripts/venti.min.js"></script>
 
+    <!-- Howler -->
+    <script src="/scripts/howler.min.js"></script>
+
     <!-- jRumble -->
     <script src="/scripts/jRumble.min.js"></script>
 
@@ -38,6 +41,7 @@
             <!-- Header Components -->
             <script type="text/jsx" src="/components/Main/Header/userDisplay.js"></script>
             <script type="text/jsx" src="/components/Main/Header/loginForm.js"></script>
+            <script type="text/jsx" src="/components/Main/Header/backgroundMusicControl.js"></script>
 
 
 </head>
@@ -45,6 +49,10 @@
     <div id="main">
 
     </div>
+    <video autoplay muted loop id="bgvid">
+        <source src="/assets/videos/bg-vid.webm" type="video/webm">
+        <source src="/assets/videos/bg-vid.mp4" type="video/mp4">
+    </video>
     <script type="text/jsx">
         /** @jsx React.DOM **/
         React.render(<Main />,document.getElementById('main'));
