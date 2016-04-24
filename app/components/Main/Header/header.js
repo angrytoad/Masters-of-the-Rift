@@ -4,12 +4,22 @@ var Header = React.createClass({
 
     getInitialState: function(){
         return({
-            loggedIn: this.props.loggedIn
+            loggedIn: this.props.loggedIn,
+            summoner:this.props.summoner,
+            loginId:this.props.loginId
         })
     },
 
     componentDidMount: function(){
         $('#header').slideToggle(400);
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        this.setState({
+            loggedIn: nextProps.loggedIn,
+            summoner: nextProps.summoner,
+            loginId: nextProps.loginId
+        });
     },
 
     render: function(){
@@ -26,7 +36,7 @@ var Header = React.createClass({
                 </div>
                 {(
                     this.state.loggedIn
-                    ? <UserDisplay loggedIn={this.state.loggedIn} />
+                    ? <UserDisplay loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />
                     : <LoginForm />
                 )}
             </div>

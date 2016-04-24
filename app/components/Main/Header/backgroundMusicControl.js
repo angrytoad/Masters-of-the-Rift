@@ -36,7 +36,6 @@ var BackgroundMusicControl = React.createClass({
     },
 
     componentDidMount: function(){
-        console.log(this.state.muted);
         if(!this.state.muted){
             this.state.music.unmute();
             localStorage.setItem('motr-music-mute','0');

@@ -5,7 +5,9 @@ var Main = React.createClass({
     getInitialState: function(){
         return({
             inGame:false,
-            loggedIn:false
+            loggedIn:false,
+            summoner:null,
+            loginId:null
         })
     },
 
@@ -28,7 +30,6 @@ var Main = React.createClass({
     },
 
     changePlayState: function(data){
-        console.log(data);
         $('#homepage').slideUp(400);
         $('#game').slideUp(400);
         var that = this;
@@ -39,13 +40,14 @@ var Main = React.createClass({
     },
 
     changeLoggedState: function(data){
-        this.setState({loggedIn:data.loggedIn});
+        this.setState({loggedIn:data.loggedIn,summoner:data.summoner,loginId:data.loginId});
     },
 
     render: function(){
+        console.log(this.state.loggedIn);
         return(
             <div>
-                <Header loggedIn={this.state.loggedIn} />
+                <Header loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />
                 {(this.state.inGame ? <GameContent /> : <HomepageContent />)}
             </div>
         )
