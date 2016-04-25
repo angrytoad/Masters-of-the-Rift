@@ -73,6 +73,8 @@ module.exports = function(io, Models) {
                                     if (err) {
                                         console.log(err);
                                         socket.emit('loginFailedEvent', {error: 'Failed to enter session data.'});
+                                    } else {
+                                        socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
                                     }
                                 });
                             } else {
