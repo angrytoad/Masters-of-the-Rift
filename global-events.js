@@ -102,15 +102,14 @@ module.exports = function(io, Models) {
                 socket.emit('authErrorEvent', {error: 'No session data.'});
             } else {
                 var $res = Models.validateSession(data.session.token, data.session.loginId, function($resp) {
-                    return $resp;
+                    console.log($res);
+                    if ($res.err) {
+                        console.log($res.msg);
+                        socket.emit('authErrorEvent', {error: $res.msg});
+                    } else {
+                        socket.emit('userStatsEvent', {});
+                    }
                 });
-                console.log($res);
-                if ($res.err) {
-                    console.log($res.msg);
-                    socket.emit('authErrorEvent', {error: $res.msg});
-                } else {
-                    socket.emit('userStatsEvent', {});
-                }
             }
         })
 
