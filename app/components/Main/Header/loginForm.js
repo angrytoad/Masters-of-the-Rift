@@ -75,6 +75,7 @@ var LoginForm = React.createClass({
         }
 
         if(counter == 3){
+            console.log('making login request');
             socket.emit('loginRequest',{login:requestObject});
         }else{
             this.setState({error:'Please fill out the required fields.'});

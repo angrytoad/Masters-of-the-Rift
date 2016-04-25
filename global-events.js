@@ -4,8 +4,8 @@ module.exports = function(io, Models) {
     var app = express();
     var server = require('http').Server(app);
     var bcrypt = require('bcrypt-nodejs');
-    //var io = require('./app.js');
-
+    var uuid = require('uuid');
+    
     // On Global Socket Connection
     io.on('connection', function(socket)
     {
@@ -23,6 +23,10 @@ module.exports = function(io, Models) {
         });
 
         socket.on('loginRequest', function(data) {
+
+
+
+            //console.log('Saved session data is: '+socket.handshake.session.test);
 
             // A function for handling registration events
             console.log(data);
@@ -56,6 +60,8 @@ module.exports = function(io, Models) {
                         console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
                         if ($hash === $dbUser.password) {
                             //Login Sucessful
+
+
                             socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId});
                         } else {
                             // Login Failed

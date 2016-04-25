@@ -16,6 +16,18 @@ module.exports = function (mongoose) {
 
 	this.Users = $users
 
+    /*
+	$sessionSchema = new mongoose.Schema({
+
+		loginId: { type: [String], index: true },
+		sessionId: String,
+		time:{ type: Date, default: Date.now }
+
+	});
+	$sessions = mongoose.model('Sessions', $sessionSchema);
+
+	this.Sessions = $sessions;
+    */
 
 
 }
