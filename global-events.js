@@ -97,6 +97,7 @@ module.exports = function(io, Models) {
         });
 
         socket.on('requestUserStats', function (data) {
+            console.log(data);
             if (typeof data.session == 'undefined') {
                 socket.emit('authErrorEvent', {error: 'No session data.'});
             } else {
