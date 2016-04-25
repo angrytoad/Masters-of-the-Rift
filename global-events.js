@@ -24,12 +24,10 @@ module.exports = function(io, Models) {
 
         socket.on('loginRequest', function(data) {
 
-
-
             //console.log('Saved session data is: '+socket.handshake.session.test);
 
             // A function for handling registration events
-            console.log(data);
+
             // Validate Input data
             // var $filterRegEx = '/[a-z]|[A-Z]|[0-9]| ';
             // var $passFilter = '/[0-9]';
@@ -60,9 +58,14 @@ module.exports = function(io, Models) {
                         console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
                         if ($hash === $dbUser.password) {
                             //Login Sucessful
-
-
-                            socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId});
+                            $token = uuid.v4();
+                            Models.Sessions.update({loginId: $id}, {$set: {sessionId: $token}}, function (err, session) {
+                                if (err) {
+                                    socket.emit('loginFailedEvent', {error: 'Session id update failed.'});
+                                } else {
+                                    socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
+                                }
+                            });   
                         } else {
                             // Login Failed
                             socket.emit('loginFailedEvent', {error: 'Bad username/password combination.'});

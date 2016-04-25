@@ -16,7 +16,7 @@ module.exports = function (mongoose) {
 
 	this.Users = $users
 
-    /*
+    
 	$sessionSchema = new mongoose.Schema({
 
 		loginId: { type: [String], index: true },
@@ -27,7 +27,26 @@ module.exports = function (mongoose) {
 	$sessions = mongoose.model('Sessions', $sessionSchema);
 
 	this.Sessions = $sessions;
-    */
+    
+	this.prototype.validateSession = function ($token, $loginId) {
+		var $session = null;
+		this.Sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
+			if (err) {
+				console.log(err);
+			} else {
+				$user = session;
+				if ($session = null) {
+					return {err: true, msg: 'No session found.'};
+				} else {
+					if ((($user.time.getTime() / 1000) + 2592000) > (new Date.getTime() / 1000)) {
+						return {err: true, msg: 'Session exceeds 30 day timeout.'};
+					} else {
+						return {err: false, msg: 'Success!'};
+					}
+				}
+			}
+		});
 
+	}
 
 }
