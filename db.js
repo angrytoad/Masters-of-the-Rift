@@ -30,7 +30,7 @@ module.exports = function (mongoose) {
     
 	this.validateSession = function ($token, $loginId) {
 		var $session = null;
-		var Date = new Date;
+		var $Date = new Date;
 		this.Sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
 			if (err) {
 				console.log(err);
@@ -39,7 +39,7 @@ module.exports = function (mongoose) {
 				if ($session = null) {
 					return {err: true, msg: 'No session found.'};
 				} else {
-					if ((($user.time.getTime() / 1000) + 2592000) > (Date.getTime() / 1000)) {
+					if ((($user.time.getTime() / 1000) + 2592000) > ($Date.getTime() / 1000)) {
 						return {err: true, msg: 'Session exceeds 30 day timeout.'};
 					} else {
 						return {err: false, msg: 'Success!'};
