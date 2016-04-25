@@ -36,7 +36,7 @@ module.exports = function (mongoose) {
 				console.log('IMPORTANT MEGAERROR: ' + err);
 			} else {
 				console.log(session);
-				if (typeof session === 'object') {
+				if (typeof session === 'object' && session != null) {
 					if ((((new Date(session.time).getTime()) / 1000) + 2592000) < $Date.getTime() / 1000) {
 						$callBack({err: true, msg: 'Session exceeds 30 day timeout.'});
 					} else {
