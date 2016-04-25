@@ -101,7 +101,7 @@ module.exports = function(io, Models) {
             if (typeof data.session == 'undefined') {
                 socket.emit('authErrorEvent', {error: 'No session data.'});
             } else {
-                $res = Models.validateSession(data.session.token, data.session.loginId)
+                var $res = Models.validateSession(data.session.token, data.session.loginId)
                 if ($res.err) {
                     console.log($res.msg);
                     socket.emit('authErrorEvent', {error: $res.msg});
