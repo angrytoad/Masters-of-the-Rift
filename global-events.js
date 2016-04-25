@@ -68,15 +68,13 @@ module.exports = function(io, Models) {
                                 }
                             })
                             if ($session == null) {
-
-                                var $newSession = new Models.Sessions({loginId: $id, sessionId: $token, time: new Date.now()});
+                                var $newSession = new Models.Sessions({loginId: $id, sessionId: $token, time: Date.now()});
                                 $newSession.save(function (err, session) {
                                     if (err) {
                                         console.log(err);
                                         socket.emit('loginFailedEvent', {error: 'Failed to enter session data.'});
                                     }
                                 });
-
                             } else {
                                 Models.Sessions.update({loginId: $id}, {$set: {sessionId: $token}}, function (err, session) {
                                     if (err) {
