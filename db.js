@@ -28,7 +28,7 @@ module.exports = function (mongoose) {
 
 	this.Sessions = $sessions;
     
-	this.prototype.validateSession = function validateSession($token, $loginId) {
+	this.validateSession = function validateSession($token, $loginId) {
 		var $session = null;
 		var $Date = new Date;
 		console.log($Date);
