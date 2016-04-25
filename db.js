@@ -48,7 +48,6 @@ module.exports = function (mongoose) {
 				}
 			}
 		});
-		console.log('FAIL!!!');
 		return {err: true, msg: 'POO'};
 	}
 	this.validateSession = $validateSession;
