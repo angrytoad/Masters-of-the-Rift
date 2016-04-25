@@ -30,7 +30,7 @@ module.exports = function (mongoose) {
     
 	this.validateSession = function ($token, $loginId) {
 		var $session = null;
-		var Date = new Date();
+		var Date = new Date;
 		this.Sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
 			if (err) {
 				console.log(err);
