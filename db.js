@@ -28,7 +28,7 @@ module.exports = function (mongoose) {
 
 	this.Sessions = $sessions;
     
-	this.validateSession = function ($token, $loginId) {
+	this.prototype.validateSession = function validateSession($token, $loginId) {
 		var $session = null;
 		var $Date = new Date;
 		console.log($Date);
@@ -50,5 +50,5 @@ module.exports = function (mongoose) {
 		});
 
 	}
-	return {err: 'IT FAILED GRRRRRRR'};
+	return {err: true, msg: 'Fugged.'};
 }
