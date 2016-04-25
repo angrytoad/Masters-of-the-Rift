@@ -34,10 +34,10 @@ module.exports = function (mongoose) {
 		console.log($Date);
 		this.Sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
 			if (err) {
-				console.log(err);
+				console.log('IMPORTANT MEGAERROR: ' + err);
 			} else {
-				$user = session;
-				if ($session = null) {
+				$session = session;
+				if ($session == null) {
 					return {err: true, msg: 'No session found.'};
 				} else {
 					if ((((new Date($user.time).getTime()) / 1000) + 2592000) < $Date.getTime() / 1000) {
