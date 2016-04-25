@@ -24,7 +24,7 @@ module.exports = function (mongoose) {
 		time:{ type: Date, default: Date.now }
 
 	});
-	$sessions = mongoose.model('Sessions', $sessionSchema);
+	var $sessions = mongoose.model('Sessions', $sessionSchema);
 
 	this.Sessions = $sessions;
     
@@ -35,6 +35,7 @@ module.exports = function (mongoose) {
 			if (err) {
 				console.log('IMPORTANT MEGAERROR: ' + err);
 			} else {
+				console.log('IMPORTANT MEGASUCCESS!');
 				$session = session;
 				if ($session == null) {
 					return {err: true, msg: 'No session found.'};
