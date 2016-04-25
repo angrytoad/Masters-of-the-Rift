@@ -32,7 +32,7 @@ module.exports = function (mongoose) {
 		var $session = null;
 		var $Date = new Date;
 		console.log($Date);
-		this.Sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
+		$sessions.Sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
 			if (err) {
 				console.log('IMPORTANT MEGAERROR: ' + err);
 			} else {
