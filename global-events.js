@@ -96,6 +96,20 @@ module.exports = function(io, Models) {
 
         });
 
+        socket.on('requestUserStats', function (data) {
+            if (typeof data.session == 'undefined') {
+                socket.emit('authErrorEvent', {error: 'No session data.'});
+            } else {
+                $res = Models.validateSession(data.session.token, data.session.loginId)
+                if ($res.err) {
+                    console.log($res.msg);
+                    socket.emit('authErrorEvent', {error: $res.msg});
+                } else {
+                    socket.emit('userStatsEvent', {});
+                }
+            }
+        })
+
         socket.on('registerRequest', function(data) {
 
             // Validate Input data
