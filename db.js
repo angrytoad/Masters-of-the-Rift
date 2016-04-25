@@ -31,7 +31,6 @@ module.exports = function (mongoose) {
 	var $validateSession = function($token, $loginId) {
 		var $session = null;
 		var $Date = new Date;
-		console.log($Date);
 		$sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
 			if (err) {
 				console.log('IMPORTANT MEGAERROR: ' + err);
@@ -48,7 +47,8 @@ module.exports = function (mongoose) {
 				}
 			}
 		});
-
+		console.log('FAIL!!!');
+		return {err: true, msg: 'POO'};
 	}
 	this.validateSession = $validateSession;
 }
