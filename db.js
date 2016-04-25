@@ -31,11 +31,11 @@ module.exports = function (mongoose) {
 	var $validateSession = function($token, $loginId) {
 		var $session = null;
 		var $Date = new Date;
-		$sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function (err, session) {
+		$sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function(err, session) {
 			if (err) {
 				console.log('IMPORTANT MEGAERROR: ' + err);
 			} else {
-				console.log('IMPORTANT MEGASUCCESS!');
+				console.log(session);
 				$session = session;
 				if ($session == null) {
 					return {err: true, msg: 'No session found.'};
