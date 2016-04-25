@@ -29,20 +29,22 @@ module.exports = function (mongoose) {
 	this.Sessions = $sessions;
     
 	var $validateSession = function($token, $loginId) {
-		var $session = null;
 		var $Date = new Date;
 		$sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function(err, session) {
 			if (err) {
 				console.log('IMPORTANT MEGAERROR: ' + err);
 			} else {
 				console.log(session);
-				$session = session;
-				if (typeof $session === 'object') {
-					if ((((new Date($session.time).getTime()) / 1000) + 2592000) < $Date.getTime() / 1000) {
+				if (typeof session === 'object') {
+					console.log('1');
+					if ((((new Date(session.time).getTime()) / 1000) + 2592000) < $Date.getTime() / 1000) {
+						console.log('2');
 						return {err: true, msg: 'Session exceeds 30 day timeout.'};
 					} else {
+						console.log('3');
 						return {err: false, msg: 'Success!'};
 					}
+					console.log('5');
 				} else {
 					return {err: true, msg: 'No session found.'};
 				}
