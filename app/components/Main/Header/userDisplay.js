@@ -18,10 +18,30 @@ var UserDisplay = React.createClass({
         });
     },
 
+    componentDidMount: function(){
+
+    },
+
+    pressedPlay: function(){
+        console.log('Lets play!');
+        venti.trigger('changePlayState',{playing:true});
+    },
+
+    requestLogout: function(){
+        socket.emit('requestLogout',{loginId:this.state.loginId});
+    },
+
     render: function(){
         return(
             <div id="user-display" className="header-secondary col s6 right-align">
-                <h4>{this.state.summoner} <i>({this.state.loginId})</i></h4>
+                <div className="account-buttons col s6">
+                    <button className="waves-effect waves-light btn-large motr-blue play-button" onClick={this.pressedPlay}><span className="motr-pink">Play</span></button>
+
+                </div>
+                <div className="col s6 user-account-information left-align">
+                    <h5>{this.state.summoner} <i>({this.state.loginId})</i></h5>
+                    <a href="#" className="motr-blue faded" onClick={this.requestLogout}>Logout</a>
+                </div>
             </div>
         )
     }

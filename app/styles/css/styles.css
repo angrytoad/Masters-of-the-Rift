@@ -134,9 +134,46 @@ video#bgvid {
 }
 
 .motr-pink{
-    color:#A23D97
+    color:#A23D97;
 }
 
 .motr-blue{
     color:#1FBDE2
+}
+
+.faded{
+    opacity:0.3;
+}
+
+.play-button{
+    margin-right:15px;
+    font-weight: bold;
+    font-size: 2em;
+    font-family: 'autumn';
+    text-align: center;
+}
+
+.user-account-information h5{
+    margin:0px;
+}
+
+.user-account-information{
+    padding: 15px!important;
+    margin: 0px;
+    border: 1px solid #2A2A33;
+    box-shadow: 1px 1px 5px black;
+    background: rgba(0,0,0,0.6);
+    border-radius: 8px;
+}
+
+.account-buttons{
+    margin-top:15px;
+}
+
+.join-queue-button{
+    margin-right:15px;
+    font-weight: bold;
+    font-size: 2em;
+    font-family: 'autumn';
+    text-align: center;
 }

@@ -8,10 +8,6 @@ var HomepageContent = React.createClass({
         },300);
     },
 
-    setPlaying: function(){
-        venti.trigger('changePlayState',{playing:true})
-    },
-
     render: function(){
         return(
             <div id="homepage" className="container">
@@ -19,7 +15,6 @@ var HomepageContent = React.createClass({
                     <HomepageIntro />
                     <Leaderboard />
                 </div>
-                <a onClick={this.setPlaying}>Press me to play.</a>
             </div>
         )
     }

@@ -30,12 +30,14 @@ var Main = React.createClass({
     },
 
     changePlayState: function(data){
-        $('#homepage').slideUp(400);
-        $('#game').slideUp(400);
-        var that = this;
-        setTimeout(function(){
-            that.setState({inGame:data.playing});
-        },400);
+        if(data.playing !== this.state.inGame) {
+            $('#homepage').slideUp(400);
+            $('#game').slideUp(400);
+            var that = this;
+            setTimeout(function () {
+                that.setState({inGame: data.playing});
+            }, 400);
+        }
 
     },
 
@@ -48,7 +50,11 @@ var Main = React.createClass({
         return(
             <div>
                 <Header loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />
-                {(this.state.inGame ? <GameContent /> : <HomepageContent />)}
+                {(
+                    this.state.inGame
+                    ? <GameContent loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />
+                    : <HomepageContent />
+                )}
             </div>
         )
     }
