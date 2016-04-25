@@ -37,14 +37,14 @@ module.exports = function (mongoose) {
 			} else {
 				console.log(session);
 				$session = session;
-				if ($session == null) {
-					return {err: true, msg: 'No session found.'};
-				} else {
+				if (typeof $session === 'object') {
 					if ((((new Date($session.time).getTime()) / 1000) + 2592000) < $Date.getTime() / 1000) {
 						return {err: true, msg: 'Session exceeds 30 day timeout.'};
 					} else {
 						return {err: false, msg: 'Success!'};
 					}
+				} else {
+					return {err: true, msg: 'No session found.'};
 				}
 			}
 		});
