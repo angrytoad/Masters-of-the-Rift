@@ -59,13 +59,33 @@ module.exports = function(io, Models) {
                         if ($hash === $dbUser.password) {
                             //Login Sucessful
                             $token = uuid.v4();
-                            Models.Sessions.update({loginId: $id}, {$set: {sessionId: $token}}, function (err, session) {
+                            $session = null;
+                            Models.Sessions.findOne({loginId: $id}, 'loginId sessionId time', function (err, session) {
                                 if (err) {
-                                    socket.emit('loginFailedEvent', {error: 'Session id update failed.'});
+                                    console.log(err);
                                 } else {
-                                    socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
+                                    $session = session;
                                 }
-                            });   
+                            })
+                            if ($session == null) {
+
+                                var $newSession = new Models.Sessions({loginId: $id, sessionId: $token, time: new Date.now()});
+                                $newSession.save(function (err, session) {
+                                    if (err) {
+                                        console.log(err);
+                                        socket.emit('loginFailedEvent', {error: 'Failed to enter session data.'});
+                                    }
+                                });
+
+                            } else {
+                                Models.Sessions.update({loginId: $id}, {$set: {sessionId: $token}}, function (err, session) {
+                                    if (err) {
+                                        socket.emit('loginFailedEvent', {error: 'Session id update failed.'});
+                                    } else {
+                                        socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
+                                    }
+                                }); 
+                            }  
                         } else {
                             // Login Failed
                             socket.emit('loginFailedEvent', {error: 'Bad username/password combination.'});
