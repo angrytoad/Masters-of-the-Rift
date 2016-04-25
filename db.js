@@ -50,5 +50,5 @@ module.exports = function (mongoose) {
 		});
 
 	}
-
+	return {err: 'IT FAILED GRRRRRRR'};
 }
