@@ -1,3 +1,13 @@
+/*
+ This is the queue object and contains all people who are currently in the queue.
+ */
+var $queue = {};
+
+/*
+ This is the matches object and contains all matches which are currently being played.
+ */
+var $matches = {};
+
 module.exports = function(io, Models) {
 
     var express = require('express');
@@ -97,6 +107,30 @@ module.exports = function(io, Models) {
 
         });
 
+        socket.on('logoutRequest', function(data) {
+            /*
+            Ensure we remove the user from areas that they might be subscribed to in the case that they wish to logout.
+             */
+            if (typeof data.session == 'undefined') {
+                socket.emit('authErrorEvent', {error: 'No session data.'});
+            } else {
+                var $res = Models.validateSession(data.session.token, data.session.loginId, function($res) {
+                    /*
+                     If we can successfully validate the session of the user.
+                     */
+                    if ($res.err) {
+                        socket.emit('authErrorEvent', {error: $res.msg});
+                    } else {
+                        if(typeof $queue[data.session.loginId] !== 'undefined'){
+                            console.log(data.session.login)
+                            delete $queue[data.session.loginId];
+                            io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
+                        }
+                    }
+                });
+            }
+        });
+
         socket.on('requestUserStats', function (data) {
             /*
             When userDisplay is rendered, we want to request information about this user after validating in order to
@@ -136,17 +170,11 @@ module.exports = function(io, Models) {
             }
         });
 
-        /*
-        This is the queue object and contains all people who are currently in the queue.
-         */
-        var $queue = {};
-
-        /*
-        This is the matches object and contains all matches which are currently being played.
-         */
-        var $matches = {};
 
 
+        function getQueueCount(){
+            return {'queue':Object.keys($queue).length,'match':Object.keys($matches).length}
+        }
 
         socket.on('requestQueueInformation', function(data) {
             /*
@@ -154,15 +182,61 @@ module.exports = function(io, Models) {
             request queue information when this happens so we can give the user information about who is currently in the
             queue and stuff.
             */
-            var $queueLength = Object.keys($queue).length;
-            var $matchLength = Object.keys($matches).length;
             socket.join('queue-room');
-            io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:$queueLength,inMatch:$matchLength});
+            io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
         });
 
         socket.on('requestLeaveQueueInformation', function(data) {
+            /*
+            If a request to leave is given, un-subscribe the user from the room that receives notifications about the queue and match sizes.
+             */
             socket.leave('queue-room');
         });
+
+        socket.on('joinQueueRequest', function(data) {
+            if (typeof data.session == 'undefined') {
+                socket.emit('authErrorEvent', {error: 'No session data.'});
+            } else {
+                var $res = Models.validateSession(data.session.token, data.session.loginId, function($res) {
+                    /*
+                     If we can successfully validate the session of the user.
+                     */
+                    if ($res.err) {
+                        socket.emit('authErrorEvent', {error: $res.msg});
+                    } else {
+                        $queue[data.session.loginId] = data.session.token;
+                        io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
+                        socket.emit('joinQueueRequestEvent',{inQueue:true});
+                    }
+                });
+            }
+        });
+
+        socket.on('leaveQueueRequest', function(data) {
+            if (typeof data.session == 'undefined') {
+                socket.emit('authErrorEvent', {error: 'No session data.'});
+            } else {
+                var $res = Models.validateSession(data.session.token, data.session.loginId, function($res) {
+                    /*
+                     If we can successfully validate the session of the user.
+                     */
+                    if ($res.err) {
+                        socket.emit('authErrorEvent', {error: $res.msg});
+                    } else {
+                        if(typeof $queue[data.session.loginId] !== 'undefined'){
+                            delete $queue[data.session.loginId];
+                        }
+                        io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
+                        socket.emit('leaveQueueRequestEvent',{inQueue:false});
+                    }
+                });
+            }
+        });
+
+
+
+
+
 
         socket.on('registerRequest', function(data) {
 

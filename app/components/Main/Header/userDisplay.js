@@ -39,6 +39,7 @@ var UserDisplay = React.createClass({
     },
 
     requestLogout: function(){
+        socket.emit('logoutRequest',{session:getSession()});
         venti.trigger('clientLogout');
     },
 
