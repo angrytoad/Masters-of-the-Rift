@@ -19,7 +19,6 @@ var UserDisplay = React.createClass({
     },
 
     componentDidMount: function(){
-        console.log(getSession());
         socket.emit('requestUserStats',{session:getSession()})
 
         socket.on('userStatsEvent',this.userStatsEvent);
@@ -29,17 +28,17 @@ var UserDisplay = React.createClass({
         socket.removeListener('userStatsEvent');
     },
 
-    userStatsEvent: function(){
+    userStatsEvent: function(data){
         console.log('USER STATS RECEIVED AND SUCCESSFUL AUTHENTICATION MADE!');
+        venti.trigger('changeLoggedState',{loggedIn:true,summoner:'Mr Phreak',loginId:'NA-Mr Phreak'});
     },
 
     pressedPlay: function(){
-        console.log('Lets play!');
         venti.trigger('changePlayState',{playing:true});
     },
 
     requestLogout: function(){
-        socket.emit('requestLogout',{loginId:this.state.loginId});
+        venti.trigger('clientLogout');
     },
 
     render: function(){

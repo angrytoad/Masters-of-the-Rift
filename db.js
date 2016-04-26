@@ -30,12 +30,10 @@ module.exports = function (mongoose) {
     
 	var $validateSession = function($token, $loginId, $callBack) {
 		var $Date = new Date;
-		var $resp = null;
 		$sessions.findOne({loginId: $loginId, sessionId: $token}, 'loginId sessionId Date', function(err, session) {
 			if (err) {
-				console.log('IMPORTANT MEGAERROR: ' + err);
+                $callBack({err: true, msg:'There was an error fetching your session.'});
 			} else {
-				console.log(session);
 				if (typeof session === 'object' && session != null) {
 					if ((((new Date(session.time).getTime()) / 1000) + 2592000) < $Date.getTime() / 1000) {
 						$callBack({err: true, msg: 'Session exceeds 30 day timeout.'});

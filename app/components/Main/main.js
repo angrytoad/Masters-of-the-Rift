@@ -21,6 +21,7 @@ var Main = React.createClass({
 
         venti.on('changePlayState',this.changePlayState);
         venti.on('changeLoggedState',this.changeLoggedState);
+        venti.on('clientLogout',this.authErrorEvent);
 
     },
 
@@ -30,16 +31,17 @@ var Main = React.createClass({
 
         venti.off('changePlayState',this.changePlayState);
         venti.off('changeLoggedState',this.changeLoggedState);
+        venti.off('clientLogout',this.authErrorEvent);
     },
 
     authErrorEvent: function(data){
-        console.log('THERE WAS AN ERROR AUTHENTICATING');
         destroySession();
         this.setState({
             loggedIn:false,
             summoner:null,
             loginId:null
         });
+        venti.trigger('authErrorEvent');
     },
 
     changePlayState: function(data){
@@ -59,7 +61,7 @@ var Main = React.createClass({
     },
 
     render: function(){
-        console.log(this.state.loggedIn);
+        console.log('Logged in: '+this.state.loggedIn);
         return(
             <div>
                 <Header loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />

@@ -58,34 +58,35 @@ module.exports = function(io, Models) {
                         console.log($hash + '--' + $dbUser.password + '--' + $dbUser.salt);
                         if ($hash === $dbUser.password) {
                             //Login Sucessful
-                            $token = uuid.v4();
-                            $session = null;
+                            var $token = uuid.v4();
+                            var $session = null;
                             Models.Sessions.findOne({loginId: $id}, 'loginId sessionId time', function (err, session) {
                                 if (err) {
                                     console.log(err);
                                 } else {
                                     $session = session;
+                                    if ($session == null) {
+                                        var $newSession = new Models.Sessions({loginId: $id, sessionId: $token, time: Date.now()});
+                                        $newSession.save(function (err, session) {
+                                            if (err) {
+                                                console.log(err);
+                                                socket.emit('loginFailedEvent', {error: 'Failed to enter session data.'});
+                                            } else {
+                                                socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
+                                            }
+                                        });
+                                    } else {
+                                        Models.Sessions.update({loginId: $id}, {$set: {sessionId: $token}}, function (err, session) {
+                                            if (err) {
+                                                socket.emit('loginFailedEvent', {error: 'Session id update failed.'});
+                                            } else {
+                                                socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
+                                            }
+                                        });
+                                    }
                                 }
                             })
-                            if ($session == null) {
-                                var $newSession = new Models.Sessions({loginId: $id, sessionId: $token, time: Date.now()});
-                                $newSession.save(function (err, session) {
-                                    if (err) {
-                                        console.log(err);
-                                        socket.emit('loginFailedEvent', {error: 'Failed to enter session data.'});
-                                    } else {
-                                        socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
-                                    }
-                                });
-                            } else {
-                                Models.Sessions.update({loginId: $id}, {$set: {sessionId: $token}}, function (err, session) {
-                                    if (err) {
-                                        socket.emit('loginFailedEvent', {error: 'Session id update failed.'});
-                                    } else {
-                                        socket.emit('loginSuccessEvent', {summonerName: user.summonerName, loginId: user.loginId, token: $token});
-                                    }
-                                }); 
-                            }  
+
                         } else {
                             // Login Failed
                             socket.emit('loginFailedEvent', {error: 'Bad username/password combination.'});
@@ -97,14 +98,11 @@ module.exports = function(io, Models) {
         });
 
         socket.on('requestUserStats', function (data) {
-            console.log(data);
             if (typeof data.session == 'undefined') {
                 socket.emit('authErrorEvent', {error: 'No session data.'});
             } else {
                 var $res = Models.validateSession(data.session.token, data.session.loginId, function($res) {
-                    console.log($res);
                     if ($res.err) {
-                        console.log($res.msg);
                         socket.emit('authErrorEvent', {error: $res.msg});
                     } else {
                         socket.emit('userStatsEvent', {});
