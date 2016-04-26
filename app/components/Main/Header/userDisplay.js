@@ -19,7 +19,18 @@ var UserDisplay = React.createClass({
     },
 
     componentDidMount: function(){
+        console.log(getSession());
+        socket.emit('requestUserStats',{session:getSession()})
 
+        socket.on('userStatsEvent',this.userStatsEvent);
+    },
+
+    componentWillUnmount: function(){
+        socket.removeListener('userStatsEvent');
+    },
+
+    userStatsEvent: function(){
+        console.log('USER STATS RECEIVED AND SUCCESSFUL AUTHENTICATION MADE!');
     },
 
     pressedPlay: function(){

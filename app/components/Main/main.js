@@ -16,17 +16,30 @@ var Main = React.createClass({
         socket.on('connectedEvent', function (data) {
             console.info('connectedEvent Fired Successfully');
         });
+        socket.on('authErrorEvent',this.authErrorEvent);
 
 
         venti.on('changePlayState',this.changePlayState);
         venti.on('changeLoggedState',this.changeLoggedState);
+
     },
 
     componentWillUnmount: function(){
-        socket.removeListener('connectedEvent')
+        socket.removeListener('connectedEvent');
+        socket.removeListener('authErrorEvent');
 
         venti.off('changePlayState',this.changePlayState);
         venti.off('changeLoggedState',this.changeLoggedState);
+    },
+
+    authErrorEvent: function(data){
+        console.log('THERE WAS AN ERROR AUTHENTICATING');
+        destroySession();
+        this.setState({
+            loggedIn:false,
+            summoner:null,
+            loginId:null
+        });
     },
 
     changePlayState: function(data){

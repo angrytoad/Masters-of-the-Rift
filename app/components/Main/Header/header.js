@@ -12,6 +12,8 @@ var Header = React.createClass({
 
     componentDidMount: function(){
         $('#header').slideToggle(400);
+
+        (sessionExists() ? this.setState({loggedIn:true}) : this.setState({loggedIn:false}));
     },
 
     componentWillReceiveProps: function(nextProps) {

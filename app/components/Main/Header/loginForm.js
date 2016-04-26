@@ -16,6 +16,8 @@ var LoginForm = React.createClass({
 
         socket.on('registrationFailedEvent', this.registrationFailedEvent);
         socket.on('registrationSuccessEvent', this.registrationSuccessEvent);
+
+        venti.on('authErrorEvent',this.authErrorEvent);
     },
 
     componentWillUnmount: function(){
@@ -26,6 +28,13 @@ var LoginForm = React.createClass({
 
         socket.removeListener('registrationFailedEvent');
         socket.removeListener('registrationSuccessEvent');
+
+        venti.off('authErrorEvent',this.authErrorEvent);
+    },
+
+    authErrorEvent: function(){
+        this.setState({error:'Please log in again',is_error:true});
+        this.rumbleForm();
     },
 
     getInitialState: function(){
@@ -51,6 +60,7 @@ var LoginForm = React.createClass({
     },
     
     loginSuccessfulEvent: function(data){
+        setSession(data.loginId,data.token);
         venti.trigger('changeLoggedState',{loggedIn:true,summoner:data.summonerName,loginId:data.loginId});
     },
 
