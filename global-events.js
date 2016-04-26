@@ -98,14 +98,39 @@ module.exports = function(io, Models) {
         });
 
         socket.on('requestUserStats', function (data) {
+            /*
+            When userDisplay is rendered, we want to request information about this user after validating in order to
+            show specific information. In its most basic form it should be returning the summoner name and loginId, but
+            eventually we'd like this to be able to send back information on stuff such as win streak, loses, total games etc.
+             */
             if (typeof data.session == 'undefined') {
                 socket.emit('authErrorEvent', {error: 'No session data.'});
             } else {
                 var $res = Models.validateSession(data.session.token, data.session.loginId, function($res) {
+                    /*
+                    If we can successfully validate the session of the user.
+                     */
                     if ($res.err) {
                         socket.emit('authErrorEvent', {error: $res.msg});
                     } else {
-                        socket.emit('userStatsEvent', {});
+                        Models.Users.findOne({loginId: data.session.loginId}, 'loginId region summonerName password salt', function(err, user) {
+                            /*
+                            If we can successfully find the user in the users table.
+                             */
+                            if (err) {
+                                socket.emit('authErrorEvent', {error: err.msg});
+                            }  else {
+                                if (user === null) {
+                                    socket.emit('authErrorEvent', {error: 'Could not find the user to validate session off.'});
+                                } else {
+                                    /*
+                                    Send back the data that the client side component needs.
+                                     */
+                                    socket.emit('userStatsEvent', {summoner:user.summonerName,loginId:user.loginId});
+                                }
+                            }
+                        });
+
                     }
                 });
             }

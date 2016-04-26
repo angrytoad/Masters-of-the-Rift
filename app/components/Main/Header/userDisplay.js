@@ -30,7 +30,8 @@ var UserDisplay = React.createClass({
 
     userStatsEvent: function(data){
         console.log('USER STATS RECEIVED AND SUCCESSFUL AUTHENTICATION MADE!');
-        venti.trigger('changeLoggedState',{loggedIn:true,summoner:'Mr Phreak',loginId:'NA-Mr Phreak'});
+        console.log(data);
+        venti.trigger('changeLoggedState',{loggedIn:true,summoner:data.summoner,loginId:data.loginId});
     },
 
     pressedPlay: function(){
