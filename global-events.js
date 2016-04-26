@@ -134,7 +134,35 @@ module.exports = function(io, Models) {
                     }
                 });
             }
-        })
+        });
+
+        /*
+        This is the queue object and contains all people who are currently in the queue.
+         */
+        var $queue = {};
+
+        /*
+        This is the matches object and contains all matches which are currently being played.
+         */
+        var $matches = {};
+
+
+
+        socket.on('requestQueueInformation', function(data) {
+            /*
+            This event is fired when a user presses the play button and the gameContent component is rendered, we want to
+            request queue information when this happens so we can give the user information about who is currently in the
+            queue and stuff.
+            */
+            var $queueLength = Object.keys($queue).length;
+            var $matchLength = Object.keys($matches).length;
+            socket.join('queue-room');
+            io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:$queueLength,inMatch:$matchLength});
+        });
+
+        socket.on('requestLeaveQueueInformation', function(data) {
+            socket.leave('queue-room');
+        });
 
         socket.on('registerRequest', function(data) {
 
