@@ -38,10 +38,10 @@ var HomepageIntro = React.createClass({
                               Welcome to Masters of the Rift, a game that tests your knowledge, speed and luck against other online opponents!
                           </p>
                           <p className="flow-text">
-                              This game is an entry by Tom Freeborough and Alex Salam into the Riot Games 2016 API Challenge. To play all you need to do
+                              This game is an entry by Tom Freeborough and Alex Salam into the <a href="https://developer.riotgames.com/discussion/announcements/show/eoq3tZd1" target="_blank">Riot Games 2016 API Challenge.</a> To play all you need to do
                               is register and login, since this is in the early phases you might want to grab a friend though! All of the code for this project
-                              is available on our <a href="https://github.com/angrytoad/Masters-of-the-Rift">Github.</a> Alternatively, if you'd like to read more
-                              in depth about the technologies and techniques used in this project, please <a href="#" onClick={this.loadTechnicalInformation}>click here.</a>
+                              is available on our <a href="https://github.com/angrytoad/Masters-of-the-Rift" target="_blank">Github.</a> Alternatively, if you'd like to read more
+                              in depth about the technologies and techniques used in this project, please <a href="javascript:void(0)" onClick={this.loadTechnicalInformation}>click here.</a>
                           </p>
                           <button className="waves-effect waves-light btn-large motr-blue play-button col s12" onClick={this.pressedPlay}>
                               <span className="motr-pink">Play</span>
