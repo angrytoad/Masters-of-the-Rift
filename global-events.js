@@ -15,7 +15,43 @@ module.exports = function(io, Models) {
     var server = require('http').Server(app);
     var bcrypt = require('bcrypt-nodejs');
     var uuid = require('uuid');
+    var Game = require('./match-logic.js');
     
+    var $matcher = setInterval(matcher, 1000);
+
+    function matcher() {
+
+        var $players = Object.keys($queue);
+        console.log($players);
+        var $len = Math.floor($players.length);
+
+        if ($len < 2) {
+            return false;
+        }
+        console.log($queue);
+        for (var i = 0; i <= $len; i+2) {
+            $gameId = uuid.v4();
+            console.log($players);
+            $players.find(function (element, index, array) {
+                if (index == i) {
+                    var $p1 = element;
+                    $players.find(function (element, index, array) {
+                        if (index == i + 1) {
+                            var $p2 = element;
+                            console.log($queue);
+                            $game = new Game($gameId, $queue[$p1], $queue[$p2]);
+                            $matches.$gameId = $game;
+                            $queue[$p1].socket.emit('matchFoundEvent', {matchId: $gameId});
+                            $queue[$p2].socket.emit('matchFoundEvent', {matchId: $gameId});
+                            $queue[$p1] = null;
+                            $queue[$p2] = null;
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     // On Global Socket Connection
     io.on('connection', function(socket)
     {
@@ -204,7 +240,7 @@ module.exports = function(io, Models) {
                     if ($res.err) {
                         socket.emit('authErrorEvent', {error: $res.msg});
                     } else {
-                        $queue[data.session.loginId] = data.session.token;
+                        $queue[data.session.loginId] = {id: data.session.loginId, token: data.session.token, socket: socket};
                         io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
                         socket.emit('joinQueueRequestEvent',{inQueue:true});
                     }
