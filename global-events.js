@@ -29,7 +29,7 @@ module.exports = function(io, Models) {
             return false;
         }
         console.log($queue);
-        for (var i = 0; i <= $len; i+2) {
+        for (var i = 0; i < $len; i+2) {
             $gameId = uuid.v4();
             console.log($players);
             $players.find(function (element, index, array) {
