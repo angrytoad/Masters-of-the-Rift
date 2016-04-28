@@ -6,5 +6,15 @@
 
  	this.id = $id;
  	this.players = [$p1, $p2];
+ 	this.api = require('./api.js');
+
+ 	var initGamestate = function() {
+
+
+
+ 	}
+ 	this.initGamestate = initGamestate;
+
+ 	this.initGamestate();
 
  }
