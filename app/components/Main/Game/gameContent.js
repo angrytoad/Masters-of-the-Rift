@@ -61,8 +61,6 @@ var GameContent = React.createClass({
         });
         var counter = 0;
 
-        venti.trigger('fadeOutMusic',{volume:0});
-
         var countdown = setInterval(function(){
             if(counter < 3){
                 countdownSound.play();
@@ -71,9 +69,6 @@ var GameContent = React.createClass({
         },1000);
         var that = this;
         setTimeout(function(){
-
-            venti.trigger('swapTrack',{track:'matchMusic.mp3'});
-            venti.trigger('fadeInMusic',{volume:0.4});
 
             clearInterval(countdown);
             matchstartSound.play();

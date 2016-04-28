@@ -8,7 +8,8 @@ var BackgroundMusicControl = React.createClass({
             music: new Howl({
                 urls: ['/assets/sounds/background2.mp3'],
                 loop: true,
-                volume: 0
+                autoplay:true,
+                volume: 0.2
             })
         })
     },
@@ -25,23 +26,20 @@ var BackgroundMusicControl = React.createClass({
     },
 
     muteSound: function() {
-        this.fadeOut({volume:0,override:true});
+        this.state.music.mute();
         localStorage.setItem('motr-music-mute','1');
     },
 
     unmuteSound: function(){
-        this.fadeIn({volume:0.2,override:true});
+        this.state.music.unmute();
         localStorage.setItem('motr-music-mute','0');
     },
 
     componentDidMount: function(){
 
-        this.state.music.play();
-
-
         if(!this.state.muted){
             this.state.music.unmute();
-            this.fadeIn({volume:0.2,override:true});
+            this.unmuteSound();
             localStorage.setItem('motr-music-mute','0');
         }else {
             this.state.music.mute();
@@ -50,38 +48,23 @@ var BackgroundMusicControl = React.createClass({
 
 
 
-        venti.on('fadeOutMusic',this.fadeOut);
-        venti.on('fadeInMusic',this.fadeIn);
+        venti.on('fadeOutMusic',this.muteSound);
+        venti.on('fadeInMusic',this.unmuteSound);
         venti.on('swapTrack',this.swapTrack);
     },
 
     componentWillUnmount: function(){
-        venti.off('fadeOutMusic',this.fadeOut);
-        venti.off('fadeInMusic',this.fadeIn);
+        venti.off('fadeOutMusic',this.muteSound);
+        venti.off('fadeInMusic',this.unmuteSound);
         venti.off('swapTrack',this.swapTrack);
-    },
-
-    fadeOut: function(data){
-        if(!this.state.muted || data.override) {
-            this.state.music.fadeOut(data.volume, 1000);
-        }
-    },
-
-    fadeIn: function(data){
-        this.state.music.play();
-        if(!this.state.muted || data.override) {
-            this.state.music.fadeIn(data.volume, 1000);
-        }else{
-            console.log('muting music from fade in');
-            this.state.music.mute();
-        }
     },
 
     swapTrack: function(data){
         this.setState({
             music: new Howl({
                 urls: ['/assets/sounds/'+data.track],
-                loop: true,
+                loop: data.loop,
+                autoplay:true,
                 volume: 0
             })
         })
