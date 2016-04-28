@@ -22,39 +22,54 @@ module.exports = function(io, Models) {
     function matcher() {
 
         var $players = Object.keys($queue);
-        console.log($players);
         var $len = Math.floor($players.length);
 
         if ($len < 2) {
             return false;
         }
-        console.log($queue);
-        for (var i = 0; i < $len; i+2) {
-            $gameId = uuid.v4();
-            console.log($players);
-            $players.find(function (element, index, array) {
-                if (index == i) {
-                    var $p1 = element;
-                    $players.find(function (element, index, array) {
-                        if (index == i + 1) {
-                            var $p2 = element;
-                            console.log($queue);
-                            $game = new Game($gameId, $queue[$p1], $queue[$p2]);
-                            $matches.$gameId = $game;
-                            $queue[$p1].socket.emit('matchFoundEvent', {matchId: $gameId});
-                            $queue[$p2].socket.emit('matchFoundEvent', {matchId: $gameId});
-                            $queue[$p1] = null;
-                            $queue[$p2] = null;
-                        }
-                    });
-                }
-            });
+
+        while($len >= 2){
+            var $gameId = uuid.v4();
+            var $tempQueue = [];
+            for(var i = 0; i<2; i++){
+                var $player = $players[i]
+                $tempQueue[i] = $player;
+            }
+            var $game = new Game($gameId, $tempQueue[0], $tempQueue[1]);
+            $matches[$gameId] = $game;
+            //console.log($queue[$tempQueue[0]]);
+
+            $queue[$tempQueue[0]].socket.emit('matchFoundEvent', {matchId: $gameId});
+            $queue[$tempQueue[1]].socket.emit('matchFoundEvent', {matchId: $gameId});
+
+            $queue[$tempQueue[0]].socket.join($gameId);
+            $queue[$tempQueue[1]].socket.join($gameId)
+
+            delete $queue[$tempQueue[0]];
+            delete $queue[$tempQueue[1]];
+            $players.filter(function(val){return val});
+
+            $players = Object.keys($queue);
+            $len = Math.floor($players.length);
+            console.log('Match has been made.');
         }
+        console.log($matches);
+    }
+
+    function getQueueCount(){
+        return {'queue':Object.keys($queue).length,'match':(Object.keys($matches).length)*2}
     }
 
     // On Global Socket Connection
     io.on('connection', function(socket)
     {
+
+        socket.on('disconnect', function(){
+            if(typeof socket.loginId !== 'undefined'){
+                delete $queue[socket.loginId];
+                io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
+            }
+        });
 
         socket.on('connectionAttemptEvent', function(data)
         {
@@ -206,12 +221,6 @@ module.exports = function(io, Models) {
             }
         });
 
-
-
-        function getQueueCount(){
-            return {'queue':Object.keys($queue).length,'match':Object.keys($matches).length}
-        }
-
         socket.on('requestQueueInformation', function(data) {
             /*
             This event is fired when a user presses the play button and the gameContent component is rendered, we want to
@@ -242,6 +251,7 @@ module.exports = function(io, Models) {
                     } else {
                         $queue[data.session.loginId] = {id: data.session.loginId, token: data.session.token, socket: socket};
                         io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
+                        socket.loginId = data.session.loginId;
                         socket.emit('joinQueueRequestEvent',{inQueue:true});
                     }
                 });

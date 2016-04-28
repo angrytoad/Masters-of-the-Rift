@@ -7,6 +7,7 @@ var UserDisplay = React.createClass({
             loggedIn:this.props.loggedIn,
             summoner:this.props.summoner,
             loginId:this.props.loginId,
+            inGame:false
         })
     },
 
@@ -22,10 +23,12 @@ var UserDisplay = React.createClass({
         socket.emit('requestUserStats',{session:getSession()})
 
         socket.on('userStatsEvent',this.userStatsEvent);
+        socket.on('matchFoundEvent',this.matchFoundEvent);
     },
 
     componentWillUnmount: function(){
         socket.removeListener('userStatsEvent');
+        socket.removeListener('matchFoundEvent',this.matchFoundEvent);
     },
 
     userStatsEvent: function(data){
@@ -43,6 +46,10 @@ var UserDisplay = React.createClass({
         venti.trigger('clientLogout');
     },
 
+    matchFoundEvent: function(){
+        this.setState({inGame:true});
+    },
+
     render: function(){
         return(
             <div id="user-display" className="header-secondary col s6 right-align">
@@ -52,7 +59,12 @@ var UserDisplay = React.createClass({
                 </div>
                 <div className="col s6 user-account-information left-align">
                     <h5>{this.state.summoner} <i>({this.state.loginId})</i></h5>
-                    <a href="#" className="motr-blue faded" onClick={this.requestLogout}>Logout</a>
+                    {(
+                        this.state.inGame
+                        ? <a href="#" className="motr-blue faded">You cannot logout in a game</a>
+                        : <a href="#" className="motr-blue faded" onClick={this.requestLogout}>Logout</a>
+                    )}
+
                 </div>
             </div>
         )

@@ -9,6 +9,7 @@ var GameContent = React.createClass({
             loginId:this.props.loginId,
             inQueue:false,
             inGame:false,
+            matchId:''
         })
     },
 
@@ -49,32 +50,41 @@ var GameContent = React.createClass({
         })
     },
 
-    matchFoundEvent: function(){
+    matchFoundEvent: function(data){
         var countdownSound = new Howl({
             urls: ['/assets/sounds/countdown.mp3'],
-            autoplay:true,
-            volume: 1
+            volume: 1.5
         });
         var matchstartSound = new Howl({
             urls: ['/assets/sounds/matchStart.mp3'],
-            autoplay:true,
             volume: 1
         });
         var counter = 0;
+
+        venti.trigger('fadeOutMusic',{volume:0});
+
         var countdown = setInterval(function(){
-            if(counter == 3){
-                matchstartSound.play();
-            }else {
+            if(counter < 3){
                 countdownSound.play();
             }
             counter++;
         },1000);
         var that = this;
         setTimeout(function(){
+
+            venti.trigger('swapTrack',{track:'matchMusic.mp3'});
+            venti.trigger('fadeInMusic',{volume:0.4});
+
             clearInterval(countdown);
-            $('no-game').fadeToggle(function(){
-                that.setState({inGame:true});
-            },3000);
+            matchstartSound.play();
+            $('.no-game').fadeToggle(3000,function(){
+
+                that.setState({
+                    inGame:true,
+                    matchId:data.matchId
+                });
+                $('.yes-game').fadeToggle(1000);
+            });
         },4000);
     },
 
@@ -105,7 +115,7 @@ var GameContent = React.createClass({
                     ?
                         <div className="yes-game">
                             <h4 className="center-align">You are now in a game</h4>
-                            <Match loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />
+                            <Match loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} matchId={this.state.matchId} />
                         </div>
                     :
                         <div className="no-game">

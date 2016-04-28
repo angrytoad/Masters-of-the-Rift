@@ -6,7 +6,8 @@ var Match = React.createClass({
         return({
             loggedIn:this.props.loggedIn,
             summoner:this.props.summoner,
-            loginId:this.props.loginId
+            loginId:this.props.loginId,
+            matchId:this.props.matchId
         })
     },
 
@@ -14,23 +15,24 @@ var Match = React.createClass({
         this.setState({
             loggedIn:nextProps.loggedIn,
             summoner:nextProps.summoner,
-            loginId:nextProps.loginId
+            loginId:nextProps.loginId,
+            matchId:nextProps.matchId
         });
     },
 
     componentDidMount: function(){
-
+        socket.on('gameCloseEvent',this.gameCloseEvent);
     },
 
     componentWillUnmount: function(){
-
+        socket.removeListener('gameCloseEvent',this.gameCloseEvent);
     },
 
     render: function(){
         return(
             <div>
                 <p className="flow-text">
-                    Isn't this a fine gaammme?
+                    Welcome to match {this.state.matchId}, enjoy your stay.
                 </p>
             </div>
         )
