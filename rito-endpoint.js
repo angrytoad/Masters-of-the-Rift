@@ -60,3 +60,45 @@ var endpoint = module.exports = {};
             }
         )
     }
+
+    endpoint.getMatchData = function($match, $callback) {
+
+    	//Takes a match id and returns the teams
+    	endpoint.https.get(
+    		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/api/lol/'+endpoint.settings.region+'/v2.2/match/'+$match.matchId+'?includeTimeline=true&api_key='+endpoint.key,
+    		function(response) {
+    			//Update Datastream
+    			var body = '';
+                response.on('data', function(d) {
+                    body += d;
+                });
+                response.on('end', function() {
+                    var parsed = JSON.parse(body);
+                    console.log(parsed);
+                    $callback(parsed);
+                });
+    		}
+    	);
+
+    }
+
+    endpoint.getMasteryRatingByPlayerChampIds = function($playerId, $champId, $callback) {
+
+    	console.log($playerId + '-' + $champId);
+    	endpoint.https.get(
+    		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/championmastery/location/'+endpoint.settings.region+'1/player/'+$playerId+'/champion/'+$champId+'?api_key='+endpoint.key,
+    		function(response) {
+    			//Update Datastream
+    			var body = '';
+                response.on('data', function(d) {
+                    body += d;
+                });
+                response.on('end', function() {
+                	console.log(body);
+                    var parsed = JSON.parse(body);
+                    $callback(parsed);
+                });
+    		}
+    	);	
+
+    }
