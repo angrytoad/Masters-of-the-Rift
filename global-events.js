@@ -52,8 +52,10 @@ module.exports = function(io, Models) {
             $players = Object.keys($queue);
             $len = Math.floor($players.length);
             console.log('Match has been made.');
+
+            var $gameDetails = $matches[$gameId].fetchGameDetails();
+            
         }
-        console.log($matches);
     }
 
     function getQueueCount(){

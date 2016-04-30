@@ -6,15 +6,13 @@
 
  	this.id = $id;
  	this.players = [$p1, $p2];
- 	this.api = require('./api.js');
+ 	var $apiHandler = require('./api.js');
 
- 	var initGamestate = function() {
+ 	this.fetchGameDetails = function() {
+		//console.log(this.players[0]);
+		var $match = $apiHandler.getMatch();
 
-
-
- 	}
- 	this.initGamestate = initGamestate;
-
- 	this.initGamestate();
+		return $match;
+ 	};
 
  }

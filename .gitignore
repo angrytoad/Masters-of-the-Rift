@@ -39,3 +39,6 @@ data/db
 
 # Mongodb Exes
 mongodb
+
+# The API KEY
+api-key.js
