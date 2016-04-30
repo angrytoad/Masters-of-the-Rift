@@ -84,7 +84,6 @@ var endpoint = module.exports = {};
 
     endpoint.getMasteryRatingByPlayerChampIds = function($playerId, $champId, $callback) {
 
-    	console.log($playerId + '-' + $champId);
     	endpoint.https.get(
     		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/championmastery/location/'+endpoint.settings.region+'1/player/'+$playerId+'/champion/'+$champId+'?api_key='+endpoint.key,
     		function(response) {
@@ -94,11 +93,9 @@ var endpoint = module.exports = {};
                     body += d;
                 });
                 response.on('end', function() {
-                	console.log(body);
                     var parsed = JSON.parse(body);
-                    $callback(parsed);
+                    $re = $callback(parsed);
                 });
     		}
     	);	
-
     }

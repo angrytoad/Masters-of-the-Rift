@@ -51,45 +51,57 @@ var api = module.exports = {};
 			var $mastery = null;
 			$response.participants.forEach(function(element, index, array) {
 				if (element.teamId == 100) {
-					$pIdNo = element.participantId;
-					$response.participantIdentities.forEach(function(elem, ind, arr) {
-						if (elem.participantId == $pIdNo) {
-							console.log(element);
-							// api.endpoint.getMasteryRatingByPlayerChampIds(elem.player.playerId, element.championId, function($resp) {  // Commented out mastery getting since its individual to champs it causes rate exceeds and risks blacklisting, also fails somewhere
-							// 	if ($resp.statusCode == 204) {
-							// 		$mastery = 0;
-							// 	} else {
-							// 		$mastery = $resp.championLevel;
-							// 	}
-							// });
-						}
-					});
 					$red.push({playerObj: element, champion: element.championId, team: 'red', rankedBest: element.highestAchievedSeasonTeir, timeline: element.timeline, mastery: $mastery});
 				} else if (element.teamId == 200) {
-					$pIdNo = element.participantId;
-					$response.participantIdentities.forEach(function(elem, ind, arr) {
-						if (elem.participantId == $pIdNo) {
-							console.log(element);
-							// api.endpoint.getMasteryRatingByPlayerChampIds(elem.player.playerId, element.championId, function($resp) {
-							// 	if ($resp.statusCode == 204) {
-							// 		$mastery = 0;
-							// 	} else {
-							// 		$mastery = $resp.championLevel;
-							// 	}
-							// });
-						}
-					});
 					$blue.push({playerObj: element, champion: element.championId, team: 'blue', rankedBest: element.highestAchievedSeasonTeir, timeline: element.timeline, mastery: $mastery});
 				}
 			});
 			$gameData.presented = {};
 			$gameData.presented.teams = {red: $red, blue: $blue};
+			// api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
+			// 	$gameData = data;
+			// 	setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
+			// 		$gameData = data;
+			// 		console.log('ERMAGERD');
+			// 		console.log($gameData.presented.teams.red);
+
+			// 	})
+			// });
+
 
 		});
 		
 
 	}
 
-	api.getPlayerInfo = function ($match) {
+	api.getPlayerInfo = function ($team, $teamColour, $participants, $gameData, callback) {
 
-	}
+		//Passing a team array in adds mastery property, do one team and then wait 10, or else you risk a blacklisting
+
+		$newTeam = $team.map(function(obj, ind) {
+			$pIdNo = obj.playerObj.participantId;
+			var $returnObj = obj;
+			$returnObj = $participants.map(function(elem, ind, arr) {
+				if (elem.participantId == $pIdNo) {
+          
+					var $returningObject = api.endpoint.getMasteryRatingByPlayerChampIds(elem.player.summonerId, obj.playerObj.championId, function($resp) {
+						if ($resp.statusCode == 204) {
+							returnObj.mastery = 0;
+						} else {
+							returnObj = obj;
+							returnObj.mastery = $resp.championLevel;
+						}
+           			return returnObj; // In here got it
+					});
+					return $returningObject // Then pass it back to .map()
+				}
+			});
+			return $returnObj[ind]; // Then pass your $returnObj (from $participants.map) back up to the $team.map function
+		});
+		if ($teamColour == 'red') {
+			$gameData.presented.teams.red = $newTeam;
+		} else {
+			$gameData.presented.teams.blue = $newTeam;
+		}
+		callback($gameData);
+	} 
