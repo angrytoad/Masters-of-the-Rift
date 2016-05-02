@@ -7,7 +7,8 @@ var Match = React.createClass({
             loggedIn:this.props.loggedIn,
             summoner:this.props.summoner,
             loginId:this.props.loginId,
-            matchId:this.props.matchId
+            matchId:this.props.matchId,
+            gameData:{},
         })
     },
 
@@ -21,21 +22,39 @@ var Match = React.createClass({
     },
 
     componentDidMount: function(){
-        socket.on('gameCloseEvent',this.gameCloseEvent);
+        venti.on('callMatchEnd',this.callMatchEnd);
+
+        socket.on('requiredGameData',this.requiredGameDataEvent)
     },
 
     componentWillUnmount: function(){
-        socket.removeListener('gameCloseEvent',this.gameCloseEvent);
+        venti.off('callMatchEnd',this.callMatchEnd);
+    },
+
+    callMatchEnd: function(){
+        socket.emit('callMatchEnd');
+    },
+
+    requiredGameDataEvent: function(){
+        /*
+            - Object (Object
+              - Teams (Object)
+                - Red (Arrays of Players)
+                    - Player (Object)
+                - Blue (Arrays of Players)
+                    - Player (Object)
+
+
+        */
     },
 
     render: function(){
         return(
             <div>
-                <p className="flow-text">
-                    Welcome to match {this.state.matchId}, enjoy your stay.
-                </p>
-                <MatchTimer />
-                <GameInformation />
+                <div className="timer-wrap">
+                    <MatchTimer />
+                </div>
+                <GameInformation data={this.state.gameData} />
                 <OpponentInformation />
             </div>
         )
