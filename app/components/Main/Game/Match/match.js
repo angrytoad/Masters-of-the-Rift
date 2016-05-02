@@ -34,6 +34,9 @@ var Match = React.createClass({
                 <p className="flow-text">
                     Welcome to match {this.state.matchId}, enjoy your stay.
                 </p>
+                <MatchTimer />
+                <GameInformation />
+                <OpponentInformation />
             </div>
         )
     }

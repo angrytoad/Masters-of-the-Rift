@@ -6,7 +6,7 @@ var BackgroundMusicControl = React.createClass({
         return({
             muted:(localStorage.getItem('motr-music-mute') == '1'),
             music: new Howl({
-                urls: ['/assets/sounds/background2.mp3'],
+                urls: ['/assets/sounds/background3.mp3'],
                 loop: true,
                 autoplay:true,
                 volume: 0.2
