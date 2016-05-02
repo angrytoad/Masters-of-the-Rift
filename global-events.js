@@ -52,8 +52,9 @@ module.exports = function(io, Models) {
             $players = Object.keys($queue);
             $len = Math.floor($players.length);
             console.log('Match has been made.');
-
-            var $gameDetails = $matches[$gameId].fetchGameDetails();
+            var $gameDetails = $matches[$gameId].fetchGameDetails(function($gameDetails) {
+                io.to($gameId).emit('requiredGameDataEvent', $gameDetails.presented);
+            });
             
         }
     }

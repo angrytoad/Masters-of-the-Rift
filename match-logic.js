@@ -8,11 +8,12 @@
  	this.players = [$p1, $p2];
  	var $apiHandler = require('./api.js');
 
- 	this.fetchGameDetails = function() {
+ 	this.fetchGameDetails = function(callback) {
 		//console.log(this.players[0]);
-		var $match = $apiHandler.getMatch();
+		var $match = $apiHandler.getMatch(null, null, function($match) {
+			callback($match);
+		});
 
-		return $match;
  	};
 
  }

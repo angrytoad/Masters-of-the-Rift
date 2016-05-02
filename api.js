@@ -29,12 +29,13 @@ var api = module.exports = {};
 
 	});
 
-	api.getMatch = function ($region, $id) {
+	api.getMatch = function ($region, $id, $callback) {
         var $match = api.endpoint.league.challenger({
             type: 'RANKED_SOLO_5x5'
         }, function($response){
         	// console.log($response);
         	if (typeof $response.entries == "undefined") {
+        		console.log('A FAILURE HAS OCCOURED (1)');
         		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
         	} else {
 
@@ -50,6 +51,7 @@ var api = module.exports = {};
 	            	// console.log($response);
 	            	// console.log($response.matches);
 	            	if (typeof $response.matches == "undefined") {
+	            		console.log('A FAILURE HAS OCCOURED (2)');
 	            		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
 	            	} else {
 		                var $matchList = $response.matches;
@@ -64,7 +66,10 @@ var api = module.exports = {};
 		                still in the rito-endpoint
 		                 */
 		                // console.log($match);
-		                $match = api.populateMatch($match);
+		                $match = api.populateMatch($match, function($match) {
+		                	//console.log($match.presented.teams.red[0]);
+		                	$callback($match);
+		                });
 	            	}
 
 	            });
@@ -74,20 +79,46 @@ var api = module.exports = {};
         });
 	},
 
-	api.populateMatch = function($match) {
+	api.populateMatch = function($match, callback) {
 		// Populate the match object with relevant information to the game
+		//teamId is red
 		var $popMatch = api.endpoint.getMatchData($match, function($response) {
 			// console.log($response);
+			// console.log($response.participants[1].stats);
 			var $gameData = {};
 			var $red = [];
 			var $blue = [];
 			var $mastery = null;
+			var idObj = $response.participantIdentities.reduce(function(o, v, i) {
+			  o[i] = v;
+			  return o;
+			}, {});
+			$gameData.playerStats = {};
 			$response.participants.forEach(function(element, index, array) {
+				pId = element.participantId - 1;
+				$pObj = idObj[pId];
 				if (element.teamId == 100) {
-					$red.push({playerObj: element, champion: element.championId, team: 'red', rankedBest: element.highestAchievedSeasonTeir, timeline: element.timeline, mastery: $mastery});
+					$red.push({playerObj: element,
+						champion: element.championId,
+						team: 'red',
+						rankedBest: element.highestAchievedSeasonTier,
+						timeline: element.timeline,
+						mastery: $mastery,
+						pId: element.participantId,
+						playerName: $pObj.player.summonerName
+					});
 				} else if (element.teamId == 200) {
-					$blue.push({playerObj: element, champion: element.championId, team: 'blue', rankedBest: element.highestAchievedSeasonTeir, timeline: element.timeline, mastery: $mastery});
+					$blue.push({playerObj: element,
+						champion: element.championId,
+						team: 'red',
+						rankedBest: element.highestAchievedSeasonTier,
+						timeline: element.timeline,
+						mastery: $mastery,
+						pId: element.participantId,
+						playerName: $pObj.player.summonerName
+					});
 				}
+				$gameData.playerStats[element.participantId] = element.stats;
 			});
 			$gameData.presented = {};
 			$gameData.presented.teams = {red: $red, blue: $blue};
@@ -95,7 +126,18 @@ var api = module.exports = {};
 				$gameData = data;
 				setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
 					$gameData = data;
-					console.log($gameData.presented.teams.red);
+					$gameData.teams = {red: null, blue: null};
+					$response.teams.forEach(function (ele, ind, arr) {
+						if (ele.teamId == 100) {
+							$gameData.teams.red = ele;
+						} else if (ele.teamId == 200) {
+							$gameData.teams.blue = ele;
+						}
+						if ($gameData.teams.red != null && $gameData.teams.blue != null) {
+							callback($gameData);
+						}
+					});
+
 				})
 			});
 
@@ -114,6 +156,7 @@ var api = module.exports = {};
 			$returnObj = $participants.map(function(elem, ind, arr) {
 				if (elem.participantId == $pIdNo) {
 					var $returningObject = api.endpoint.getMasteryRatingByPlayerChampIds(elem.player.summonerId, obj.playerObj.championId, function($resp) {
+
 						if ($resp.statusCode == 204) {
 							returnObj.mastery = 0;
 							venti.trigger('gotMasteryData', {teamcolour: $teamColour, reObj: returnObj, callback: callback, gameData: $gameData});
@@ -128,3 +171,26 @@ var api = module.exports = {};
 			});
 		});
 	} 
+
+	/*
+	For Questions
+assists
+champLevel
+deaths
+goldEarned
+goldSpent
+kills
+largestCriticalStrike
+largestKillingSpree
+minionsKilled
+physicalDamageDealtToChampions
+totalDamageDealtToChampions
+totalDamageTaken
+totalHeal
+wardsPlaced
+wardsKilled
+towerKills
+totalTImeCrowdControlDelt
+firstBlood
+firstTowerKill
+	*/
