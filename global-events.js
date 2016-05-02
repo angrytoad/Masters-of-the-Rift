@@ -16,6 +16,8 @@ module.exports = function(io, Models) {
     var bcrypt = require('bcrypt-nodejs');
     var uuid = require('uuid');
     var Game = require('./match-logic.js');
+    var Api = require('./api.js');
+    venti = require('./venti.min.js');
     
     var $matcher = setInterval(matcher, 1000);
 
@@ -35,7 +37,7 @@ module.exports = function(io, Models) {
                 var $player = $players[i]
                 $tempQueue[i] = $player;
             }
-            var $game = new Game($gameId, $tempQueue[0], $tempQueue[1]);
+            var $game = new Game($gameId, $tempQueue[0], $tempQueue[1], Api);
             $matches[$gameId] = $game;
             //console.log($queue[$tempQueue[0]]);
 
@@ -52,12 +54,19 @@ module.exports = function(io, Models) {
             $players = Object.keys($queue);
             $len = Math.floor($players.length);
             console.log('Match has been made.');
-            var $gameDetails = $matches[$gameId].fetchGameDetails(function($gameDetails) {
+            var $gameDetails = $matches[$gameId].fetchGameDetails($gameId,function($gameDetails) {
                 io.to($gameId).emit('requiredGameDataEvent', $gameDetails.presented);
             });
             
         }
     }
+
+    venti.on('matchesUndefinedEvent', function(data) {
+        console.log(data);
+        var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
+            io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
+        });
+    });
 
     function getQueueCount(){
         return {'queue':Object.keys($queue).length,'match':(Object.keys($matches).length)*2}

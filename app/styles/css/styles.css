@@ -216,3 +216,12 @@ video#bgvid {
     margin: auto;
     text-align: center;
 }
+
+.square{
+    height: 96px;
+    width: 96px;
+    display: inline-block;
+    vertical-align: top;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+}

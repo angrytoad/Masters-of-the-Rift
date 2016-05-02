@@ -7,11 +7,10 @@
 var api = module.exports = {};
 
     api.endpoint = require('./rito-endpoint');
+	api.matchLogic = require('./match-logic');
     venti = require('./venti.min.js');
 
-	venti.on('matchesUndefinedEvent', function(data) {
-		api.getMatch(data.region, data.id);
-	});
+
 	var $masteryResp = [];
 	venti.on('gotMasteryData', function(data) {
 
@@ -29,14 +28,14 @@ var api = module.exports = {};
 
 	});
 
-	api.getMatch = function ($region, $id, $callback) {
+	api.getMatch = function ($gameId, $region, $id, $callback) {
         var $match = api.endpoint.league.challenger({
             type: 'RANKED_SOLO_5x5'
         }, function($response){
         	// console.log($response);
         	if (typeof $response.entries == "undefined") {
         		console.log('A FAILURE HAS OCCOURED (1)');
-        		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
+        		venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
         	} else {
 
 	            var $league = $response.entries;
@@ -52,7 +51,7 @@ var api = module.exports = {};
 	            	// console.log($response.matches);
 	            	if (typeof $response.matches == "undefined") {
 	            		console.log('A FAILURE HAS OCCOURED (2)');
-	            		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
+	            		venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
 	            	} else {
 		                var $matchList = $response.matches;
 		                /*

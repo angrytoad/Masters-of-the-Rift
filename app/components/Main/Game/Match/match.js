@@ -9,6 +9,7 @@ var Match = React.createClass({
             loginId:this.props.loginId,
             matchId:this.props.matchId,
             gameData:{},
+            gameDataReceived:false
         })
     },
 
@@ -24,7 +25,7 @@ var Match = React.createClass({
     componentDidMount: function(){
         venti.on('callMatchEnd',this.callMatchEnd);
 
-        socket.on('requiredGameData',this.requiredGameDataEvent)
+        socket.on('requiredGameDataEvent',this.requiredGameDataEvent)
     },
 
     componentWillUnmount: function(){
@@ -35,7 +36,7 @@ var Match = React.createClass({
         socket.emit('callMatchEnd');
     },
 
-    requiredGameDataEvent: function(){
+    requiredGameDataEvent: function(data){
         /*
             - Object (Object
               - Teams (Object)
@@ -46,17 +47,32 @@ var Match = React.createClass({
 
 
         */
+        this.setState({
+            gameDataReceived:true,
+            gameData:data.teams
+        });
     },
 
     render: function(){
-        return(
-            <div>
-                <div className="timer-wrap">
-                    <MatchTimer />
+        if(this.state.gameDataReceived) {
+            return (
+                <div>
+                    <div className="timer-wrap">
+                        <MatchTimer />
+                    </div>
+                    <GameInformation data={this.state.gameData}/>
+                    <OpponentInformation />
                 </div>
-                <GameInformation data={this.state.gameData} />
-                <OpponentInformation />
-            </div>
-        )
+            )
+        }else{
+            return (
+                <div>
+                    <p className="flow-text">
+                        Waiting on server...
+                    </p>
+                </div>
+            )
+        }
     }
+
 })
