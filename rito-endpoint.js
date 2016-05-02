@@ -74,7 +74,6 @@ var endpoint = module.exports = {};
                 });
                 response.on('end', function() {
                     var parsed = JSON.parse(body);
-                    console.log(parsed);
                     $callback(parsed);
                 });
     		}

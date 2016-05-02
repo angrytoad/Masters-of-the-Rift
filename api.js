@@ -12,12 +12,28 @@ var api = module.exports = {};
 	venti.on('matchesUndefinedEvent', function(data) {
 		api.getMatch(data.region, data.id);
 	});
+	var $masteryResp = [];
+	venti.on('gotMasteryData', function(data) {
+
+		$masteryResp.push(data.reObj);
+
+		if ($masteryResp.length == 5) {
+			if (data.teamColour == 'red') {
+				data.gameData.presented.teams.red = $masteryResp;
+			} else {
+				data.gameData.presented.teams.blue = $masteryResp;
+			}
+			data.callback(data.gameData);
+			$masteryResp = [];
+		}
+
+	});
 
 	api.getMatch = function ($region, $id) {
         var $match = api.endpoint.league.challenger({
             type: 'RANKED_SOLO_5x5'
         }, function($response){
-        	console.log($response);
+        	// console.log($response);
         	if (typeof $response.entries == "undefined") {
         		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
         	} else {
@@ -47,8 +63,8 @@ var api = module.exports = {};
 		                This should allow us to grab the match ID and start returning some actual match information. Needs building
 		                still in the rito-endpoint
 		                 */
-		                //console.log($match);
-		                //$match = api.populateMatch($match);
+		                // console.log($match);
+		                $match = api.populateMatch($match);
 	            	}
 
 	            });
@@ -61,7 +77,7 @@ var api = module.exports = {};
 	api.populateMatch = function($match) {
 		// Populate the match object with relevant information to the game
 		var $popMatch = api.endpoint.getMatchData($match, function($response) {
-			console.log($response);
+			// console.log($response);
 			var $gameData = {};
 			var $red = [];
 			var $blue = [];
@@ -79,9 +95,7 @@ var api = module.exports = {};
 				$gameData = data;
 				setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
 					$gameData = data;
-					console.log('ERMAGERD');
 					console.log($gameData.presented.teams.red);
-
 				})
 			});
 
@@ -94,31 +108,23 @@ var api = module.exports = {};
 	api.getPlayerInfo = function ($team, $teamColour, $participants, $gameData, callback) {
 
 		//Passing a team array in adds mastery property, do one team and then wait 10, or else you risk a blacklisting
-
-		$newTeam = $team.map(function(obj, ind) {
+		$team.forEach(function(obj) {
 			$pIdNo = obj.playerObj.participantId;
 			var $returnObj = obj;
 			$returnObj = $participants.map(function(elem, ind, arr) {
 				if (elem.participantId == $pIdNo) {
-          
 					var $returningObject = api.endpoint.getMasteryRatingByPlayerChampIds(elem.player.summonerId, obj.playerObj.championId, function($resp) {
 						if ($resp.statusCode == 204) {
 							returnObj.mastery = 0;
+							venti.trigger('gotMasteryData', {teamcolour: $teamColour, reObj: returnObj, callback: callback, gameData: $gameData});
 						} else {
 							returnObj = obj;
 							returnObj.mastery = $resp.championLevel;
+							venti.trigger('gotMasteryData', {teamcolour: $teamColour, reObj: returnObj, callback: callback, gameData: $gameData});
+
 						}
-           			return returnObj; // In here got it
 					});
-					return $returningObject // Then pass it back to .map()
 				}
 			});
-			return $returnObj[ind]; // Then pass your $returnObj (from $participants.map) back up to the $team.map function
 		});
-		if ($teamColour == 'red') {
-			$gameData.presented.teams.red = $newTeam;
-		} else {
-			$gameData.presented.teams.blue = $newTeam;
-		}
-		callback($gameData);
 	} 
