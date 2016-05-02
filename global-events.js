@@ -62,10 +62,12 @@ module.exports = function(io, Models) {
     }
 
     venti.on('matchesUndefinedEvent', function(data) {
-        console.log(data);
-        var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
-            io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
-        });
+        console.log('RECEIVED AN ERROR, WILL TRY AGAIN IN 10 SECONDS');
+        setTimeout(function(){
+            var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
+                io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
+            });
+        },10000);
     });
 
     function getQueueCount(){

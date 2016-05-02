@@ -47,9 +47,10 @@ var Match = React.createClass({
 
 
         */
+        console.log(data);
         this.setState({
             gameDataReceived:true,
-            gameData:data.teams
+            gameData:data
         });
     },
 

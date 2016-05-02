@@ -34,7 +34,7 @@ var api = module.exports = {};
         }, function($response){
         	// console.log($response);
         	if (typeof $response.entries == "undefined") {
-        		console.log('A FAILURE HAS OCCOURED (1)');
+        		console.log('A FAILURE HAS OCCOURED: Cannot get Challenger list');
         		venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
         	} else {
 
@@ -50,7 +50,7 @@ var api = module.exports = {};
 	            	// console.log($response);
 	            	// console.log($response.matches);
 	            	if (typeof $response.matches == "undefined") {
-	            		console.log('A FAILURE HAS OCCOURED (2)');
+	            		console.log('A FAILURE HAS OCCOURED (2): Could not get matches for '+$player.playerOrTeamName);
 	            		venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
 	            	} else {
 		                var $matchList = $response.matches;
@@ -65,7 +65,7 @@ var api = module.exports = {};
 		                still in the rito-endpoint
 		                 */
 		                // console.log($match);
-		                $match = api.populateMatch($match, function($match) {
+		                $match = api.populateMatch($gameId, $match, function($match) {
 		                	//console.log($match.presented.teams.red[0]);
 		                	$callback($match);
 		                });
@@ -78,7 +78,7 @@ var api = module.exports = {};
         });
 	},
 
-	api.populateMatch = function($match, callback) {
+	api.populateMatch = function($gameId, $match, callback) {
 		// Populate the match object with relevant information to the game
 		//teamId is red
 		var $popMatch = api.endpoint.getMatchData($match, function($response) {
@@ -88,59 +88,62 @@ var api = module.exports = {};
 			var $red = [];
 			var $blue = [];
 			var $mastery = null;
-			var idObj = $response.participantIdentities.reduce(function(o, v, i) {
-			  o[i] = v;
-			  return o;
-			}, {});
-			$gameData.playerStats = {};
-			$response.participants.forEach(function(element, index, array) {
-				pId = element.participantId - 1;
-				$pObj = idObj[pId];
-				if (element.teamId == 100) {
-					$red.push({playerObj: element,
-						champion: element.championId,
-						team: 'red',
-						rankedBest: element.highestAchievedSeasonTier,
-						timeline: element.timeline,
-						mastery: $mastery,
-						pId: element.participantId,
-						playerName: $pObj.player.summonerName
-					});
-				} else if (element.teamId == 200) {
-					$blue.push({playerObj: element,
-						champion: element.championId,
-						team: 'red',
-						rankedBest: element.highestAchievedSeasonTier,
-						timeline: element.timeline,
-						mastery: $mastery,
-						pId: element.participantId,
-						playerName: $pObj.player.summonerName
-					});
-				}
-				$gameData.playerStats[element.participantId] = element.stats;
-			});
-			$gameData.presented = {};
-			$gameData.presented.teams = {red: $red, blue: $blue};
-			api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
-				$gameData = data;
-				setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
-					$gameData = data;
-					$gameData.teams = {red: null, blue: null};
-					$response.teams.forEach(function (ele, ind, arr) {
-						if (ele.teamId == 100) {
-							$gameData.teams.red = ele;
-						} else if (ele.teamId == 200) {
-							$gameData.teams.blue = ele;
-						}
-						if ($gameData.teams.red != null && $gameData.teams.blue != null) {
-							callback($gameData);
-						}
-					});
+            if (typeof $response.matches == "undefined") {
+                console.log('A FAILURE HAS OCCOURED (3): Could not get matche information');
+                venti.trigger('matchesUndefinedEvent', {match:$gameId});
+            }else{
+                var idObj = $response.participantIdentities.reduce(function(o, v, i) {
+                  o[i] = v;
+                  return o;
+                }, {});
+                $gameData.playerStats = {};
+                $response.participants.forEach(function(element, index, array) {
+                    pId = element.participantId - 1;
+                    $pObj = idObj[pId];
+                    if (element.teamId == 100) {
+                        $red.push({playerObj: element,
+                            champion: element.championId,
+                            team: 'red',
+                            rankedBest: element.highestAchievedSeasonTier,
+                            timeline: element.timeline,
+                            mastery: $mastery,
+                            pId: element.participantId,
+                            playerName: $pObj.player.summonerName
+                        });
+                    } else if (element.teamId == 200) {
+                        $blue.push({playerObj: element,
+                            champion: element.championId,
+                            team: 'red',
+                            rankedBest: element.highestAchievedSeasonTier,
+                            timeline: element.timeline,
+                            mastery: $mastery,
+                            pId: element.participantId,
+                            playerName: $pObj.player.summonerName
+                        });
+                    }
+                    $gameData.playerStats[element.participantId] = element.stats;
+                });
+                $gameData.presented = {};
+                $gameData.presented.teams = {red: $red, blue: $blue};
+                api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
+                    $gameData = data;
+                    setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
+                        $gameData = data;
+                        $gameData.teams = {red: null, blue: null};
+                        $response.teams.forEach(function (ele, ind, arr) {
+                            if (ele.teamId == 100) {
+                                $gameData.teams.red = ele;
+                            } else if (ele.teamId == 200) {
+                                $gameData.teams.blue = ele;
+                            }
+                            if ($gameData.teams.red != null && $gameData.teams.blue != null) {
+                                callback($gameData);
+                            }
+                        });
 
-				})
-			});
-
-
+                    })
+                });
+            }
 		});
 		
 
