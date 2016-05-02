@@ -7,37 +7,54 @@
 var api = module.exports = {};
 
     api.endpoint = require('./rito-endpoint');
+    venti = require('./venti.min.js');
+
+	venti.on('matchesUndefinedEvent', function(data) {
+		api.getMatch(data.region, data.id);
+	});
 
 	api.getMatch = function ($region, $id) {
         var $match = api.endpoint.league.challenger({
             type: 'RANKED_SOLO_5x5'
         }, function($response){
-        	//console.log($response);
-            var $league = $response.entries;
-            var $player = $league[Math.floor(Math.random() * ($league.length - 0 + 1))];
+        	console.log($response);
+        	if (typeof $response.entries == "undefined") {
+        		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
+        	} else {
 
-            /*
-            AT THE MOMENT $player THIS WILL GIVE YOU A RANDOM PLAYER FROM CHALLENGER LEAGUE.
-             */
-            var $matchList = api.endpoint.matchList({
-                id:$player.playerOrTeamId
-            },function($response){
-            	//console.log($response.matches);
-                var $matchList = $response.matches;
-                /*
-                AT THIS POINT $matchList SHOULD CONTAIN A NUMBER OF GAMES FROM THE PLAYER THAT ARE RANKED SOLO QUEUE AND
-                HAVE BEEN PLAYED IN THE 2016 SEASON
-                 */
-                var $match = $matchList[Math.floor(Math.random() * ($matchList.length + 1))]; // Get a random match from the ones returned.
+	            var $league = $response.entries;
+	            var $player = $league[Math.floor(Math.random() * ($league.length - 0 + 1))];
+	            /*
+	            AT THE MOMENT $player THIS WILL GIVE YOU A RANDOM PLAYER FROM CHALLENGER LEAGUE.
+	             */
+	            var $matchList = api.endpoint.matchList({
+	                id:$player.playerOrTeamId
+	            },function($response){
+	            	// console.log($player);
+	            	// console.log($response);
+	            	// console.log($response.matches);
+	            	if (typeof $response.matches == "undefined") {
+	            		venti.trigger('matchesUndefinedEvent', {region: $region, id: $id});
+	            	} else {
+		                var $matchList = $response.matches;
+		                /*
+		                AT THIS POINT $matchList SHOULD CONTAIN A NUMBER OF GAMES FROM THE PLAYER THAT ARE RANKED SOLO QUEUE AND
+		                HAVE BEEN PLAYED IN THE 2016 SEASON
+		                 */
+		                var $match = $matchList[Math.floor(Math.random() * ($matchList.length + 1))]; // Get a random match from the ones returned.
 
-                /*
-                This should allow us to grab the match ID and start returning some actual match information. Needs building
-                still in the rito-endpoint
-                 */
-                console.log($match);
-                $match = api.populateMatch($match);
+		                /*
+		                This should allow us to grab the match ID and start returning some actual match information. Needs building
+		                still in the rito-endpoint
+		                 */
+		                //console.log($match);
+		                //$match = api.populateMatch($match);
+	            	}
 
-            });
+	            });
+
+        	}
+
         });
 	},
 
@@ -58,15 +75,15 @@ var api = module.exports = {};
 			});
 			$gameData.presented = {};
 			$gameData.presented.teams = {red: $red, blue: $blue};
-			// api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
-			// 	$gameData = data;
-			// 	setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
-			// 		$gameData = data;
-			// 		console.log('ERMAGERD');
-			// 		console.log($gameData.presented.teams.red);
+			api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
+				$gameData = data;
+				setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
+					$gameData = data;
+					console.log('ERMAGERD');
+					console.log($gameData.presented.teams.red);
 
-			// 	})
-			// });
+				})
+			});
 
 
 		});
