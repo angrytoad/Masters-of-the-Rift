@@ -87,6 +87,7 @@ var api = module.exports = {};
 			var $gameData = {};
 			var $red = [];
 			var $blue = [];
+			var $champs = [];
 			var $mastery = null;
             if (typeof $response.matchId == "undefined") {
                 console.log('A FAILURE HAS OCCOURED (3): Could not get match information');
