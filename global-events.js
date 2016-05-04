@@ -45,7 +45,7 @@ module.exports = function(io, Models) {
             $queue[$tempQueue[1]].socket.emit('matchFoundEvent', {matchId: $gameId});
 
             $queue[$tempQueue[0]].socket.join($gameId);
-            $queue[$tempQueue[1]].socket.join($gameId)
+            $queue[$tempQueue[1]].socket.join($gameId);
 
             delete $queue[$tempQueue[0]];
             delete $queue[$tempQueue[1]];

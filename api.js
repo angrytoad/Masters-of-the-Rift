@@ -88,8 +88,8 @@ var api = module.exports = {};
 			var $red = [];
 			var $blue = [];
 			var $mastery = null;
-            if (typeof $response.matches == "undefined") {
-                console.log('A FAILURE HAS OCCOURED (3): Could not get matche information');
+            if (typeof $response.matchId == "undefined") {
+                console.log('A FAILURE HAS OCCOURED (3): Could not get match information');
                 venti.trigger('matchesUndefinedEvent', {match:$gameId});
             }else{
                 var idObj = $response.participantIdentities.reduce(function(o, v, i) {
@@ -127,7 +127,8 @@ var api = module.exports = {};
                 $gameData.presented.teams = {red: $red, blue: $blue};
                 api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
                     $gameData = data;
-                    setTimeout(api.getPlayerInfo, 10000, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
+					console.log()
+                    setTimeout(api.getPlayerInfo, 500, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
                         $gameData = data;
                         $gameData.teams = {red: null, blue: null};
                         $response.teams.forEach(function (ele, ind, arr) {
