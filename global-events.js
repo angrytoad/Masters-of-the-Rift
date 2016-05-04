@@ -55,6 +55,7 @@ module.exports = function(io, Models) {
             $len = Math.floor($players.length);
             console.log('Match has been made.');
             var $gameDetails = $matches[$gameId].fetchGameDetails($gameId,function($gameDetails) {
+                console.log('EMITTING DATA TO CLIENTS ON '+$gameId);
                 io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams});
             });
             
@@ -65,6 +66,7 @@ module.exports = function(io, Models) {
         console.log('RECEIVED AN ERROR, WILL TRY AGAIN IN 10 SECONDS');
         setTimeout(function(){
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
+                console.log('EMITTING DATA TO CLIENTS ON '+data.match);
                 io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
             });
         },1000);

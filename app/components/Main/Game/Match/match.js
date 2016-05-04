@@ -70,6 +70,7 @@ var Match = React.createClass({
                 <div>
                     <p className="flow-text">
                         Waiting on server...
+                        {this.state.matchId}
                     </p>
                 </div>
             )

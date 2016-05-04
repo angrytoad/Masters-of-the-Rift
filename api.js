@@ -127,7 +127,7 @@ var api = module.exports = {};
                 $gameData.presented.teams = {red: $red, blue: $blue};
                 api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
                     $gameData = data;
-					console.log()
+					console.log('Got Red team, not getting blue');
                     setTimeout(api.getPlayerInfo, 500, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
                         $gameData = data;
                         $gameData.teams = {red: null, blue: null};
