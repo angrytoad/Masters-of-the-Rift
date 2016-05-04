@@ -67,7 +67,7 @@ module.exports = function(io, Models) {
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
                 io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
             });
-        },10000);
+        },1000);
     });
 
     function getQueueCount(){
