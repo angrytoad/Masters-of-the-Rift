@@ -51,36 +51,21 @@ var GameContent = React.createClass({
     },
 
     matchFoundEvent: function(data){
+        var matchstartSound = new Howl({
+            urls: ['/assets/sounds/matchStart.mp3'],
+            volume: 1,
+            autoplay:true
+        });
+        this.setState({
+            inGame:true,
+            matchId:data.matchId
+        });
+        /*
         var countdownSound = new Howl({
             urls: ['/assets/sounds/countdown.mp3'],
             volume: 1.5
         });
-        var matchstartSound = new Howl({
-            urls: ['/assets/sounds/matchStart.mp3'],
-            volume: 1
-        });
-        var counter = 0;
-
-        var countdown = setInterval(function(){
-            if(counter < 3){
-                countdownSound.play();
-            }
-            counter++;
-        },1000);
-        var that = this;
-        setTimeout(function(){
-
-            clearInterval(countdown);
-            matchstartSound.play();
-            $('.no-game').fadeToggle(3000,function(){
-
-                that.setState({
-                    inGame:true,
-                    matchId:data.matchId
-                });
-                $('.yes-game').fadeToggle(1000);
-            });
-        },4000);
+        */
     },
 
     componentDidMount: function(){
