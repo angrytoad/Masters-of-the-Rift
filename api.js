@@ -8,8 +8,8 @@ var api = module.exports = {};
 
     api.endpoint = require('./rito-endpoint');
 	api.matchLogic = require('./match-logic');
+	api.champions = require('./champions.json');
     venti = require('./venti.min.js');
-
 
 	var $masteryResp = [];
 	venti.on('gotMasteryData', function(data) {
@@ -19,7 +19,7 @@ var api = module.exports = {};
 		if ($masteryResp.length == 5) {
 			if (data.teamColour == 'red') {
 				data.gameData.presented.teams.red = $masteryResp;
-			} else {
+			} else if (data.teamColour == 'blue') {
 				data.gameData.presented.teams.blue = $masteryResp;
 			}
 			data.callback(data.gameData);
@@ -101,9 +101,16 @@ var api = module.exports = {};
                 $response.participants.forEach(function(element, index, array) {
                     pId = element.participantId - 1;
                     $pObj = idObj[pId];
+                    $champName = null;
+                    Object.keys(api.champions.data).map(function(value, index) {
+                    	if (api.champions.data[value].key == element.championId) {
+                    		$champName = value;
+                    	}
+                    });
+    
                     if (element.teamId == 100) {
                         $red.push({playerObj: element,
-                            champion: element.championId,
+                            champion: $champName,
                             team: 'red',
                             rankedBest: element.highestAchievedSeasonTier,
                             timeline: element.timeline,
@@ -113,7 +120,7 @@ var api = module.exports = {};
                         });
                     } else if (element.teamId == 200) {
                         $blue.push({playerObj: element,
-                            champion: element.championId,
+                            champion: $champName,
                             team: 'red',
                             rankedBest: element.highestAchievedSeasonTier,
                             timeline: element.timeline,
@@ -126,9 +133,9 @@ var api = module.exports = {};
                 });
                 $gameData.presented = {};
                 $gameData.presented.teams = {red: $red, blue: $blue};
+                //console.log($gameData.presented.teams);  CORRECT
                 api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
                     $gameData = data;
-					console.log('Got Red team, not getting blue');
                     setTimeout(api.getPlayerInfo, 500, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
                         $gameData = data;
                         $gameData.teams = {red: null, blue: null};
@@ -153,14 +160,13 @@ var api = module.exports = {};
 
 	api.getPlayerInfo = function ($team, $teamColour, $participants, $gameData, callback) {
 
-		//Passing a team array in adds mastery property, do one team and then wait 10, or else you risk a blacklisting
+		//Passing a team array in adds mastery property, do one team and then wait 10, or else you risk a blacklisting IRRELEVANT ALL HAIL PRODUCTION KEYS
 		$team.forEach(function(obj) {
 			$pIdNo = obj.playerObj.participantId;
 			var $returnObj = obj;
 			$returnObj = $participants.map(function(elem, ind, arr) {
 				if (elem.participantId == $pIdNo) {
 					var $returningObject = api.endpoint.getMasteryRatingByPlayerChampIds(elem.player.summonerId, obj.playerObj.championId, function($resp) {
-
 						if ($resp.statusCode == 204) {
 							returnObj.mastery = 0;
 							venti.trigger('gotMasteryData', {teamcolour: $teamColour, reObj: returnObj, callback: callback, gameData: $gameData});
@@ -168,7 +174,6 @@ var api = module.exports = {};
 							returnObj = obj;
 							returnObj.mastery = $resp.championLevel;
 							venti.trigger('gotMasteryData', {teamcolour: $teamColour, reObj: returnObj, callback: callback, gameData: $gameData});
-
 						}
 					});
 				}

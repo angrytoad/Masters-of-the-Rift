@@ -56,6 +56,8 @@ module.exports = function(io, Models) {
             console.log('Match has been made.');
             var $gameDetails = $matches[$gameId].fetchGameDetails($gameId,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+$gameId);
+                console.log($gameDetails.presented.teams.red);
+                console.log($gameDetails.presented.teams.blue);
                 io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams});
             });
             
