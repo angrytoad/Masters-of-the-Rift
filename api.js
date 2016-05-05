@@ -9,6 +9,8 @@ var api = module.exports = {};
     api.endpoint = require('./rito-endpoint');
 	api.matchLogic = require('./match-logic');
 	api.champions = require('./champions.json');
+	api.items = require('./items.json');
+	api.spells = require('./spells.json');
     venti = require('./venti.min.js');
 
 	var $masteryResp = [];
@@ -41,14 +43,11 @@ var api = module.exports = {};
 	            var $league = $response.entries;
 	            var $player = $league[Math.floor(Math.random() * ($league.length - 0 + 1))];
 	            /*
-	            AT THE MOMENT $player THIS WILL GIVE YOU A RANDOM PLAYER FROM CHALLENGER LEAGUE.
+	            AT THE MOMENT $player THIS WILL GIVE YOU A RANDOM PLAYER.
 	             */
 	            var $matchList = api.endpoint.matchList({
 	                id:$player.playerOrTeamId
 	            },function($response){
-	            	// console.log($player);
-	            	// console.log($response);
-	            	// console.log($response.matches);
 	            	if (typeof $response.matches == "undefined") {
 	            		console.log('A FAILURE HAS OCCOURED (2): Could not get matches for '+$player.playerOrTeamName);
 	            		venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
@@ -82,12 +81,12 @@ var api = module.exports = {};
 		// Populate the match object with relevant information to the game
 		//teamId is red
 		var $popMatch = api.endpoint.getMatchData($match, function($response) {
-			// console.log($response);
-			// console.log($response.participants[1].stats);
 			var $gameData = {};
 			var $red = [];
 			var $blue = [];
 			var $champs = [];
+			var $spells = [];
+			var $items = [];
 			var $mastery = null;
             if (typeof $response.matchId == "undefined") {
                 console.log('A FAILURE HAS OCCOURED (3): Could not get match information');
@@ -106,6 +105,9 @@ var api = module.exports = {};
                     	if (api.champions.data[value].key == element.championId) {
                     		$champName = value;
                     	}
+                    });
+                    Object.keys(api.items.data).map(function(value, index) {
+
                     });
     
                     if (element.teamId == 100) {
@@ -130,6 +132,15 @@ var api = module.exports = {};
                         });
                     }
                     $gameData.playerStats[element.participantId] = element.stats;
+                });
+                Object.keys($gameData.playerStats).forEach(function (ele, ind, arr) {
+                	$gameData.playerStats[ele].item0 = api.items.data[$gameData.playerStats[ele].item0];
+                	$gameData.playerStats[ele].item1 = api.items.data[$gameData.playerStats[ele].item1];
+                	$gameData.playerStats[ele].item2 = api.items.data[$gameData.playerStats[ele].item2];
+                	$gameData.playerStats[ele].item3 = api.items.data[$gameData.playerStats[ele].item3];
+                	$gameData.playerStats[ele].item4 = api.items.data[$gameData.playerStats[ele].item4];
+                	$gameData.playerStats[ele].item5 = api.items.data[$gameData.playerStats[ele].item5];
+                	$gameData.playerStats[ele].item6 = api.items.data[$gameData.playerStats[ele].item6];
                 });
                 $gameData.presented = {};
                 $gameData.presented.teams = {red: $red, blue: $blue};

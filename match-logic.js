@@ -9,7 +9,6 @@
  	
 
  	this.fetchGameDetails = function($gameId,callback) {
-		//console.log(this.players[0]);
 		var $match = $apiHandler.getMatch($gameId,null, null, function($match) {
 			callback($match);
 		});
