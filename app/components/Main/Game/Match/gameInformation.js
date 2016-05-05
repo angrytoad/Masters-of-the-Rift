@@ -22,8 +22,8 @@ var GameInformation = React.createClass({
         return(
             <div>
                 <div className="row">
-                    <TeamRoster data={this.state.data.playerDetails.teams.blue} name="Team 1" />
-                    <TeamRoster data={this.state.data.playerDetails.teams.red} name="Team 2" />
+                    <TeamRoster data={this.state.data.playerDetails.teams.blue} game={this.state.data.gameData.blue} name="Team 1" />
+                    <TeamRoster data={this.state.data.playerDetails.teams.red} game={this.state.data.gameData.red} name="Team 2" />
                 </div>
             </div>
         )

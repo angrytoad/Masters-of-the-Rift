@@ -55,22 +55,30 @@ var Match = React.createClass({
     },
 
     render: function(){
-        if(this.state.gameDataReceived) {
+        console.log(this.state.gameDataReceived);
+        if(this.state.gameDataReceived === true) {
             return (
-                <div>
-                    <div className="timer-wrap">
-                        <MatchTimer />
+                <div className="match-wrapper row">
+                    <div className="col s4 left-wrapper">
+                        <div className="timer-wrap">
+                            <MatchTimer />
+                        </div>
+                        <div>
+                            <PlayerInformation />
+                        </div>
                     </div>
-                    <GameInformation data={this.state.gameData}/>
-                    <OpponentInformation />
+                    <div className="col s8">
+                        <GameInformation data={this.state.gameData}/>
+                        <OpponentInformation />
+                    </div>
                 </div>
             )
         }else{
             return (
                 <div>
+                    <h4 className="center-align">Preparing the game...</h4>
                     <p className="flow-text">
-                        Waiting on server...
-                        {this.state.matchId}
+                        Waiting on server... {this.state.matchId}
                     </p>
                 </div>
             )

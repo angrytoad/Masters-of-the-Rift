@@ -10,11 +10,18 @@ var TeamMember = React.createClass({
         });
     },
 
+    displayPlayerInformation: function(e){
+        venti.trigger('displayPlayerInformation',{player:this.state.data});
+        $('.square').removeClass('active');
+        $(e.target).parents('.square').addClass('active');
+    },
+
     render: function(){
+        var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this.state.data.champion+".png"
         return(
             <div className="left center-align">
-                <div className="square">
-                    {this.state.number}
+                <div className="square no-select" onClick={this.displayPlayerInformation}>
+                    <img className="no-select" src={imgString} />
                 </div>
             </div>
         )

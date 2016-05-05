@@ -6,8 +6,8 @@ var MatchTimer = React.createClass({
 
     getInitialState: function(){
         return({
-            timer:60,
-            timeLeft:60,
+            timer:120,
+            timeLeft:120,
             percentageLeft:100
         });
     },
@@ -15,7 +15,9 @@ var MatchTimer = React.createClass({
     componentDidMount: function(){
         var that = this;
         var countDown = setInterval(function(){
+            console.log('playing sound');
             if(that.state.timeLeft > 0) {
+                //that.state.sound.play();
                 that.reduceTime();
             }else{
                 that.callMatchEnd();
@@ -24,10 +26,10 @@ var MatchTimer = React.createClass({
     },
 
     reduceTime: function(){
-          this.setState({
-              timeLeft:this.state.timeLeft-1,
-              percentageLeft:(100/this.state.timer)*(this.state.timeLeft-1)
-          });
+        this.setState({
+          timeLeft:this.state.timeLeft-1,
+          percentageLeft:(100/this.state.timer)*(this.state.timeLeft-1)
+        });
     },
 
     callMatchEnd: function(){
@@ -35,6 +37,7 @@ var MatchTimer = React.createClass({
     },
 
     render: function(){
+
         return(
             <div className="timer">
                 <p className="timer-text">{this.state.timeLeft}</p>

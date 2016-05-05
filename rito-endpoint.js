@@ -86,15 +86,23 @@ var endpoint = module.exports = {};
     	endpoint.https.get(
     		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/championmastery/location/'+endpoint.settings.region+'1/player/'+$playerId+'/champion/'+$champId+'?api_key='+endpoint.key,
     		function(response) {
-    			//Update Datastream
-    			var body = '';
-                response.on('data', function(d) {
-                    body += d;
-                });
-                response.on('end', function() {
-                    var parsed = JSON.parse(body);
-                    $re = $callback(parsed);
-                });
+
+                console.log('STATUS CODE: '+response.statusCode);
+                if(response.statusCode === 204){
+                    console.log('NO MASTERY FOUND')
+                    $re = $callback({championLevel:0});
+                }else{
+                    //Update Datastream
+                    var body = '';
+                    response.on('data', function(d) {
+                        body += d;
+                    });
+                    response.on('end', function() {
+                        var parsed = JSON.parse(body);
+                        $re = $callback(parsed);
+                    });
+                }
+
     		}
     	);	
     }

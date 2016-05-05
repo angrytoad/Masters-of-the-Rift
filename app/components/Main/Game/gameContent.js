@@ -60,12 +60,6 @@ var GameContent = React.createClass({
             inGame:true,
             matchId:data.matchId
         });
-        /*
-        var countdownSound = new Howl({
-            urls: ['/assets/sounds/countdown.mp3'],
-            volume: 1.5
-        });
-        */
     },
 
     componentDidMount: function(){
@@ -94,7 +88,6 @@ var GameContent = React.createClass({
                     this.state.inGame
                     ?
                         <div className="yes-game">
-                            <h4 className="center-align">You are now in a game</h4>
                             <Match loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} matchId={this.state.matchId} />
                         </div>
                     :
@@ -104,7 +97,6 @@ var GameContent = React.createClass({
                             <QueueInformation loggedIn={this.state.loggedIn} inQueue={this.state.inQueue} />
                         </div>
                 )}
-
             </div>
         )
 
