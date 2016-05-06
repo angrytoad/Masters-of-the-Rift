@@ -153,32 +153,24 @@ var api = module.exports = {};
                                 $gameData.teams.blue = ele;
                             }
                             if ($gameData.teams.red != null && $gameData.teams.blue != null) {
-                        //     	if ($gameData.teams.red.bans != undefined || $gameData.teams.blue.bans != undefined) {
-	                       //      	console.log($gameData.teams.red.bans);
-				                    // Object.keys(api.champions.data).map(function(value, index) {
-				                    // 	$gameData.teams.red.bans = $gameData.teams.red.bans.map(function (ban) {
-				                    // 		console.log(ban);
-				                    // 		if (ban != undefined) {
-					                   //  		if (ban.championId == api.champions.data[value].key) {
-					                   //  			return api.champions.data[value];
-					                   //  		}
-				                    // 		}  else {
-				                    // 			return ban;
-				                    // 		}
-				                    // 	});
-				                    // });
-				                    // Object.keys(api.champions.data).map(function(value, index) {
-				                    // 	$gameData.teams.blue.bans = $gameData.teams.blue.bans.map(function (ban) {
-				                    // 		if (ban != undefined) {
-					                   //  		if (ban.championId == api.champions.data[value].key) {
-					                   //  			return api.champions.data[value];
-					                   //  		}
-				                    // 		} else {
-				                    // 			return ban;
-				                    // 		}
-				                    // 	});
-				                    // });
-                        //     	}
+                            	$gameData.teams.red.bans = $gameData.teams.red.bans.map(function (ban) {
+                            		$thisBan = null;
+                            		Object.keys(api.champions.data).forEach(function (ele, ind, arr) {
+                            			if (ban.championId == api.champions.data[ele].key) {
+                            				$thisBan = ele;
+                            			}
+                            		});
+                            		return $thisBan;
+                            	});
+                            	$gameData.teams.blue.bans = $gameData.teams.blue.bans.map(function (ban) {
+                            		$thisBan = null;
+                            		Object.keys(api.champions.data).forEach(function (ele, ind, arr) {
+                            			if (ban.championId == api.champions.data[ele].key) {
+                            				$thisBan = ele;
+                            			}
+                            		});
+                            		return $thisBan;
+                            	});
                                 callback($gameData);
                             }
                         });

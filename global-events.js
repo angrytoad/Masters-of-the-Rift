@@ -57,6 +57,7 @@ module.exports = function(io, Models) {
             var $gameDetails = $matches[$gameId].fetchGameDetails($gameId,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+$gameId);
                 console.log($gameDetails.teams.red.bans);
+                console.log($gameDetails.teams.blue.bans);
                 io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams});
             });
             
@@ -69,6 +70,7 @@ module.exports = function(io, Models) {
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+data.match);
                 console.log($gameDetails.teams.red.bans);
+                console.log($gameDetails.teams.blue.bans);
                 io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
             });
         },1000);
