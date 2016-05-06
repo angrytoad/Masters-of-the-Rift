@@ -18,6 +18,7 @@ module.exports = function(io, Models) {
     var Game = require('./match-logic.js');
     var Api = require('./api.js');
     var questions = require('./questions.json');
+    var matchEvents = require('./match-events.js');
     venti = require('./venti.min.js');
     
     var $matcher = setInterval(matcher, 1000);
