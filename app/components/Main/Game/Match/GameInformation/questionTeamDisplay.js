@@ -15,7 +15,7 @@ var QuestionTeamDisplay = React.createClass({
             <div className="col s12 champions-wrapper">
                 {Array.apply(null, this.state.team).map(function(item, i){
                     return (
-                        <TeamMember data={item} number={i+1} question="true" />
+                        <TeamMember data={item} number={i+1} question="true" participant={item.pId}/>
                     );
                 }, this)}
             </div>

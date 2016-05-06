@@ -399,12 +399,13 @@ video#bgvid {
 }
 
 .match-answers.closed{
-    width:20px;
+    width:0px;
 }
 
 .match-answers .view-toggler{
-    background:blue;
-    height:200px;
+    background: #26A69A;
+    height: 200px;
+    border-radius: 5px 0px 0px 5px;
 }
 
 
@@ -416,13 +417,15 @@ video#bgvid {
     width: 40px;
     height: 40px;
     margin-right: 2px;
+    overflow: hidden;
+    border-radius: 5px;
 }
 
 .question{
     display: inline-block;
     margin-bottom: -5px;
     border-bottom: 2px solid;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
 }
 .question .champions-wrapper{
     padding:0px;
@@ -452,6 +455,20 @@ video#bgvid {
 
 .match-answers{
     z-index: 99999;
+}
+
+
+.match-answers .question:last-child{
+    border-bottom:none;
+    padding-bottom:20px;
+}
+
+.question .selected{
+    border: 2px solid yellow!important;
+}
+
+.question .btn {
+    border: 2px solid black;
 }
 
 /*

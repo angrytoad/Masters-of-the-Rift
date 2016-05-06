@@ -21,7 +21,8 @@ var MatchAnswers = React.createClass({
         console.log(this.state.questions);
         var that = this;
         return(
-            <div className="col s11">
+            <div className="col s12">
+                <h4>Questions</h4>
                 {Object.keys(this.state.questions).map(function(key){
                     return (
                         <Question data={that.state.questions[key]} players={that.state.game.playerDetails.teams} />
