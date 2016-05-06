@@ -89,7 +89,7 @@ module.exports = function(io, Models) {
         setTimeout(function(){
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+data.match);
-                io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
+                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: getRandomQuestions(5)});
             });
         },1000);
     });
