@@ -119,7 +119,7 @@ var api = module.exports = {};
                     } else if (element.teamId == 200) {
                         $blue.push({playerObj: element,
                             champion: $champName,
-                            team: 'red',
+                            team: 'blue',
                             rankedBest: element.highestAchievedSeasonTier,
                             timeline: element.timeline,
                             mastery: $mastery,
@@ -140,7 +140,6 @@ var api = module.exports = {};
                 });
                 $gameData.presented = {};
                 $gameData.presented.teams = {red: $red, blue: $blue};
-                //console.log($gameData.presented.teams);  CORRECT
                 api.getPlayerInfo($gameData.presented.teams.red, 'red', $response.participantIdentities, $gameData, function(data) {
                     $gameData = data;
                     setTimeout(api.getPlayerInfo, 500, $gameData.presented.teams.blue, 'blue', $response.participantIdentities, $gameData, function(data) {
@@ -153,24 +152,28 @@ var api = module.exports = {};
                                 $gameData.teams.blue = ele;
                             }
                             if ($gameData.teams.red != null && $gameData.teams.blue != null) {
-                            	$gameData.teams.red.bans = $gameData.teams.red.bans.map(function (ban) {
-                            		$thisBan = null;
-                            		Object.keys(api.champions.data).forEach(function (ele, ind, arr) {
-                            			if (ban.championId == api.champions.data[ele].key) {
-                            				$thisBan = ele;
-                            			}
-                            		});
-                            		return $thisBan;
-                            	});
-                            	$gameData.teams.blue.bans = $gameData.teams.blue.bans.map(function (ban) {
-                            		$thisBan = null;
-                            		Object.keys(api.champions.data).forEach(function (ele, ind, arr) {
-                            			if (ban.championId == api.champions.data[ele].key) {
-                            				$thisBan = ele;
-                            			}
-                            		});
-                            		return $thisBan;
-                            	});
+                            	if ($gameData.teams.red.hasOwnProperty('bans')) {
+	                            	$gameData.teams.red.bans = $gameData.teams.red.bans.map(function (ban) {
+	                            		$thisBan = null;
+	                            		Object.keys(api.champions.data).forEach(function (ele, ind, arr) {
+	                            			if (ban.championId == api.champions.data[ele].key) {
+	                            				$thisBan = ele;
+	                            			}
+	                            		});
+	                            		return $thisBan;
+	                            	});
+                            	}
+                            	if ($gameData.teams.blue.hasOwnProperty('bans')) {
+	                            	$gameData.teams.blue.bans = $gameData.teams.blue.bans.map(function (ban) {
+	                            		$thisBan = null;
+	                            		Object.keys(api.champions.data).forEach(function (ele, ind, arr) {
+	                            			if (ban.championId == api.champions.data[ele].key) {
+	                            				$thisBan = ele;
+	                            			}
+	                            		});
+	                            		return $thisBan;
+	                            	});
+                            	}
                                 callback($gameData);
                             }
                         });

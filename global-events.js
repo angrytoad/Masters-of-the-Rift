@@ -17,6 +17,7 @@ module.exports = function(io, Models) {
     var uuid = require('uuid');
     var Game = require('./match-logic.js');
     var Api = require('./api.js');
+    var questions = require('./questions.json');
     venti = require('./venti.min.js');
     
     var $matcher = setInterval(matcher, 1000);
