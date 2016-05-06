@@ -1,0 +1,19 @@
+{
+	"1": {"Which team was victorious?": 1},
+	"2": {"Who did the most healing?": 2},
+	"3": {"Who delt the most crowd control in total time?": 2},
+	"4": {"Who placed the most wards?": 3},
+	"5": {"Which team got first blood?": 3},
+	"6": {"Which team took the first dragon, if any?": 2},
+	"7": {"Which team took the first baron, if any?": 2},
+	"8": {"Which player delt the largest critical strike?": 2},
+	"9": {"Which champion took the most damage?": 2},
+	"10": {"Which team took the most dragons?": 2},
+	"11": {"Which team too the most barons?": 2},
+	"12": {"Who killed the most wards?": 3},
+	"13": {"Which team delt the most physical damage?": 1},
+	"14": {"Which team delt the most magical damage?": 1},
+	"15": {"Which team placed the most wards?": 3},
+	"16": {"Which team earned the most gold?": 1},
+	"17": {"Which team spent the most gold?": 1}
+}

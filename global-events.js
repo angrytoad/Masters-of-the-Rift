@@ -57,12 +57,31 @@ module.exports = function(io, Models) {
             console.log('Match has been made.');
             var $gameDetails = $matches[$gameId].fetchGameDetails($gameId,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+$gameId);
-                console.log($gameDetails.teams.red.bans);
-                console.log($gameDetails.teams.blue.bans);
-                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams});
+                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: getRandomQuestions(5)});
             });
             
         }
+    }
+
+    function getRandomQuestions($amount) {
+        $totalQs = Object.keys(questions).length;
+        $questions = {};
+        console.log(questions);
+        do {
+            duplicate = false;
+            $thisQ = Math.floor((Math.random() * $totalQs) + 1);
+            Object.keys($questions).forEach(function (ele, ind, arr) {
+                if (ele == $thisQ) {
+                    $duplicate = true;
+                }
+            });
+            if (duplicate == false) {
+                $questions[Object.keys($questions).length + 1] = questions[$thisQ];
+            }
+
+        }
+        while (Object.keys($questions).length < $amount);
+        return $questions;
     }
 
     venti.on('matchesUndefinedEvent', function(data) {
@@ -70,8 +89,6 @@ module.exports = function(io, Models) {
         setTimeout(function(){
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+data.match);
-                console.log($gameDetails.teams.red.bans);
-                console.log($gameDetails.teams.blue.bans);
                 io.to(data.match).emit('requiredGameDataEvent', $gameDetails.presented);
             });
         },1000);

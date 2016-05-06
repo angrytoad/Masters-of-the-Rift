@@ -208,26 +208,3 @@ var api = module.exports = {};
 			});
 		});
 	} 
-
-	/*
-	For Questions
-assists
-champLevel
-deaths
-goldEarned
-goldSpent
-kills
-largestCriticalStrike
-largestKillingSpree
-minionsKilled
-physicalDamageDealtToChampions
-totalDamageDealtToChampions
-totalDamageTaken
-totalHeal
-wardsPlaced
-wardsKilled
-towerKills
-totalTImeCrowdControlDelt
-firstBlood
-firstTowerKill
-	*/
