@@ -72,7 +72,7 @@ var Match = React.createClass({
                         <OpponentInformation />
                     </div>
                     <div className="match-answers expanded">
-                        <MatchAnswers data={this.state.gameData.questions} game={this.state.gameData} />
+                        <MatchAnswers data={this.state.gameData.questions} game={this.state.gameData} match={this.state.matchId} />
                     </div>
                 </div>
             )

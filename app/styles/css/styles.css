@@ -471,6 +471,11 @@ video#bgvid {
     border: 2px solid black;
 }
 
+.no-answer {
+    color: red;
+    margin: 0px;
+}
+
 /*
 
 Animation Stuff
