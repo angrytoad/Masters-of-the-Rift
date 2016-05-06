@@ -71,7 +71,6 @@ module.exports = function(io, Models) {
             $thisQ = Math.floor((Math.random() * $totalQs) + 1);
             Object.keys($questions).forEach(function (ele, ind, arr) {
                 if (ele == $thisQ) {
-                    console.log('Duplicate!');
                     duplicate = true;
                 }
             });
