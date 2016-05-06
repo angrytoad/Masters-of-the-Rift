@@ -71,6 +71,12 @@ var Match = React.createClass({
                         <GameInformation data={this.state.gameData}/>
                         <OpponentInformation />
                     </div>
+                    <div className="match-answers expanded">
+                        <h4>Questions</h4>
+                        <MatchAnswers data={this.state.gameData.questions} game={this.state.gameData} />
+                        <div className="col s1 view-toggler">
+                        </div>
+                    </div>
                 </div>
             )
         }else{

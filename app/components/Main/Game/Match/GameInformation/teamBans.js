@@ -9,7 +9,7 @@ var TeamBans = React.createClass({
                 <div>
                     <p className="flow-text label">Bans:</p>
                     {Array.apply(null, this.props.bans).map(function (ban, i) {
-                        var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+ban.championId+".png"
+                        var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+ban+".png"
                         return (
                             <div className="champion-ban left">
                                 <img src={imgString} />

@@ -18,12 +18,22 @@ var TeamMember = React.createClass({
 
     render: function(){
         var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+this.state.data.champion+".png"
-        return(
-            <div className="left center-align">
-                <div className="square no-select" onClick={this.displayPlayerInformation}>
-                    <img className="no-select" src={imgString} />
+        if(this.props.question){
+            return(
+                <div className="left center-align">
+                    <div className="square no-select">
+                        <img className="no-select" src={imgString} />
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }else{
+            return(
+                <div className="left center-align">
+                    <div className="square no-select" onClick={this.displayPlayerInformation}>
+                        <img className="no-select" src={imgString} />
+                    </div>
+                </div>
+            )
+        }
     }
 });
