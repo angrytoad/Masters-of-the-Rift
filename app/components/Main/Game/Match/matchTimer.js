@@ -8,24 +8,31 @@ var MatchTimer = React.createClass({
         return({
             timer:120,
             timeLeft:120,
-            percentageLeft:100
+            percentageLeft:100,
+            lastTenSeconds: new Howl({
+                urls: ['/assets/sounds/countdown.mp3'],
+                volume: 0.2
+            })
         });
     },
 
     componentDidMount: function(){
         var that = this;
         var countDown = setInterval(function(){
-            console.log('playing sound');
             if(that.state.timeLeft > 0) {
-                //that.state.sound.play();
                 that.reduceTime();
             }else{
                 that.callMatchEnd();
             }
+
+
         },1000);
     },
 
     reduceTime: function(){
+        if(this.state.timeLeft < 10){
+            this.state.lastTenSeconds.play();
+        }
         this.setState({
           timeLeft:this.state.timeLeft-1,
           percentageLeft:(100/this.state.timer)*(this.state.timeLeft-1)

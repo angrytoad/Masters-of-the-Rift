@@ -10,14 +10,13 @@ var TeamRoster = React.createClass({
     },
 
     render: function(){
-        console.log(this.state.team);
         return(
             <div className="col s6 team-roster">
                 <div className="col s12">
                     <h3 className="flow-text">{this.props.name}</h3>
                 </div>
                 <div className="col s12 bans-wrapper">
-                    <TeamBans bans={this.state.game.bans} />
+                    {(typeof this.state.game.bans == 'undefined' ? '' : <TeamBans bans={this.state.game.bans} />)}
                 </div>
                 <div className="col s12 champions-wrapper">
                     <p className="flow-text label">Champions:</p>

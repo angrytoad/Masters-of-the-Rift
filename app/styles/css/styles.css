@@ -233,6 +233,9 @@ video#bgvid {
 
 .team-roster .active{
     border:2px solid yellow;
+    -webkit-animation: yellow-pulsate 0.5s infinite alternate;
+    -moz-animation: yellow-pulsate 0.5s infinite alternate;
+    -animation: yellow-pulsate 0.5s infinite alternate;
 }
 
 .champion-ban{
@@ -265,4 +268,138 @@ video#bgvid {
 .square img{
     width:100%;
     cursor:pointer;
+}
+
+.player-info-wrapper{
+    margin-top: 18px;
+}
+
+.champion-loading-img{
+    width: 100%;
+    max-width: 300px;
+    display: inline-block;
+    margin: auto;
+    border-radius: 178px;
+    border: 6px ridge yellow;
+    box-shadow: 0px 0px 45px yellow;
+    margin-top: 20px;
+    -webkit-animation: yellow-pulsate 2s infinite alternate;
+    -moz-animation: yellow-pulsate 2s infinite alternate;
+    -animation: yellow-pulsate 2s infinite alternate;
+}
+
+.items-wrapper .icon{
+    vertical-align: top;
+    margin-top: 7px;
+}
+
+.selected-information-title{
+    border-bottom: 4px solid;
+    padding-bottom: 7px;
+}
+
+.items-wrapper-title{
+    margin-bottom:5px;
+}
+
+.items-wrapper .square{
+    width:64px;
+    height:64px;
+    cursor:default;
+}
+
+.items-wrapper .square img{
+    cursor:default;
+}
+
+.selected-champion-stats .icon{
+    vertical-align: top;
+    margin-top: 7px;
+}
+
+.selected-champion-stats .stat-item .icon{
+    vertical-align: top;
+    margin-right: 6px;
+}
+
+.selected-champion-stats .small-icon{
+    width: 32px;
+    vertical-align: top;
+    margin-top: 10px;
+    margin-right: -6px;
+}
+
+.stat-item{
+
+}
+
+.stat-div{
+    display:inline-block;
+    width:100%;
+}
+
+.stat-title{
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.champion-stats-title {
+    margin-bottom: 5px;
+}
+
+.trinket{
+    border:5px ridge #1FBDE2;
+}
+
+.no-select{
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+
+.ap-damage{
+    color:#3181FF;
+}
+
+.ad-damage{
+    color:#C51C20;
+}
+
+.gold-stat{
+    color:#F9CD23;
+}
+
+.selected-information-title .icon{
+    padding: 5px;
+    background: rgba(0,0,0,0.4);
+    vertical-align: top;
+    margin-top: 4px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+
+/*
+
+Animation Stuff
+
+*/
+
+@-webkit-keyframes yellow-pulsate {
+    from { box-shadow: 0 0 10px yellow; }
+    to { box-shadow: 0 0 45px yellow; }
+}
+@-moz-keyframes yellow-pulsate {
+    from { box-shadow: 0 0 10px yellow; }
+    to { box-shadow: 0 0 45px yellow; }
+}
+@keyframes yellow-pulsate {
+    from { box-shadow: 0 0 10px yellow; }
+    to { box-shadow: 0 0 45px yellow; }
 }
