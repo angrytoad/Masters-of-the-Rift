@@ -75,7 +75,7 @@ module.exports = function(io, Models) {
                 }
             });
             if (duplicate == false) {
-                $questions[Object.keys($questions).length + 1] = questions[$thisQ];
+                $questions[$thisQ] = questions[$thisQ];
             }
 
         }
