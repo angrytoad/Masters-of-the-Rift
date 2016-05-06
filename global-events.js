@@ -66,13 +66,13 @@ module.exports = function(io, Models) {
     function getRandomQuestions($amount) {
         $totalQs = Object.keys(questions).length;
         $questions = {};
-        console.log(questions);
         do {
             duplicate = false;
             $thisQ = Math.floor((Math.random() * $totalQs) + 1);
             Object.keys($questions).forEach(function (ele, ind, arr) {
                 if (ele == $thisQ) {
-                    $duplicate = true;
+                    console.log('Duplicate!');
+                    duplicate = true;
                 }
             });
             if (duplicate == false) {
