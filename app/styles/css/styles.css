@@ -529,6 +529,20 @@ video#bgvid {
     font-size: 3em;
 }
 
+.disclaimer{
+    margin-top:10px;
+    display: inline-block;
+    text-align: center;
+    opacity:0.6;
+    font-style: italic;
+}
+
+.firsts .icon{
+    width:32px;
+    height:32px;
+    margin-top:2px!important;
+}
+
 /*
 
 Animation Stuff

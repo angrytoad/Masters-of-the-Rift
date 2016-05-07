@@ -46,6 +46,12 @@ var HomepageIntro = React.createClass({
                           <button className="waves-effect waves-light btn-large motr-blue play-button col s12" onClick={this.pressedPlay}>
                               <span className="motr-pink">Play</span>
                           </button>
+                          <p className="disclaimer">
+                              Masters of the Rift isn’t endorsed by Riot Games and doesn’t reflect the views or opinions
+                              of Riot Games or anyone officially involved in producing or managing League of Legends.
+                              League of Legends and Riot Games are trademarks or registered trademarks of Riot Games,
+                              Inc. League of Legends © Riot Games, Inc.
+                          </p>
                       </div>
                     
                     

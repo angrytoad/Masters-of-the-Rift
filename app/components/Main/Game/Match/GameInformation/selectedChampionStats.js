@@ -127,6 +127,36 @@ var SelectedChampionStats = React.createClass({
                         </div>
                     </div>
 
+                    <div className="stat-div firsts">
+                        <p className="flow-text stat-title">
+                            First for everything
+                        </p>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                {
+                                    this.state.stats.firstBloodKill ? <img className="icon" src="/assets/images/tick.png" /> : <img className="icon" src="/assets/images/cross.png" />
+                                }
+                                <span>First Blood</span>
+                            </div>
+                        </div>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                {
+                                    this.state.stats.firstInhibitorKill ? <img className="icon" src="/assets/images/tick.png" /> : <img className="icon" src="/assets/images/cross.png" />
+                                }
+                                <span>First Inhib</span>
+                            </div>
+                        </div>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                {
+                                    this.state.stats.firstTowerKill ? <img className="icon" src="/assets/images/tick.png" /> : <img className="icon" src="/assets/images/cross.png" />
+                                }
+                                <span>First Tower</span>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>

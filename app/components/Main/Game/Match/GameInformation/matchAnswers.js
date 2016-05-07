@@ -27,7 +27,7 @@ var MatchAnswers = React.createClass({
             if(typeof answer == 'undefined'){
                 $(obj).addClass('no-answer');
             }else{
-                submittedAnswers[i] = answer;
+                submittedAnswers.push(answer);
             }
         });
         
@@ -54,9 +54,10 @@ var MatchAnswers = React.createClass({
         $('.question').each(function(i,obj){
             var answer = $(obj).find('.selected').data('answer');
             if(typeof answer !== 'undefined'){
-                submittedAnswers[i] = answer;
+                submittedAnswers.push(answer);
             }
         });
+        console.log(submittedAnswers.length);
         if(submittedAnswers.length == 5){
             console.log(submittedAnswers);
             $('.match-answers .play-button').removeClass('disabled');

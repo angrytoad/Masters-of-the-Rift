@@ -51,7 +51,6 @@ var ItemDisplay = React.createClass({
         var csMin = Object.keys(this.state.timeline.creepsPerMinDeltas).map(function(i,item){
             return(this.state.timeline.creepsPerMinDeltas[i]);
         },this);
-        console.log(csMin);
         csMin = this.workOutAverage(csMin);
 
         var dtMin = Object.keys(this.state.timeline.damageTakenPerMinDeltas).map(function(i,item){
