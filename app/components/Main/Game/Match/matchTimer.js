@@ -30,7 +30,7 @@ var MatchTimer = React.createClass({
     },
 
     reduceTime: function(){
-        if(this.state.timeLeft < 10){
+        if(this.state.timeLeft < 12){
             this.state.lastTenSeconds.play();
         }
         this.setState({

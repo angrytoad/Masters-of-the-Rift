@@ -21,6 +21,7 @@ var TeamMember = React.createClass({
         var $children = $parent.find('.square img');
         $children.removeClass('selected');
         $(e.target).addClass('selected');
+        venti.trigger('checkForCompleteForm');
     },
 
     render: function(){

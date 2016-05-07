@@ -46,7 +46,7 @@ var PlayerInformation = React.createClass({
         }else{
             return(
                 <div>
-
+                    <h4 className="motr-blue center-align none-selected">Click on a champion to learn more about their game.</h4>
                 </div>
             )
         }

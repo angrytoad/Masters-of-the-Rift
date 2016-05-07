@@ -6,6 +6,7 @@ var QuestionTeamChooser = React.createClass({
     chooseOption: function(e){
         $(e.target).parents('.team-chooser').children('a').removeClass('selected');
         $(e.target).addClass('selected');
+        venti.trigger('checkForCompleteForm');
     },
 
     render: function(){

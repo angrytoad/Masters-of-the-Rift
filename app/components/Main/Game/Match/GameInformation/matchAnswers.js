@@ -30,14 +30,48 @@ var MatchAnswers = React.createClass({
                 submittedAnswers[i] = answer;
             }
         });
-        this.setState({
-            submittedAnswers:submittedAnswers
+        
+        if(submittedAnswers.length == 5){
+            new Howl({
+                urls: ['/assets/sounds/lockAnswer.mp3'],
+                autoplay:true,
+                volume: 0.8
+            });
+            this.setState({
+                submittedAnswers:submittedAnswers
+            });
+            socket.emit('submitAnswers',{
+                gameId:this.state.matchId,
+                answers:submittedAnswers
+            });
+            $('.match-answers').fadeToggle(500);
+        }
+
+    },
+
+    checkForCompleteForm: function(){
+        var submittedAnswers = [];
+        $('.question').each(function(i,obj){
+            var answer = $(obj).find('.selected').data('answer');
+            if(typeof answer !== 'undefined'){
+                submittedAnswers[i] = answer;
+            }
         });
-        console.log('sending answers');
-        socket.emit('submitAnswers',{
-            gameId:this.state.matchId,
-            answers:submittedAnswers
-        })
+        if(submittedAnswers.length == 5){
+            console.log(submittedAnswers);
+            $('.match-answers .play-button').removeClass('disabled');
+        }else{
+            $('.match-answers .play-button').addClass('disabled');
+        }
+
+    },
+
+    componentDidMount: function(){
+        venti.on('checkForCompleteForm',this.checkForCompleteForm);
+    },
+
+    componentWillUnmount: function(){
+        venti.off('checkForCompleteForm',this.checkForCompleteForm);
     },
 
     render: function(){
@@ -51,7 +85,8 @@ var MatchAnswers = React.createClass({
                         <Question data={that.state.questions[key]} players={that.state.game.playerDetails.teams} />
                     );
                 })}
-                <a className="waves-effect waves-light btn green darken-1 white-text" onClick={this.submitAnswers}>Submit Answers</a>
+                <a className="waves-effect waves-light btn-large motr-pink play-button disabled" onClick={this.submitAnswers}>Submit Answers</a>
+                <OpponentInformation />
             </div>
         )
     }

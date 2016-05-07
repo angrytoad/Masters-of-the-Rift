@@ -5,14 +5,22 @@ var ItemDisplay = React.createClass({
 
     getInitialState: function(){
         return({
-            stats:this.props.stats
+            stats:this.props.stats,
+            timeline:this.props.timeline
         })
     },
 
     componentWillReceiveProps: function(nextProps){
         this.setState({
-            stats:nextProps.stats
+            stats:nextProps.stats,
+            timeline:nextProps.timeline
         })
+    },
+
+    workOutAverage: function(array){
+        var sum = array.reduce(function(a, b) { return a + b; });
+        var avg = sum / array.length;
+        return avg;
     },
 
     render: function(){
@@ -40,9 +48,59 @@ var ItemDisplay = React.createClass({
                 }
             }
         }
+        var csMin = Object.keys(this.state.timeline.creepsPerMinDeltas).map(function(i,item){
+            return(this.state.timeline.creepsPerMinDeltas[i]);
+        },this);
+        console.log(csMin);
+        csMin = this.workOutAverage(csMin);
+
+        var dtMin = Object.keys(this.state.timeline.damageTakenPerMinDeltas).map(function(i,item){
+            return(this.state.timeline.damageTakenPerMinDeltas[i])
+        },this);
+        dtMin = this.workOutAverage(dtMin);
+
+        var goldMin = Object.keys(this.state.timeline.goldPerMinDeltas).map(function(i,item){
+            return(this.state.timeline.goldPerMinDeltas[i])
+        },this);
+        goldMin = this.workOutAverage(goldMin);
+
+        var xpMin = Object.keys(this.state.timeline.xpPerMinDeltas).map(function(i,item){
+            return(this.state.timeline.xpPerMinDeltas[i])
+        },this);
+        xpMin = this.workOutAverage(xpMin);
+
         return(
             <div>
                 {rows}
+                <div className="stat-div">
+                    <p className="flow-text stat-title">
+                        Progression
+                    </p>
+                    <div className="stat-item col s12 flow-text">
+                        <div className="stat-item-title">
+                            <img className="icon" src="/assets/images/icons/cooldown-reduction.png" />
+                            <span>CS/Min: <b><span className="cs-min">{csMin.toFixed(0)}</span></b></span>
+                        </div>
+                    </div>
+                    <div className="stat-item col s12 flow-text">
+                        <div className="stat-item-title">
+                            <img className="icon" src="/assets/images/icons/cooldown-reduction.png" />
+                            <span>DT/Min: <b><span className="cs-min">{dtMin.toFixed(0)}</span></b></span>
+                        </div>
+                    </div>
+                    <div className="stat-item col s12 flow-text">
+                        <div className="stat-item-title">
+                            <img className="icon" src="/assets/images/icons/cooldown-reduction.png" />
+                            <span>Gold/Min: <b><span className="cs-min">{goldMin.toFixed(0)}</span></b></span>
+                        </div>
+                    </div>
+                    <div className="stat-item col s12 flow-text">
+                        <div className="stat-item-title">
+                            <img className="icon" src="/assets/images/icons/cooldown-reduction.png" />
+                            <span>XP/Min: <b><span className="cs-min">{xpMin.toFixed(0)}</span></b></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

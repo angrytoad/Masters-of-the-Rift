@@ -29,7 +29,7 @@ var SelectedChampion = React.createClass({
                         <img className="icon" src="http://ddragon.leagueoflegends.com/cdn/5.5.1/img/ui/items.png" />
                         <span><b>ITEMS</b></span>
                     </p>
-                    <ItemDisplay stats={this.state.player.playerObj.stats} />
+                    <ItemDisplay stats={this.state.player.playerObj.stats} timeline={this.state.player.playerObj.timeline} />
                 </div>
                 <div className="col s8">
                     <SelectedChampionStats stats={this.state.player.playerObj.stats} />

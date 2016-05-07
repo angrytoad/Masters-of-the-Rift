@@ -13,7 +13,7 @@ var Question = React.createClass({
     render: function(){
         if(this.state.question.type == 'player') {
             return (
-                <div className="question">
+                <div className="question col s12">
                     <p className="question-text">{this.state.question.question} ({this.state.question.points} pts)</p>
                     <QuestionTeamDisplay team={this.state.players.blue} teamName='BLUE'/>
                     <QuestionTeamDisplay team={this.state.players.red} teamName='RED'/>
@@ -21,7 +21,7 @@ var Question = React.createClass({
             )
         }else{
             return (
-                <div className="question">
+                <div className="question col s12">
                     <p className="question-text">{this.state.question.question} ({this.state.question.points} pts)</p>
                     <QuestionTeamChooser />
                 </div>

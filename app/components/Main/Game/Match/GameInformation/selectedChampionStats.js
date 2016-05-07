@@ -87,6 +87,46 @@ var SelectedChampionStats = React.createClass({
                     </div>
 
 
+                    <div className="stat-div">
+                        <p className="flow-text stat-title">
+                            KILLING MACHINE
+                        </p>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <span>Double Kills: <b><span className="double-kills">{this.state.stats.doubleKills}</span></b></span>
+                            </div>
+                        </div>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <span>Triple Kills: <b><span className="double-kills">{this.state.stats.tripleKills}</span></b></span>
+                            </div>
+                        </div>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <span>Quadra Kills: <b><span className="double-kills">{this.state.stats.quadraKills}</span></b></span>
+                            </div>
+                        </div>
+                        <div className="stat-item col s12 flow-text">
+                            <div className="stat-item-title">
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <img className="icon" src="/assets/images/icons/crit.png" />
+                                <span>Penta Kills: <b><span className="double-kills">{this.state.stats.pentaKills}</span></b></span>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
