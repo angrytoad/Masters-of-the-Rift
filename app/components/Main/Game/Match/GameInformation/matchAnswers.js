@@ -57,9 +57,8 @@ var MatchAnswers = React.createClass({
                 submittedAnswers.push(answer);
             }
         });
-        console.log(submittedAnswers.length);
+        socket.emit('answerCount',{matchId:this.state.matchId,count:submittedAnswers.length});
         if(submittedAnswers.length == 5){
-            console.log(submittedAnswers);
             $('.match-answers .play-button').removeClass('disabled');
         }else{
             $('.match-answers .play-button').addClass('disabled');

@@ -543,6 +543,16 @@ video#bgvid {
     margin-top:2px!important;
 }
 
+.share{
+    margin-top: 5px;
+}
+
+.share-title{
+    font-weight: bold;
+    margin-bottom: 3px;
+    border-bottom: 2px solid;
+}
+
 /*
 
 Animation Stuff

@@ -9,6 +9,22 @@ var OpponentInformation = React.createClass({
         })
     },
 
+    componentDidMount: function(){
+        socket.on('answerCountEvent',this.answerCountEvent);
+    },
+
+    componentWillUnmount: function(){
+        socket.removeListener('answerCountEvent',this.answerCountEvent);
+    },
+
+    answerCountEvent: function(data){
+        var answerArray = [];
+        for(var i=0; i<data.count;i++){
+            answerArray[i] = 1;
+        }
+        this.setState({opponentsAnswers:answerArray});
+    },
+
     render: function(){
         return(
             <div className="center-align opponent-answers">

@@ -43,9 +43,11 @@ var HomepageIntro = React.createClass({
                               is available on our <a href="https://github.com/angrytoad/Masters-of-the-Rift" target="_blank">Github.</a> Alternatively, if you'd like to read more
                               in depth about the technologies and techniques used in this project, please <a href="javascript:void(0)" onClick={this.loadTechnicalInformation}>click here.</a>
                           </p>
+
                           <button className="waves-effect waves-light btn-large motr-blue play-button col s12" onClick={this.pressedPlay}>
                               <span className="motr-pink">Play</span>
                           </button>
+
                           <p className="disclaimer">
                               Masters of the Rift isn’t endorsed by Riot Games and doesn’t reflect the views or opinions
                               of Riot Games or anyone officially involved in producing or managing League of Legends.
@@ -53,9 +55,9 @@ var HomepageIntro = React.createClass({
                               Inc. League of Legends © Riot Games, Inc.
                           </p>
                       </div>
-                    
-                    
-                    
+
+
+
                     
                     
                 )}
