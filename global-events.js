@@ -58,7 +58,10 @@ module.exports = function(io, Models) {
             console.log('Match has been made.');
             var $gameDetails = $matches[$gameId].fetchGameDetails($gameId,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+$gameId);
-                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: getRandomQuestions(5)});
+                qs = getRandomQuestions(5);
+                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: qs});
+                $matches[$gameId].questions = qs;
+                $matches[$gameId].gameDetails = $gameDetails;
             });
             
         }
@@ -89,7 +92,10 @@ module.exports = function(io, Models) {
         setTimeout(function(){
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+data.match);
-                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: getRandomQuestions(5)});
+                qs = getRandomQuestions(5);
+                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: qs});
+                $matches[data.match].questions = qs;
+                $matches[data.match].gameDetails = $gameDetails;
             });
         },1000);
     });
@@ -101,6 +107,11 @@ module.exports = function(io, Models) {
     // On Global Socket Connection
     io.on('connection', function(socket)
     {
+
+        socket.on('submitAnswers', function(data) {
+            $score = matchEvents.parseAnswers(data, socket, $matches[data.gameId].questions, $matches);
+            console.log($score);
+        });
 
         socket.on('disconnect', function(){
             if(typeof socket.loginId !== 'undefined'){
