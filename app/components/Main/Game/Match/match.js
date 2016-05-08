@@ -73,7 +73,7 @@ var Match = React.createClass({
         if(this.state.gameDataReceived === true) {
             if(this.state.matchEnded){
                return (
-                    <EndMatch game={this.state.gameDetails} matchId={this.state.matchId} player={this.state.loginId} />
+                    <EndMatch game={this.state.gameData} matchId={this.state.matchId} player={this.state.loginId} />
                )
             }else {
                 return (

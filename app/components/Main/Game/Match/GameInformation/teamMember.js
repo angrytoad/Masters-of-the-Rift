@@ -29,8 +29,8 @@ var TeamMember = React.createClass({
         if(this.props.question){
             return(
                 <div className="left center-align">
-                    <div className="square no-select" onClick={this.chooseOption}>
-                        <img className="no-select" src={imgString} data-answer={this.props.participant} />
+                    <div className="square no-select">
+                        <img className="no-select" src={imgString} data-answer={this.props.participant} onClick={this.chooseOption} />
                     </div>
                 </div>
             )
