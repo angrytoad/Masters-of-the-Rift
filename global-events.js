@@ -41,7 +41,7 @@ module.exports = function(io, Models) {
             }
             var $game = new Game($gameId, $tempQueue[0], $tempQueue[1], Api);
             $matches[$gameId] = $game;
-            $matches[$gameId]['answers'] = [];
+            $matches[$gameId]['answers'] = {};
             //console.log($queue[$tempQueue[0]]);
 
             $queue[$tempQueue[0]].socket.emit('matchFoundEvent', {matchId: $gameId});
@@ -105,16 +105,15 @@ module.exports = function(io, Models) {
         return {'queue':Object.keys($queue).length,'match':(Object.keys($matches).length)*2}
     }
 
-    function checkForAllAnswerSubmissions(data){
+    function checkForAllAnswerSubmissions(data,$score){
         var connectedSockets = [];
         Object.keys(io.sockets.adapter.rooms[data.gameId]).map(function(item,i){
-            console.log(item);
             if(item){
                 connectedSockets.push(i);
             }
         });
+
         $matches[data.gameId]['answers'][data.player] = $score;
-        console.log($matches[data.gameId]['answers']);
 
         var answerAmount = parseInt(Object.keys($matches[data.gameId]['answers']).length);
         var currentSockets = parseInt(connectedSockets.length)
@@ -130,15 +129,12 @@ module.exports = function(io, Models) {
 
         socket.on('endGameData', function(data){
             /*
-            FOR SOME REASON THIS CURRENTLY ISN'T SENDING
-            BACK THE SCORES INFORMATION DESPITE THE
-            CONSOLE LOG WORKING FINE
+            When we receive this event we want to send back whatever is in the answers game object back to both player
+            so they can interpret this information, if a player failed to submit all answers, they will get nothing.
              */
             console.log('SCORES ON THE DOORS: ');
             console.log($matches[data.gameId]['answers']);
-            
-            var scores = $matches[data.gameId]['answers'];
-            socket.emit('endGameDataEvent',{scores:scores})
+            socket.emit('endGameDataEvent',{scores:$matches[data.gameId]['answers']})
         });
         
         socket.on('callMatchEnd', function(data){
@@ -147,7 +143,7 @@ module.exports = function(io, Models) {
 
         socket.on('submitAnswers', function(data){
             $score = matchEvents.parseAnswers(data, socket, $matches[data.gameId].questions, $matches);
-            checkForAllAnswerSubmissions(data);
+            checkForAllAnswerSubmissions(data,$score);
         });
 
         socket.on('answerCount', function(data) {

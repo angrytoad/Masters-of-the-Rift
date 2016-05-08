@@ -33,10 +33,12 @@ var EndMatch = React.createClass({
     endGameDataEvent: function(data){
         console.log('GOT SCORES: ');
         console.log(data);
+
         this.setState({
             gotEndGameData:true,
             scores:data.scores
         });
+
     },
 
     render: function(){
