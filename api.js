@@ -45,33 +45,36 @@ var api = module.exports = {};
 	            /*
 	            AT THE MOMENT $player THIS WILL GIVE YOU A RANDOM PLAYER.
 	             */
-	            var $matchList = api.endpoint.matchList({
-	                id:$player.playerOrTeamId
-	            },function($response){
-	            	if (typeof $response.matches == "undefined") {
-	            		console.log('A FAILURE HAS OCCOURED (2): Could not get matches for '+$player.playerOrTeamName);
-	            		venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
-	            	} else {
-		                var $matchList = $response.matches;
-		                /*
-		                AT THIS POINT $matchList SHOULD CONTAIN A NUMBER OF GAMES FROM THE PLAYER THAT ARE RANKED SOLO QUEUE AND
-		                HAVE BEEN PLAYED IN THE 2016 SEASON
-		                 */
-		                var $match = $matchList[Math.floor(Math.random() * ($matchList.length + 1))]; // Get a random match from the ones returned.
+				if(typeof $player.playerOrTeamName == 'undefined'){
+					venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
+				}else{
+					var $matchList = api.endpoint.matchList({
+						id:$player.playerOrTeamId
+					},function($response){
+						if (typeof $response.matches == "undefined") {
+							console.log('A FAILURE HAS OCCOURED (2): Could not get matches for '+$player.playerOrTeamName);
+							venti.trigger('matchesUndefinedEvent', {match:$gameId, region: $region, id: $id});
+						} else {
+							var $matchList = $response.matches;
+							/*
+							AT THIS POINT $matchList SHOULD CONTAIN A NUMBER OF GAMES FROM THE PLAYER THAT ARE RANKED SOLO QUEUE AND
+							HAVE BEEN PLAYED IN THE 2016 SEASON
+							 */
+							var $match = $matchList[Math.floor(Math.random() * ($matchList.length + 1))]; // Get a random match from the ones returned.
 
-		                /*
-		                This should allow us to grab the match ID and start returning some actual match information. Needs building
-		                still in the rito-endpoint
-		                 */
-		                // console.log($match);
-		                $match = api.populateMatch($gameId, $match, function($match) {
-		                	//console.log($match.presented.teams.red[0]);
-		                	$callback($match);
-		                });
-	            	}
+							/*
+							This should allow us to grab the match ID and start returning some actual match information. Needs building
+							still in the rito-endpoint
+							 */
+							// console.log($match);
+							$match = api.populateMatch($gameId, $match, function($match) {
+								//console.log($match.presented.teams.red[0]);
+								$callback($match);
+							});
+						}
 
-	            });
-
+					});
+				}
         	}
 
         });

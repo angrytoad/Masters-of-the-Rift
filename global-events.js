@@ -41,6 +41,7 @@ module.exports = function(io, Models) {
             }
             var $game = new Game($gameId, $tempQueue[0], $tempQueue[1], Api);
             $matches[$gameId] = $game;
+            $matches[$gameId]['answers'] = [];
             //console.log($queue[$tempQueue[0]]);
 
             $queue[$tempQueue[0]].socket.emit('matchFoundEvent', {matchId: $gameId});
@@ -93,7 +94,7 @@ module.exports = function(io, Models) {
             var $gameDetails = $matches[data.match].fetchGameDetails(data.match,function($gameDetails) {
                 console.log('EMITTING DATA TO CLIENTS ON '+data.match);
                 qs = getRandomQuestions(5);
-                io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: qs});
+                io.to(data.match).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: qs});
                 $matches[data.match].questions = qs;
                 $matches[data.match].gameDetails = $gameDetails;
             });
@@ -104,19 +105,62 @@ module.exports = function(io, Models) {
         return {'queue':Object.keys($queue).length,'match':(Object.keys($matches).length)*2}
     }
 
+    function checkForAllAnswerSubmissions(data){
+        var connectedSockets = [];
+        Object.keys(io.sockets.adapter.rooms[data.gameId]).map(function(item,i){
+            console.log(item);
+            if(item){
+                connectedSockets.push(i);
+            }
+        });
+        $matches[data.gameId]['answers'][data.player] = $score;
+        console.log($matches[data.gameId]['answers']);
+
+        var answerAmount = parseInt(Object.keys($matches[data.gameId]['answers']).length);
+        var currentSockets = parseInt(connectedSockets.length)
+        if(answerAmount === currentSockets){
+            console.log('ENDING THE GAME');
+            io.to(data.gameId).emit('callMatchEndEvent');
+        }
+    }
+
     // On Global Socket Connection
     io.on('connection', function(socket)
     {
 
-        socket.on('submitAnswers', function(data) {
+        socket.on('endGameData', function(data){
+            /*
+            FOR SOME REASON THIS CURRENTLY ISN'T SENDING
+            BACK THE SCORES INFORMATION DESPITE THE
+            CONSOLE LOG WORKING FINE
+             */
+            console.log('SCORES ON THE DOORS: ');
+            console.log($matches[data.gameId]['answers']);
+            
+            var scores = $matches[data.gameId]['answers'];
+            socket.emit('endGameDataEvent',{scores:scores})
+        });
+        
+        socket.on('callMatchEnd', function(data){
+            io.to(data.gameId).emit('callMatchEndEvent');
+        });
+
+        socket.on('submitAnswers', function(data){
             $score = matchEvents.parseAnswers(data, socket, $matches[data.gameId].questions, $matches);
-            console.log($score);
+            checkForAllAnswerSubmissions(data);
+        });
+
+        socket.on('answerCount', function(data) {
+            io.to(data.match).emit('answerCountEvent',{player:data.player,count:data.count});
         });
 
         socket.on('disconnect', function(){
             if(typeof socket.loginId !== 'undefined'){
                 delete $queue[socket.loginId];
-                io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
+                io.to('queue-room').emit('requestQueueInformationEvent',{
+                    inQueue:getQueueCount().queue,
+                    inMatch:getQueueCount().match
+                });
             }
         });
 

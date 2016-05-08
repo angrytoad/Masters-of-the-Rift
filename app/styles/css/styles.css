@@ -387,11 +387,12 @@ video#bgvid {
 
 .match-answers{
     position: fixed;
-    top: 140px;
+    top: 0px;
     left: 0;
+    bottom:0;
     background: rgba(0,0,0,0.8);
     box-shadow: 0px 0px 5px #1FBDE2;
-    border-radius: 5px;
+    border-radius: 0px;
 }
 
 .match-answers.expanded{

@@ -9,7 +9,8 @@ var Match = React.createClass({
             loginId:this.props.loginId,
             matchId:this.props.matchId,
             gameData:{},
-            gameDataReceived:false
+            gameDataReceived:false,
+            matchEnded:false
         })
     },
 
@@ -25,15 +26,28 @@ var Match = React.createClass({
     componentDidMount: function(){
         venti.on('callMatchEnd',this.callMatchEnd);
 
-        socket.on('requiredGameDataEvent',this.requiredGameDataEvent)
+        socket.on('requiredGameDataEvent',this.requiredGameDataEvent);
+        socket.on('callMatchEndEvent',this.closeDownMatch);
     },
 
     componentWillUnmount: function(){
         venti.off('callMatchEnd',this.callMatchEnd);
+
+        socket.removeListener('requiredGameDataEvent',this.requiredGameDataEvent);
+        socket.removeListener('callMatchEndEvent',this.closeDownMatch);
     },
 
     callMatchEnd: function(){
-        socket.emit('callMatchEnd');
+        socket.emit('callMatchEnd',{gameId:this.state.matchId});
+    },
+
+    closeDownMatch: function(){
+        var that = this;
+        $('.match-wrapper').fadeOut(300,function(){
+            that.setState({
+                matchEnded:true
+            })
+        });
     },
 
     requiredGameDataEvent: function(data){
@@ -57,24 +71,31 @@ var Match = React.createClass({
     render: function(){
         console.log(this.state.gameDataReceived);
         if(this.state.gameDataReceived === true) {
-            return (
-                <div className="match-wrapper row">
-                    <div className="col s4 left-wrapper">
-                        <div className="timer-wrap">
-                            <MatchTimer />
+            if(this.state.matchEnded){
+               return (
+                    <EndMatch game={this.state.gameDetails} matchId={this.state.matchId} player={this.state.loginId} />
+               )
+            }else {
+                return (
+                    <div className="match-wrapper row">
+                        <div className="col s4 left-wrapper">
+                            <div className="timer-wrap">
+                                <MatchTimer />
+                            </div>
+                            <div>
+                                <PlayerInformation />
+                            </div>
                         </div>
-                        <div>
-                            <PlayerInformation />
+                        <div className="col s8">
+                            <GameInformation data={this.state.gameData}/>
+                        </div>
+                        <div className="match-answers expanded">
+                            <MatchAnswers data={this.state.gameData.questions} game={this.state.gameData}
+                                          match={this.state.matchId} player={this.state.loginId}/>
                         </div>
                     </div>
-                    <div className="col s8">
-                        <GameInformation data={this.state.gameData}/>
-                    </div>
-                    <div className="match-answers expanded">
-                        <MatchAnswers data={this.state.gameData.questions} game={this.state.gameData} match={this.state.matchId} />
-                    </div>
-                </div>
-            )
+                )
+            }
         }else{
             return (
                 <div>

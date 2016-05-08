@@ -8,7 +8,9 @@ var MatchAnswers = React.createClass({
             questions:this.props.game.questions,
             game:this.props.game,
             matchId:this.props.match,
-            submittedAnswers:[]
+            submittedAnswers:[],
+            player:this.props.player,
+            answersSubmitted:false,
         })
     },
 
@@ -16,7 +18,8 @@ var MatchAnswers = React.createClass({
         this.setState({
             questions:nextProps.game.questions,
             game:nextProps.game,
-            matchId:nextProps.match
+            matchId:nextProps.match,
+            player:nextProps.player,
         });
     },
 
@@ -42,9 +45,17 @@ var MatchAnswers = React.createClass({
             });
             socket.emit('submitAnswers',{
                 gameId:this.state.matchId,
-                answers:submittedAnswers
+                answers:submittedAnswers,
+                player:this.props.player
             });
-            $('.match-answers').fadeToggle(500);
+            var that = this;
+            $('.match-answers').fadeOut(500,function(){
+                that.setState({
+                    answersSubmitted:true
+                });
+                $('.match-answers').fadeIn(500);
+            });
+
         }
 
     },
@@ -57,7 +68,11 @@ var MatchAnswers = React.createClass({
                 submittedAnswers.push(answer);
             }
         });
-        socket.emit('answerCount',{matchId:this.state.matchId,count:submittedAnswers.length});
+        socket.emit('answerCount',{
+            match:this.state.matchId,
+            count:submittedAnswers.length,
+            player:this.state.player
+        });
         if(submittedAnswers.length == 5){
             $('.match-answers .play-button').removeClass('disabled');
         }else{
@@ -66,28 +81,46 @@ var MatchAnswers = React.createClass({
 
     },
 
+    storeOpponentAnswers: function(data){
+        this.setState({
+            storedOpponentAnswers:data.opponentAnswers
+        })
+    },
+
     componentDidMount: function(){
         venti.on('checkForCompleteForm',this.checkForCompleteForm);
+        venti.on('parentStoreOpponentAnswers',this.storeOpponentAnswers);
     },
 
     componentWillUnmount: function(){
         venti.off('checkForCompleteForm',this.checkForCompleteForm);
+        venti.off('parentStoreOpponentAnswers',this.storeOpponentAnswers);
     },
 
     render: function(){
         console.log(this.state.questions);
         var that = this;
-        return(
-            <div className="col s12">
-                <h4>Questions</h4>
-                {Object.keys(this.state.questions).map(function(key){
-                    return (
-                        <Question data={that.state.questions[key]} players={that.state.game.playerDetails.teams} />
-                    );
-                })}
-                <a className="waves-effect waves-light btn-large motr-pink play-button disabled" onClick={this.submitAnswers}>Submit Answers</a>
-                <OpponentInformation />
-            </div>
-        )
+        if(this.state.answersSubmitted){
+            return(
+                <div className="col s12">
+                    <p className="flow-text center-align">Your answers have been locked in, waiting on your opponent.</p>
+                    <OpponentInformation player={this.state.player} matchId={this.state.matchId} answers={this.state.storedOpponentAnswers}/>
+                </div>
+            )
+        }else{
+            return(
+                <div className="col s12">
+                    <h4>Questions</h4>
+                    {Object.keys(this.state.questions).map(function(key){
+                        return (
+                            <Question data={that.state.questions[key]} players={that.state.game.playerDetails.teams} />
+                        );
+                    })}
+                    <a className="waves-effect waves-light btn-large motr-pink play-button disabled" onClick={this.submitAnswers}>Submit Answers</a>
+                    <OpponentInformation player={this.state.player} matchId={this.state.matchId}/>
+                </div>
+            )
+        }
+
     }
 })
