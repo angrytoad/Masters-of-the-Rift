@@ -15,13 +15,14 @@ var LeaderboardRow = React.createClass({
     },
 
     render: function(){
+        console.log(this.state.data);
         return(
             <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
+                <td className="motr-pink">{this.state.data.loginId}</td>
+                <td className="center-align">{this.state.data.gamesWon}</td>
+                <td className="center-align">{(this.state.data.totalGames - this.state.data.gamesWon)}</td>
+                <td className="center-align motr-blue">{this.state.data.totalScore}</td>
+                <td className="center-align">{((100/this.state.data.totalGames)*this.state.data.gamesWon).toFixed(2)}%</td>
             </tr>
         )
     },

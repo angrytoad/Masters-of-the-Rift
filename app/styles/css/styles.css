@@ -125,9 +125,10 @@ video#bgvid {
 
 #leaderboard{
     background: rgba(0,0,0,0.5);
-    height: 600px;
     border-radius: 5px;
+    display: inline-block;
     box-shadow: 0px 0px 5px #607D8B;
+    width: 100%;
 }
 
 #leaderboard h4{
@@ -653,6 +654,10 @@ video#bgvid {
 
 .score-title .score{
     font-weight:bold;
+}
+
+.leaderboard-rows td{
+    padding: 3px 5px;
 }
 
 /*

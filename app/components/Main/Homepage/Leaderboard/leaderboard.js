@@ -47,7 +47,7 @@ var Leaderboard = React.createClass({
 
     leaderboardStatsEvent: function(data){
         this.setState({
-            leaderboard:data.leaderboard
+            leaderboard:data.leaders
         })
     },
 

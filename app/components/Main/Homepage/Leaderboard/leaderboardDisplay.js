@@ -21,13 +21,13 @@ var LeaderboardDisplay = React.createClass({
                     <thead>
                         <tr>
                             <th>Summoner</th>
-                            <th>W</th>
-                            <th>L</th>
-                            <th>Pts</th>
-                            <th>W %</th>
+                            <th className="center-align">W</th>
+                            <th className="center-align">L</th>
+                            <th className="center-align">Pts</th>
+                            <th className="center-align">W %</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="leaderboard-rows">
                         {Array.apply(null, this.state.leaderboard).map(function(item, i){
                             return (
                                 <LeaderboardRow rowData={item} />

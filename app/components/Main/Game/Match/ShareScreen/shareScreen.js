@@ -78,7 +78,7 @@ var ShareScreen = React.createClass({
                     <p className="flow-text motr-blue">
                         Thanks for playing the game, this game was created as part of the Riot Games API Challenge 2016
                         so if there are a few bugs, we're really sorry. If you would like to report a bug please get in touch
-                        with us over Github.
+                        with us via Github.
                     </p>
                 </div>
                 <div className="col s12">
