@@ -20,7 +20,7 @@ module.exports = function(io, Models) {
     var questions = require('./questions.json');
     var matchEvents = require('./match-events.js');
     venti = require('./venti.min.js');
-    
+
     var $matcher = setInterval(matcher, 1000);
 
     function matcher() {
@@ -132,15 +132,24 @@ module.exports = function(io, Models) {
                     }  
                 }
             });
-            recordGameToProfilePair(data.gameId, $winner);
+            $pUpdated = 0;
+            recordGameToProfilePair(data.gameId, $winner, function() {
+                $pUpdated++;
+                if ($pUpdated == 2) {
+                    delete $matches[data.gameId];
+                    io.emit('requestQueueInformationEvent',{
+                        inQueue:getQueueCount().queue,
+                        inMatch:getQueueCount().match
+                    });
+                }
+            });
             io.to(data.gameId).emit('callMatchEndEvent');
         }
     }
 
-    function recordGameToProfilePair(id, winner) {
+    function recordGameToProfilePair(id, winner, callback) {
 
         Object.keys($matches[id]['answers']).map(function(key) {
-            console.log(key + '--' + $won);
             Models.Profiles.findOne({loginId: key}, 'loginId totalGames gamesWon totalScore', function(err, user) {
                 if (err) {
                     console.log(err);
@@ -154,6 +163,7 @@ module.exports = function(io, Models) {
                                 console.log(err);
                             } else {
                                 console.log('Profile for: ' + key + ' Saved!');
+                                callback();
                             }
                         });
                     } else {
@@ -164,16 +174,12 @@ module.exports = function(io, Models) {
                                 console.log(err);
                             } else {
                                 console.log('Profile for: ' + key + ' Updated!');
+                                callback();
                             }
                         });
                     }
                 }
             });
-        });
-        delete $matches[id];
-        io.emit('requestQueueInformationEvent',{
-            inQueue:getQueueCount().queue,
-            inMatch:getQueueCount().match
         });
     }
 
