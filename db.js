@@ -14,7 +14,7 @@ module.exports = function (mongoose) {
 		*	@param region - the user's region
 		*/
 
-		loginId: { type: [String], index: true },
+		loginId: { type: String, index: true },
 		summonerName: String,
 		password: String,
 		salt: String,
@@ -54,7 +54,7 @@ module.exports = function (mongoose) {
 		*	@param totalScore - the total culuilative score accrued over all played games
 		*/
 
-		loginId: { type: [String], index: true },
+		loginId: { type: String, index: true },
 		totalGames: Number,
 		gamesWon: Number,
 		totalScore: Number
