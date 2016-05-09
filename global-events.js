@@ -30,6 +30,9 @@ module.exports = function(io, Models) {
                 inMatch:getQueueCount().match
             });
             $dataSent = 0;
+            Models.Profiles.find({}, 'loginId totalGames gamesWon totalScore', {skip:0, limit:25, sort:{totalScore:-1}}, function(err, profiles) {
+                io.emit('requestLeaderboardStatsEvent', {leaders: profiles});
+            });
         }
     });
 
@@ -186,6 +189,12 @@ module.exports = function(io, Models) {
     // On Global Socket Connection
     io.on('connection', function(socket)
     {
+
+        socket.on('requestLeaderboardStats', function(data) {
+            Models.Profiles.find({}, 'loginId totalGames gamesWon totalScore', {skip:0, limit:25, sort:{totalScore:-1}}, function(err, profiles) {
+                socket.emit('requestLeaderboardStatsEvent', {leaders: profiles});
+            });
+        });
 
         socket.on('endGameData', function(data){
             /*
