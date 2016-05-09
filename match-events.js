@@ -18,11 +18,13 @@ var matchEvents = module.exports = {};
 		*	For each of these categories there is logic to determin the correct answer and compare to the given answer.  The score is totaled up from individual scores for each question set in the questions.json file
 		*	The score object contains question under their id as objects.  THese object contain the answer given and the correct answer.  The score is a property of the return Object
 		*/
+		venti.on('nullAnswers', function(data) {
+			return data.data;
+		});
 
-		data.answers.forEach(function (ans) {
+		data.answers.map(function (ans) {
 			if (ans == null) {
-				$nullResponse = {score: 0};
-				return $nullResponse;
+				venti.trigger('nullAnswers', {data:{score:0}});				
 			}
 		}); 
 
