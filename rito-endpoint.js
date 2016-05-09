@@ -3,10 +3,16 @@
 
 
 var endpoint = module.exports = {};
-    
+
+    /*
+    Require both our API KEY in addition to the https node module for making API requests
+     */
     endpoint.key = require('./api-key');
     endpoint.https = require('https');
 
+    /*
+    As this is still being developed we only want to use the euw region, we also want to enforce https
+     */
     endpoint.settings = {
         protocol: 'https',
         region: 'euw'
@@ -41,6 +47,7 @@ var endpoint = module.exports = {};
         }
     };
 
+
     endpoint.matchList = function($options,$callback){
         /*
         Fetch a match list for SOLO RANKED in SEASON 2016 for the given Summoner ID
@@ -62,12 +69,13 @@ var endpoint = module.exports = {};
     }
 
     endpoint.getMatchData = function($match, $callback) {
-
-    	//Takes a match id and returns the teams
+        /*
+        Takes a match id and returns match data for the given id
+         */
     	endpoint.https.get(
     		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/api/lol/'+endpoint.settings.region+'/v2.2/match/'+$match.matchId+'?includeTimeline=true&api_key='+endpoint.key,
     		function(response) {
-    			//Update Datastream
+                // Continuously update stream with data
     			var body = '';
                 response.on('data', function(d) {
                     body += d;
@@ -82,17 +90,16 @@ var endpoint = module.exports = {};
     }
 
     endpoint.getMasteryRatingByPlayerChampIds = function($playerId, $champId, $callback) {
-
+        /*
+            Take the id of a summoner and a champion id and collect their mastery rating with that champion
+         */
     	endpoint.https.get(
     		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/championmastery/location/'+endpoint.settings.region+'1/player/'+$playerId+'/champion/'+$champId+'?api_key='+endpoint.key,
     		function(response) {
-
-                console.log('STATUS CODE: '+response.statusCode);
                 if(response.statusCode === 204){
-                    console.log('NO MASTERY FOUND')
                     $re = $callback({championLevel:0});
                 }else{
-                    //Update Datastream
+                    // Continuously update stream with data
                     var body = '';
                     response.on('data', function(d) {
                         body += d;
@@ -108,11 +115,13 @@ var endpoint = module.exports = {};
     }
 
     endpoint.getChampionObjectFromId = function($champId, $callback)  {
-
+        /*
+            Retrieve information about a champion based on the champion id that was provided
+         */
     	endpoint.https.get(
     		endpoint.settings.protocol+'://'+endpoint.settings.region+'.api.pvp.net/api/lol'+endpoint.settings.region+'/v1.2/champion/'+$champId+'?api_key='+endpoint.key,
     		function(response) {
-    			//Update Datastream
+                // Continuously update stream with data
     			var body = '';
                 response.on('data', function(d) {
                     body += d;

@@ -1,6 +1,14 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @ShareScreen
+ *
+ * states
+ *  - loginId: the loginId of the current user (from parent)
+ *
+ *  desc    This component handles some social media sharing stuff as well as allowing the user to leave the match
+ */
 var ShareScreen = React.createClass({
 
     shareFacebook: function(){

@@ -1,6 +1,16 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @GameInformation
+ *
+ * states
+ *  - data: the game data object that was sent by the server (from parent)
+ *  - selectSound: the sound to play when a champion is selected
+ *
+ *  desc    This component handles the rendering of each team, in addition to displaying information about the currently
+ *          selected player (if one has been selected)
+ */
 var GameInformation = React.createClass({
 
     getInitialState: function(){
@@ -14,6 +24,9 @@ var GameInformation = React.createClass({
     },
 
     componentDidMount: function(){
+        /**
+         * Play a match intro sound
+         */
         var start = new Howl({
             urls: ['/assets/sounds/fight.mp3'],
             autoplay:true,
@@ -28,6 +41,10 @@ var GameInformation = React.createClass({
     },
 
     displayPlayerInformation: function(data){
+        /**
+         * When player information has been received, set a new state called player to the player object that was
+         * sent to us. Also play the select sound.
+         */
         this.state.selectSound.play();
         this.setState({
             player:data.player
@@ -35,6 +52,10 @@ var GameInformation = React.createClass({
     },
 
     render: function(){
+        /**
+         * We need to render both teams so we render two TeamRoster components with different information each, in addition
+         * if we do have information for this.state.player we want to display this stuff
+         */
         return(
             <div>
                 <div className="row">

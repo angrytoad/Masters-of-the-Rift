@@ -1,6 +1,16 @@
 /** @jsx React.DOM */
 
-
+/**
+ * class    @OpponentInformation
+ * 
+ * states
+ *  - opponentAnswers: this is an array of eithe 0/1 to determine whether your opponent has filled out a question
+ *  - player: the uniqueid of the player (from parent)
+ *  - matchId: the match id (from parent)
+ *  - parentAnswers: answers that have been given by the player (from parent)
+ *
+ *  desc    This component deal with displaying your opponents progress as they complete questions
+ */
 var OpponentInformation = React.createClass({
 
     getInitialState: function(){
@@ -40,6 +50,9 @@ var OpponentInformation = React.createClass({
     },
 
     render: function(){
+        /**
+         * Loop over the answers that your opponent has given and render the amount of answers as ticked checkboxes
+         */
         if(typeof this.state.parentAnswers === 'undefined') {
             return (
                 <div className="center-align opponent-answers">

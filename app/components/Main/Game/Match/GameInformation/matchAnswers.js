@@ -1,6 +1,21 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @MatchAnswers
+ *
+ * states
+ *  - questions: questions that have been asked by the server (from parent)
+ *  - game: the game object sent by the server (from parent)
+ *  - matchId: the current matchId (from parent)
+ *  - submittedAnswers: the answers that have been submitted to the server
+ *  - player: The player unique id (from parent)
+ *  - answersSubmitted: A true/false on whether answers have been submitted yet.
+ *
+ *  desc    This component shows and deals with all of the question related stuff in the game, this component is in
+ *          charge of rendering the questions in addition to handling question submission and things of that
+ *          nature.
+ */
 var MatchAnswers = React.createClass({
 
     getInitialState: function(){
@@ -24,6 +39,9 @@ var MatchAnswers = React.createClass({
     },
 
     submitAnswers: function(){
+        /**
+         * Checks that all answers have been given and submits the answers to the server.
+         */
         var submittedAnswers = [];
         $('.question').each(function(i,obj){
             var answer = $(obj).find('.selected').data('answer');
@@ -61,6 +79,9 @@ var MatchAnswers = React.createClass({
     },
 
     checkForCompleteForm: function(){
+        /**
+         * Checks to see if all of the questions have been answered before the player can submit their answers.
+         */
         var submittedAnswers = [];
         $('.question').each(function(i,obj){
             var answer = $(obj).find('.selected').data('answer');
@@ -98,7 +119,10 @@ var MatchAnswers = React.createClass({
     },
 
     render: function(){
-        console.log(this.state.questions);
+        /**
+         * This component renders the questions that are shown to the player in addition to showing a dynamic component
+         * that shows the progress of the other player on their questions that updates in real time.
+         */
         var that = this;
         if(this.state.answersSubmitted){
             return(

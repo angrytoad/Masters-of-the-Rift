@@ -1,5 +1,14 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @LeaderboardDisplay
+ * 
+ * states
+ *  - leaderboard: records of the top 25 players (from parent)
+ *  
+ *  desc    This component will render the top players in terms of score out into the leaderboard component 
+ */
 var LeaderboardDisplay = React.createClass({
 
     getInitialState:function(){

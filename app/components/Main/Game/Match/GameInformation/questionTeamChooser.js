@@ -1,6 +1,11 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @QuestionTeamChooser
+ *
+ * desc     Renders a choice option between either the 1st or 2nd team
+ */
 var QuestionTeamChooser = React.createClass({
 
     chooseOption: function(e){

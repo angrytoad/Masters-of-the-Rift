@@ -1,5 +1,12 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @JoinQueueButton
+ *
+ * desc     This component will make a join queue or leave queue request depending on if the users is currently in the
+ *          queue.
+ */
 var JoinQueueButton = React.createClass({
 
     requestToJoinQueue: function(){

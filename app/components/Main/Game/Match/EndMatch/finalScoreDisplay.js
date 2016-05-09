@@ -1,5 +1,18 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    FinalScoreDisplay
+ *
+ * states
+ *  - score: the scores for the given player in the scores object (from parent)
+ *  - keyName: this is the uniqueId of the player (from parent)
+ *  - player: this is the uniqueId of the current player (from parent)
+ *  - rawScore: this the raw points that a player earned from that match (from parent)
+ *
+ *  desc    This component displays the answers and score for a given player, this object is rendered twice as we
+ *          loop over formattedScore object in endMatchPresentation.
+ */
 var FinalScoreDisplay = React.createClass({
 
     getInitialState: function(){
@@ -21,7 +34,9 @@ var FinalScoreDisplay = React.createClass({
 
     componentDidMount: function(){
         var counter = 0;
-        console.log('RAW SCORE '+this.state.rawScore);
+        /**
+         * Animate each question answers 200ms after each other to create a nice cascade effect
+         */
         $('.answers .question-answer').each(function(i,elem){
             counter++;
             setTimeout(function(){
@@ -31,6 +46,11 @@ var FinalScoreDisplay = React.createClass({
     },
 
     render: function(){
+        /**
+         * If the user has a score render their full answers as well as fetching either the champion icon or rendering
+         * the team color depending on their answers, if they don't have any scores set then that means they failed to
+         * answer the questions, so just fill out their answers with failed to answer.
+         */
         if(Object.keys(this.state.score).length > 0) {
             var that = this;
             return (
@@ -42,7 +62,6 @@ var FinalScoreDisplay = React.createClass({
                         </div>
                     </div>
                     {Object.keys(this.state.score).map(function (item, i) {
-                        console.log(that.state.score);
                         var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/" + that.state.score[i]['givenAns'] + ".png"
                         if(that.state.score[i]['givenAns'] === 'blue' || that.state.score[i]['givenAns'] === 'red'){
                             return (

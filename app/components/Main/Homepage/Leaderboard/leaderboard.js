@@ -1,6 +1,16 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @Leaderboard
+ *
+ * states
+ *  - leaderboard: The leaderboard information that was received by the server
+ *
+ *  desc    The Leaderboard component gets the top players by total points and handles the displaying of that information
+ *          inside of its child components, it also have some share functionality to players can share the game
+ *          from the homepage.
+ */
 var Leaderboard = React.createClass({
 
     shareFacebook: function(){
@@ -58,6 +68,10 @@ var Leaderboard = React.createClass({
     },
 
     render: function(){
+        /**
+         * Render either LeaderboardDisplay if there are stats that are received from the server, we also wanted to
+         * render a few sharing buttons below as well to encourage users to share the webpage via social media.
+         */
         return(
             <div className="col s5">
                 <div id="leaderboard">

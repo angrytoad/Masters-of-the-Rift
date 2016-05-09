@@ -1,6 +1,20 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    EndMatchPresentation
+ *
+ * states
+ *  - scores: scores from the server (from parent)
+ *  - game: the game object that we have been using for everything (from parent)
+ *  - matchId: our match id (from parent)
+ *  - player: the uniqueid of the current player (from parent)
+ *  - formattedScores: an object that is used to pretty-print the scores for each player.
+ *
+ *  desc    This component handles the actual presentation of data and the order in which events occur during
+ *          presentation, we wanted to put this sequence on a track so its all automated and requires no
+ *          input from the player whatsoever, we use jQuery to manipulate elements.
+ */
 var EndMatchPresentation = React.createClass({
 
     getInitialState:function(){
@@ -23,6 +37,11 @@ var EndMatchPresentation = React.createClass({
     },
 
     componentDidMount: function(){
+        /**
+         * formatForPresentation takes the scores and formats them into a nicely readable object that we can
+         * go through and present in the render portion of this component, when the component mounts
+         * (should only mount once) then we do this initial formatting.
+         */
         this.formatForPresentation();
 
         venti.on('fadeInDisplay',this.fadeInDisplay);
@@ -36,6 +55,9 @@ var EndMatchPresentation = React.createClass({
     },
 
     fadeOutLosers: function(){
+        /**
+         * Do a nice little animation sequence to highlight the winner(s) of the game
+         */
         $('.correct-answers-wrapper').addClass('faded');
         var scores = [];
         var that = this;
@@ -44,7 +66,6 @@ var EndMatchPresentation = React.createClass({
             scores.push(that.state.scores[i]['score']);
             counter++;
         });
-        console.log(scores);
         var currentHighest = 0;
         var winner = [];
         $('.answers').each(function(i,elem){
@@ -68,9 +89,6 @@ var EndMatchPresentation = React.createClass({
             $(element).removeClass('faded');
             winnerNames.push($(element).find('.score-title p span:first-child').text())
         }
-
-        console.log(winner);
-        console.log(winnerNames);
 
         var winnerString = '';
         for(var i=0;i<winnerNames.length;i++){
@@ -96,10 +114,16 @@ var EndMatchPresentation = React.createClass({
             $('.winner-name').fadeOut(300,function(){
                 $('#game').removeClass('blackout');
                 $('.yes-game').slideUp(1000,function(){
-
+                    /**
+                     * We need to ensure that we reset the formattedSectors afterwards when we change the state
+                     * of the parent components to display the shareScreen.
+                     */
                     that.setState({
                         formattedScores:{}
                     });
+                    /**
+                     * Update the header of the page to reflect the users new statistics after their game.
+                     */
                     socket.emit('requestUserStats',{session:getSession()});
                     venti.trigger('userStatsEndMatch');
 
@@ -113,12 +137,14 @@ var EndMatchPresentation = React.createClass({
     },
 
     formatForPresentation: function(){
+        /**
+         * Make sure we format all of the scores received so that we can determine the winner easily and present the
+         * the information in a clear and concise manner.
+         */
         var $formatted = {};
         var $participants = [];
         $participants.push(this.state.game.playerDetails.teams.blue);
         $participants.push(this.state.game.playerDetails.teams.red);
-
-        console.log($participants);
 
         var that = this;
         Object.keys(this.state.scores).map(function(i,obj){
@@ -150,13 +176,10 @@ var EndMatchPresentation = React.createClass({
                 });
             }
         });
-        console.log(this.state.scores.hasOwnProperty(this.state.player));
 
         if(this.state.scores.hasOwnProperty(this.state.player) === false){
             $formatted[this.state.player] = {};
         }
-
-        console.log($formatted);
 
         this.setState({
             formattedScores:$formatted
@@ -177,7 +200,14 @@ var EndMatchPresentation = React.createClass({
     },
 
     render: function(){
-
+        /**
+         * Whilst we're waiting for the scores to be formatted we just display a message, when we get our formatted
+         * scores we want to loop over the formattedScores object to display both players scores, in addition to
+         * the answers that they chose for each question, this is all quite nicely animated.
+         *
+         * After that we want to render the FinalCorrectScoreDisplay component which will render the correct answers
+         * for each question.
+         */
         if(Object.keys(this.state.formattedScores).length > 0) {
             var that = this;
             venti.trigger('fadeInDisplay');
@@ -197,7 +227,7 @@ var EndMatchPresentation = React.createClass({
         }else{
             return (
                 <div>
-                    Formatting scores...
+                    Calculating...
                 </div>
             )
         }

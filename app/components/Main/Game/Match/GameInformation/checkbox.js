@@ -1,5 +1,13 @@
 /** @jsx React.DOM */
 
+/**
+ * class    @Checkbox
+ *
+ * states
+ *  - disabled: Determine whether or not the checkbox should be ticker/unticked
+ *
+ *  desc    Shows either a checked or unchecked box depending on disabled state
+ */
 var Checkbox = React.createClass({
 
     getInitialState: function(){

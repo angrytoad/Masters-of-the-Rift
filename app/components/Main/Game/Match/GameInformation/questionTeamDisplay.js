@@ -1,6 +1,15 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @QuestionTeamDisplay
+ *
+ * states
+ *  - team: the team of players that needs to be rendered (from parent)
+ *  - teamName: the name of the team that needs to be rendered (from parent)
+ *
+ *  desc    Renders the team that it was given into the parent component
+ */
 var QuestionTeamDisplay = React.createClass({
 
     getInitialState: function(){

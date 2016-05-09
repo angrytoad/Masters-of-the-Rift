@@ -1,5 +1,18 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @QueueInformation
+ *
+ * states
+ *  - loggedIn: if the user is currently logged in (from parent)
+ *  - amountInQueue: how many users are currently in the queue
+ *  - amountInMatch: how many users are currently in a match
+ *  - inQueue: is the user currently in a queue
+ *
+ *  desc    This component keeps updated with how many players are currently in the queue or in a game, in addition it
+ *          also handles everything related to joining and leaving the queue
+ */
 var QueueInformation = React.createClass({
 
     getInitialState: function(){
@@ -21,6 +34,10 @@ var QueueInformation = React.createClass({
     componentDidMount: function(){
         socket.emit('requestQueueInformation');
 
+        /**
+         * This listenes for an event from the server is fired whenever users join or leave the queue, in addition
+         * to when a match is made, this will call the method updateQueueInformation
+         */
         socket.on('requestQueueInformationEvent',this.updateQueueInformation);
     },
 
@@ -31,7 +48,9 @@ var QueueInformation = React.createClass({
     },
 
     updateQueueInformation: function(data){
-        console.log('queue information received!');
+        /**
+         * Update queue information will update the amount of users who are currently in the queue or in a game.
+         */
         this.setState({
             amountInQueue:data.inQueue,
             amountInMatch:data.inMatch
@@ -39,6 +58,9 @@ var QueueInformation = React.createClass({
     },
 
     render: function(){
+        /**
+         * If the user is logged in render the JoinQueueButton, else render the RequireLogin Text
+         */
         return(
             <div>
                 <div>

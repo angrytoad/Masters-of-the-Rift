@@ -1,5 +1,17 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @GameContent
+ *
+ * states
+ *  - loggedIn: is the user currently authenticated? (from parent)
+ *  - summoner: the summoner name of the currently logged in user (from parent)
+ *  - loginId: the unique id of the logged in user (from parent)
+ *  - inQueue: is the user currently queuing?
+ *  - inGame: is the user current in a game?
+ *  - matchId: does the user have a matchId assigned to them to make match event calls?
+ */
 var GameContent = React.createClass({
 
     getInitialState: function(){
@@ -23,6 +35,11 @@ var GameContent = React.createClass({
 
     setNotPlaying: function(){
         venti.trigger('changePlayState',{playing:false});
+        socket.emit('leaveQueueRequest',{session:getSession()});
+        this.setState({
+            inQueue:false,
+            inGame:false
+        })
     },
 
     changeQueueStatus: function(data){
@@ -67,15 +84,26 @@ var GameContent = React.createClass({
             $('#game').fadeToggle(400);
         },300);
 
+
+        /**
+         * Listen for a matchFound Event, and if found, set the state of this component to inGame in addition to
+         * setting the matchId that was returned from the server to request events to.
+         */
         socket.on('matchFoundEvent',this.matchFoundEvent);
-        
+
+        /**
+         * Listen for logouts, match leave in addition to queue status changes, all of these will affect how this
+         * component is rendered.
+         */
         venti.on('changeQueueStatus',this.changeQueueStatus);
         venti.on('clientLogout',this.clientLogout);
         venti.on('leaveMatch',this.leaveMatch);
     },
 
     componentWillUnmount: function(){
-
+        /**
+         * Stop listening when this component is unmounted (i.e if we are on the homepage)
+         */
         socket.removeListener('matchFoundEvent');
 
         venti.off('changeQueueStatus',this.changeQueueStatus);
@@ -93,6 +121,12 @@ var GameContent = React.createClass({
     },
 
     render: function(){
+        /**
+         * If the state of this component determines that we are in a game, render the match component with all of the
+         * information required to start requesting information and sending events to the server with, if we are
+         * not in the game when we need to make sure we render the queue information components to show how many users
+         * are currently playing and to allow the user to queue if they are logged in.
+         */
         return(
             <div id="game" className="container">
                 {(

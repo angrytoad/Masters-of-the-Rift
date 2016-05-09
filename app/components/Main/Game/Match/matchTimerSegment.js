@@ -1,6 +1,11 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @MatchTimerSegment
+ *
+ * desc     Renders an SVG in the shame of a pie segments depening on the properties that are passed to it
+ */
 var MatchTimerSegment = React.createClass({
     render: function(){
 

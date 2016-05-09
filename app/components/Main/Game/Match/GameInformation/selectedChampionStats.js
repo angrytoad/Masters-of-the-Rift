@@ -1,6 +1,15 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    SelectedChampionStats
+ *
+ * states
+ *  - stats: The stats for a particular player that was selected from the TeamMember component
+ *
+ *  desc    This component prints all of the stats that we want to show in the game and makes them easily readable
+ *          by the player
+ */
 var SelectedChampionStats = React.createClass({
 
     getInitialState: function(){
@@ -16,6 +25,18 @@ var SelectedChampionStats = React.createClass({
     },
 
     render: function(){
+        /**
+         * Render all of the stats we need, therea re a few key areas that are displayed called
+         *  - Coin & Carnage
+         *      Displays gold earned/spent, kills, deaths and assists
+         *  - Might & Magic
+         *      Displays Magic and Physical damage dealt as well as creep score
+         *  - KILLING MACHINE
+         *      Displays the number of Double,Triple,Quad and Penta kills a player has
+         *  - First for everything
+         *      Displays whether the player got either First Blood, First Tower or First Inhib
+         *
+         */
         return(
             <div className="col s12 selected-champion-stats">
                 <p className="flow-text champion-stats-title">

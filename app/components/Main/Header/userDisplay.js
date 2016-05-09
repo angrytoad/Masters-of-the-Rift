@@ -1,5 +1,21 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @UserDisplay
+ *
+ * states
+ *  - loggedIn: is the user loggedIn? (From parent)
+ *  - summoner: has a summoner name been provided (From parent)
+ *  - loginId: has a loginId been provided? (From parent)
+ *  - inGame: false, when in a game this will change to prevent the user from being able to logout
+ *  - stats: object, this is updated when we receive the current users stats from the server
+ *
+ *  desc
+ *          This component handles all the stuff related to displaying the current user in the top right of the page
+ *          this component will request stats for a user and attempt to authenticate, if this is successful
+ *          then we'll changed the logged in state to ensure that user information is displayed.
+ */
 var UserDisplay = React.createClass({
 
     getInitialState: function(){
@@ -21,6 +37,9 @@ var UserDisplay = React.createClass({
     },
 
     componentDidMount: function(){
+        /**
+         * Request user stats and listen for a userStatsEvent back from the server
+         */
         socket.emit('requestUserStats',{session:getSession()})
 
         socket.on('userStatsEvent',this.userStatsEvent);
@@ -37,8 +56,10 @@ var UserDisplay = React.createClass({
     },
 
     userStatsEvent: function(data){
-        console.log('USER STATS RECEIVED AND SUCCESSFUL AUTHENTICATION MADE!');
-        console.log(data);
+        /**
+         * If we could successfully authenticate the user, trigger a changeLoggedState event to update the header and
+         * populate it with our stats.
+         */
         venti.trigger('changeLoggedState',{
             loggedIn:true,
             summoner:data.summoner,
@@ -50,10 +71,16 @@ var UserDisplay = React.createClass({
     },
 
     pressedPlay: function(){
+        /**
+         * Load in the game component if we press the play button
+         */
         venti.trigger('changePlayState',{playing:true});
     },
 
     requestLogout: function(){
+        /**
+         * Logout if user presses the logout button
+         */
         socket.emit('logoutRequest',{session:getSession()});
         venti.trigger('clientLogout');
     },
@@ -67,6 +94,9 @@ var UserDisplay = React.createClass({
     },
 
     render: function(){
+        /**
+         * Render stats and stuff depending on both the stats received in addition to the current state of the game.
+         */
         return(
             <div id="user-display" className="header-secondary col s6 right-align">
                 <div className="account-buttons col s6">

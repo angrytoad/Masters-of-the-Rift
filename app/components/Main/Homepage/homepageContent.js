@@ -1,5 +1,11 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @HomepageContent
+ *
+ * desc     Renders the two components needed that make up the homepage
+ */
 var HomepageContent = React.createClass({
 
     componentDidMount: function(){

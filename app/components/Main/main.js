@@ -1,5 +1,19 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @Main
+ *
+ * states
+ *  - inGame: whether or not the player is currently in a game
+ *  - loggedIn: whether or not the player is currently logged in
+ *  - summoner: The summoner name of the player if they are logged in
+ *  - loginId: The unique ID of the logged in player.
+ *
+ * desc     This class renders everything else required to create the webpage, listens for events
+ *          such as authentication errors, and connection events, also listens for local events
+ *          such as changePlayState and clientLogout
+ */
 var Main = React.createClass({
 
     getInitialState: function(){
@@ -14,11 +28,17 @@ var Main = React.createClass({
     componentDidMount: function(){
         socket.emit('connectionAttemptEvent');
         socket.on('connectedEvent', function (data) {
-            console.info('connectedEvent Fired Successfully');
+            /**
+             *  Test function to ensure that we have a socket connection to the server.
+             */
+            console.info('connectedEvent Fired Successfully: We have a connection to the socket server');
         });
         socket.on('authErrorEvent',this.authErrorEvent);
 
 
+        /**
+         * Venti listeners that modify states in the component
+         */
         venti.on('changePlayState',this.changePlayState);
         venti.on('changeLoggedState',this.changeLoggedState);
         venti.on('clientLogout',this.authErrorEvent);
@@ -26,6 +46,11 @@ var Main = React.createClass({
     },
 
     componentWillUnmount: function(){
+        /**
+         * In the event that we would ever want to unmount this component, we need to make sure
+         * we remove any listeners so that events do not trigger twice and we're unsubscribed
+         * from certain information from the server.
+         */
         socket.removeListener('connectedEvent');
         socket.removeListener('authErrorEvent');
 
@@ -35,16 +60,27 @@ var Main = React.createClass({
     },
 
     authErrorEvent: function(data){
+        /**
+         * If we failed to authenticate the user, we want to make sure we destroy any session cookies that might
+         * be present in addition to setting the states on this component to ensure the correct
+         * things are rendered on the page.
+         */
         destroySession();
         this.setState({
             loggedIn:false,
             summoner:null,
             loginId:null
         });
+        /**
+         * Also trigger a venti authErrorEvent so we can quickly tell the header component that it needs to do something
+         */
         venti.trigger('authErrorEvent');
     },
 
     changePlayState: function(data){
+        /**
+         * Slides up and sets the state to render a different component for handling queues and games.
+         */
         if(data.playing !== this.state.inGame) {
             $('#homepage').slideUp(400);
             $('#game').slideUp(400);
@@ -57,11 +93,22 @@ var Main = React.createClass({
     },
 
     changeLoggedState: function(data){
-        this.setState({loggedIn:data.loggedIn,summoner:data.summoner,loginId:data.loginId});
+        /**
+         * Takes data object given and sets the state of this component to the various things needed to display
+         * who is currently logged in.
+         */
+        this.setState({
+            loggedIn:data.loggedIn,
+            summoner:data.summoner,
+            loginId:data.loginId
+        });
     },
 
     render: function(){
-        console.log('Logged in: '+this.state.loggedIn);
+        /**
+         * Render the component, if in a game render GameContent instead of HomepageContent. Header should always render
+         * regardless of current game state.
+         */
         return(
             <div>
                 <Header loggedIn={this.state.loggedIn} summoner={this.state.summoner} loginId={this.state.loginId} />
