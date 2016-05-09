@@ -34,11 +34,27 @@ var Leaderboard = React.createClass({
     },
 
     componentDidMount: function(){
-        socket.on('requestLeaderboardStatsEvent',this.requestLeaderboardStats);
+        socket.emit('requestLeaderboardStats');
+
+        socket.on('requestLeaderboardStatsEvent',this.leaderboardStatsEvent);
+        socket.on('leaderboardStatsEvent',this.leaderboardStatsEvent);
     },
 
     componentWillUnmount: function(){
-        socket.removeListener('requestLeaderboardStatsEvent',this.requestLeaderboardStats);
+        socket.removeListener('requestLeaderboardStatsEvent',this.leaderboardStatsEvent);
+        socket.removeListener('leaderboardStatsEvent',this.leaderboardStatsEvent);
+    },
+
+    leaderboardStatsEvent: function(data){
+        this.setState({
+            leaderboard:data.leaderboard
+        })
+    },
+
+    getInitialState:function(){
+        return({
+            leaderboard:[]
+        })
     },
 
     render: function(){
@@ -49,6 +65,15 @@ var Leaderboard = React.createClass({
                         <span className="motr-pink">Live</span>
                         <span className="motr-blue">Leaderboards</span>
                     </h4>
+                    <div className="col s12">
+                        {(
+                            this.state.leaderboard.length > 0
+                            ?
+                                <LeaderboardDisplay leaderboard={this.state.leaderboard} />
+                            :
+                                <p className="flow-text">Pinging Server for stats...</p>
+                        )}
+                    </div>
                 </div>
                 <div className="col s12">
                     <p className="center-align flow-text motr-pink share-title">Share the game!</p>

@@ -72,7 +72,7 @@ var BackgroundMusicControl = React.createClass({
 
     render: function(){
         return(
-            <div className="col s3 valign-wrapper background-music-control">
+            <div className="valign-wrapper background-music-control">
                 <div className="valign">
                     <a className="waves-effect waves-light btn blue-grey darken-2" onClick={this.toggleMute}>{(this.state.muted ? 'Unmute Music' : 'Mute Music')}</a>
                 </div>

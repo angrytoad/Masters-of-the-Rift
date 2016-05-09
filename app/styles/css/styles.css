@@ -76,7 +76,9 @@ body{
 }
 
 .background-music-control{
-    height: 75px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
     opacity:0.3;
 }
 

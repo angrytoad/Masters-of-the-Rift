@@ -86,6 +86,12 @@ var EndMatchPresentation = React.createClass({
             winnerString + '!' +
             '</div>');
 
+        new Howl({
+            urls: ['/assets/sounds/winnerAnnounce.mp3'],
+            autoplay:true,
+            volume: 0.5
+        });
+
         setTimeout(function(){
             $('.winner-name').fadeOut(300,function(){
                 $('#game').removeClass('blackout');
@@ -94,7 +100,7 @@ var EndMatchPresentation = React.createClass({
                     venti.trigger('shareScreen');
                 });
             });
-        },2000);
+        },3500);
 
 
     },
