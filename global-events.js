@@ -344,15 +344,9 @@ module.exports = function(io, Models) {
 
         socket.on('connectionAttemptEvent', function(data)
         {
-            //Function forchecking server connectivity
             socket.emit('connectedEvent', {connected: true});
         });
 
-        // socket.on('disconnect', function()
-        // {
-        //     // Function for handling disconnects
-        //     socket.emit('clientDisconnectedEvent', {connected: false});
-        // });
 
         socket.on('loginRequest', function(data) {
 
