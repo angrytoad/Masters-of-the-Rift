@@ -368,7 +368,14 @@ module.exports = function(io, Models) {
                                     /*
                                     Send back the data that the client side component needs.
                                      */
-                                    socket.emit('userStatsEvent', {summoner:user.summonerName,loginId:user.loginId});
+                                    Models.Profiles.findOne({loginId: user.loginId}, 'totalGames totalScore gamesWon', function(err, profile) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            // If profile is found add relevant user stats to the return object
+                                            socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.totalScore}});
+                                        }
+                                    });
                                 }
                             }
                         });
