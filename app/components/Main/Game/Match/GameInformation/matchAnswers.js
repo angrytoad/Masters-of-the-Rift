@@ -123,7 +123,6 @@ var MatchAnswers = React.createClass({
          * This component renders the questions that are shown to the player in addition to showing a dynamic component
          * that shows the progress of the other player on their questions that updates in real time.
          */
-        console.log(this.state.questions);
         var that = this;
         if(this.state.answersSubmitted){
             return(

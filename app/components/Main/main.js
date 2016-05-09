@@ -31,7 +31,7 @@ var Main = React.createClass({
             /**
              *  Test function to ensure that we have a socket connection to the server.
              */
-            console.info('connectedEvent Fired Successfully');
+            console.info('connectedEvent Fired Successfully: We have a connection to the socket server');
         });
         socket.on('authErrorEvent',this.authErrorEvent);
 

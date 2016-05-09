@@ -25,7 +25,6 @@ var LeaderboardRow = React.createClass({
     },
 
     render: function(){
-        console.log(this.state.data);
         return(
             <tr>
                 <td className="motr-pink">{this.state.data.loginId}</td>
