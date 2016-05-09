@@ -672,6 +672,16 @@ video#bgvid {
     display:inline-block;
 }
 
+.technical-stuff ul{
+    list-style-type: square!important;
+    padding-left: 40px;
+
+}
+
+.technical-stuff ul li{
+    list-style-type: square!important;
+}
+
 
 /*
 

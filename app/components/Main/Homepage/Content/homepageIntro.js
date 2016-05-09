@@ -37,9 +37,56 @@ var HomepageIntro = React.createClass({
                 {(
                     this.state.showingTechnical
                     ?
-                        <div>
+                        <div className="technical-stuff">
                             <button className="waves-effect waves-light btn blue-grey darken-2 faded right" onClick={this.loadNormalInformation}>Normal Stuff</button>
                             <h4>The Project</h4>
+                            <p className="flow-text motr-pink center-align">
+                                <b>
+                                This is just a brief rundown of the project, for a full write-up please go <a target="_blank" href="https://docs.google.com/document/d/1OQTJUeE9rWVFVlN1p8xV9mijL09jSobhid-z-MBpcHU/edit?usp=sharing">HERE.</a>
+                                </b>
+                            </p>
+                            <p className="flow-text">
+                                Masters of the Rift has been developed as part of the 2016 API Challenge by Riot Games.
+                                From reading the brief of the API challenge it was clear that we needed to look towards
+                                creating something much bigger and better than our last entry.
+                            </p>
+                            <p className="flow-text">
+                                Masters of the Rift (MOTR) is a true social experience that allows players to battle against each
+                                other from anywhere in the world to see who knows the most about summoners rift. MOTR has been
+                                created as a full Single-page application and supports full asynchronous communication between
+                                clients and the server.
+                            </p>
+                            <h3 className="motr-pink">Social Elements</h3>
+                            <p className="flow-text">
+                                When looking at the announcement we saw that by giving players a social experience this would be a big plus so
+                                we decided to try and make the experience as social as possible by including lots of features which
+                                update on-the-fly and in realtime such as:
+                            </p>
+                            <ul className="flow-text motr-blue">
+                                <li className="">Live Leaderboards that update as games are completed.</li>
+                                <li className="">Live Queue data lets you see how many are queueing and who is playing at all times.</li>
+                                <li className="">Live game progression allows you to see what questions your opponent has already answered.</li>
+                            </ul>
+                            <p className="flow-text">
+                                We also wanted to include an in-game chat but unfortunately ran out of time, but this is planned for a later release.
+                            </p>
+                            <h3 className="motr-pink">Matches</h3>
+                            <p className="flow-text">
+                                A Match is played between two players. When a match is created, a random match is generated from
+                                existing players in <span className="motr-blue">Challenger</span> league from EUW. We then grab
+                                all the match information we need from various endpoints <b>(including mastery data)</b> and send
+                                it back to both clients.
+                            </p>
+                            <p className="flow-text">
+                                To achieve this we utilized technologies such as Socket.IO and ReactJS to achieve a fluid and reactive application.
+                                By having clients emit and receive events we can ensure both players are synced together inside a game and there are
+                                a little issues as possible.
+                            </p>
+                            <p className="flow-text motr-pink center-align">
+                                <b>
+                                    We encourage you to learn more in depth about how this project was created by visiting <a target="_blank" href="https://docs.google.com/document/d/1OQTJUeE9rWVFVlN1p8xV9mijL09jSobhid-z-MBpcHU/edit?usp=sharing">HERE.</a>
+                                </b>
+                            </p>
                         </div>
                     :
                       <div>
