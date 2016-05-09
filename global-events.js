@@ -374,7 +374,11 @@ module.exports = function(io, Models) {
                                             console.log(err);
                                         } else {
                                             // If profile is found add relevant user stats to the return object
-                                            socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.totalScore}});
+                                            if (profile == null) {
+                                                socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: 0, totalScore: 0, gamesWon: 0}});
+                                            } else {
+                                                socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.totalScore}});
+                                            }
                                         }
                                     });
                                 }
