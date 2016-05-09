@@ -33,6 +33,7 @@ module.exports = function(io, Models) {
             Models.Profiles.find({}, 'loginId totalGames gamesWon totalScore', {skip:0, limit:25, sort:{totalScore:-1}}, function(err, profiles) {
                 io.emit('requestLeaderboardStatsEvent', {leaders: profiles});
             });
+            //socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.totalScore}});
         }
     });
 
@@ -368,7 +369,7 @@ module.exports = function(io, Models) {
                                     /*
                                     Send back the data that the client side component needs.
                                      */
-                                    Models.Profiles.findOne({loginId: user.loginId}, 'totalGames totalScore gamesWon', function(err, profile) {
+                                    Models.Profiles.findOne({loginId: data.session.loginId}, 'totalGames totalScore gamesWon', function(err, profile) {
                                         if (err) {
                                             console.log(err);
                                         } else {
