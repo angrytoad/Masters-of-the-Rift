@@ -27,6 +27,17 @@ module.exports = function (mongoose) {
 	var $sessions = mongoose.model('Sessions', $sessionSchema);
 
 	this.Sessions = $sessions;
+
+	$profileSchema = new mongoose.Schema({
+
+		loginId: String,
+		totalGames: Number,
+		gamesWon: Number,
+		totalScore: Number
+
+	});
+	$profiles = mongoose.model('Profiles', $profileSchema);
+	this.Profiles = $profiles;
     
 	var $validateSession = function($token, $loginId, $callBack) {
 		var $Date = new Date;

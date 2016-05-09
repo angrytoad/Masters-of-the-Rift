@@ -22,11 +22,7 @@ var matchEvents = module.exports = {};
 			"14": 'goldEarned*',//EarnedGold
 			"15": 'goldSpent*',//SpentGold
 		};
-		console.log('We made it this far chaps!');
-		console.log(matches[data.gameId].gameDetails);
 		gameDetails = matches[data.gameId].gameDetails;
-		console.log(data);
-		console.log(questions);
 		var $return = {};
 		$score = 0;
 

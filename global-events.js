@@ -119,8 +119,58 @@ module.exports = function(io, Models) {
         var currentSockets = parseInt(connectedSockets.length)
         if(answerAmount === currentSockets){
             console.log('ENDING THE GAME');
+            $winner = 'none';
+            Object.keys($matches[data.gameId]['answers']).map(function(player) {
+                if ($winner == 'none') {
+                    $winner = player;
+                } else {
+                    if ($matches[data.gameId]['answers'][player].score > $matches[data.gameId]['answers'][$winner].score) {
+                        $winner = player;
+                    } else if ($matches[data.gameId]['answers'][player].score == $matches[data.gameId]['answers'][$winner].score) {
+                        // TIE
+                        $winner = 'both';
+                    }  
+                }
+            });
+            recordGameToProfilePair(data.gameId, $winner);
             io.to(data.gameId).emit('callMatchEndEvent');
         }
+    }
+
+    function recordGameToProfilePair(id, winner) {
+
+        Object.keys($matches[id]['answers']).map(function(key) {
+            console.log(key + '--' + $won);
+            Models.Profiles.findOne({loginId: key}, 'loginId totalGames gamesWon totalScore', function(err, user) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if (user == null) {
+                        // Create a profile
+                        console.log('Creating Profile!');
+                        $profile = new Models.Profiles({loginId: key, totalGames: 1, totalScore: $matches[id]['answers'][key].score, gamesWon: (key == winner || winner == 'both')? 1:0});
+                        $profile.save(function(err, profile) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('Profile for: ' + key + ' Saved!');
+                            }
+                        });
+                    } else {
+                        // Add to a profile
+                        console.log('Updating Profile!');
+                        Models.Profiles.findOneAndUpdate({loginId: key}, {$set: {totalGames: user.totalGames + 1, gamesWon: user.gamesWon + (key == winner || winner == 'both')? 1:0, totalScore: user.totalScore + $matches[id]['answers'][key].score}}, function (err, user) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('Profile for: ' + key + ' Updated!');
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
     }
 
     // On Global Socket Connection
@@ -132,9 +182,9 @@ module.exports = function(io, Models) {
             When we receive this event we want to send back whatever is in the answers game object back to both player
             so they can interpret this information, if a player failed to submit all answers, they will get nothing.
              */
-            console.log('SCORES ON THE DOORS: ');
-            console.log($matches[data.gameId]['answers']);
-            socket.emit('endGameDataEvent',{scores:$matches[data.gameId]['answers']})
+            //console.log('SCORES ON THE DOORS: ');
+            //console.log($matches[data.gameId]['answers']);
+            socket.emit('endGameDataEvent',{scores:$matches[data.gameId]['answers']});
         });
         
         socket.on('callMatchEnd', function(data){
