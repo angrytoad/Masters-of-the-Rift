@@ -376,7 +376,7 @@ module.exports = function(io, Models) {
                                             if (profile == null) {
                                                 socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: 0, totalScore: 0, gamesWon: 0}});
                                             } else {
-                                                socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.totalScore}});
+                                                socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.gamesWon}});
                                             }
                                         }
                                     });
