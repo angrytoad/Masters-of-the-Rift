@@ -26,8 +26,12 @@ body{
 }
 
 .logo-title{
-    margin-top: 16px;
-    margin-bottom: 9px;
+    margin-top: 35px;
+    margin-bottom: 35px;
+}
+
+#login-form{
+    margin-top: 40px;
 }
 
 .logo{
@@ -659,6 +663,15 @@ video#bgvid {
 .leaderboard-rows td{
     padding: 3px 5px;
 }
+
+.user-stats{
+    display:inline-block;
+}
+
+.user-stats li{
+    display:inline-block;
+}
+
 
 /*
 

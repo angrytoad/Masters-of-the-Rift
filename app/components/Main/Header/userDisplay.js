@@ -7,7 +7,8 @@ var UserDisplay = React.createClass({
             loggedIn:this.props.loggedIn,
             summoner:this.props.summoner,
             loginId:this.props.loginId,
-            inGame:false
+            inGame:false,
+            stats:{}
         })
     },
 
@@ -34,7 +35,14 @@ var UserDisplay = React.createClass({
     userStatsEvent: function(data){
         console.log('USER STATS RECEIVED AND SUCCESSFUL AUTHENTICATION MADE!');
         console.log(data);
-        venti.trigger('changeLoggedState',{loggedIn:true,summoner:data.summoner,loginId:data.loginId});
+        venti.trigger('changeLoggedState',{
+            loggedIn:true,
+            summoner:data.summoner,
+            loginId:data.loginId,
+        });
+        this.setState({
+            stats:data.stats
+        })
     },
 
     pressedPlay: function(){
@@ -58,13 +66,43 @@ var UserDisplay = React.createClass({
 
                 </div>
                 <div className="col s6 user-account-information left-align">
-                    <h5>{this.state.summoner} <i>({this.state.loginId})</i></h5>
-                    {(
-                        this.state.inGame
-                        ? <a href="#" className="motr-blue faded">You cannot logout in a game</a>
-                        : <a href="#" className="motr-blue faded" onClick={this.requestLogout}>Logout</a>
-                    )}
-
+                    <div className="col s12">
+                        <h5>{this.state.summoner} <i>({this.state.loginId})</i></h5>
+                        {(
+                            this.state.inGame
+                            ? <a href="#" className="motr-blue faded">You cannot logout in a game</a>
+                            : <a href="#" className="motr-blue faded" onClick={this.requestLogout}>Logout</a>
+                        )}
+                    </div>
+                    <div className="col s12 user-stats">
+                        <ul>
+                            <li className="col s6">
+                                <span className="motr-pink">Won: </span>
+                                {this.state.stats.gamesWon}
+                            </li>
+                            <li className="col s6">
+                                <span className="motr-pink">Lost: </span>
+                                {(this.state.stats.totalGames - this.state.stats.gamesWon)}
+                            </li>
+                            <li className="motr-blue col s6">
+                                <span className="motr-pink">Total Score: </span>
+                                {this.state.stats.totalScore}
+                            </li>
+                            {(
+                                this.state.stats.totalGames == 0
+                                ?
+                                    <li className="col s6">
+                                        <span className="motr-pink">Win Ratio: </span>
+                                        N/A
+                                    </li>
+                                :
+                                    <li className="col s6">
+                                        <span className="motr-pink">Win Ratio: </span>
+                                        {((100/this.state.stats.totalGames)*this.state.stats.gamesWon).toFixed(2)}%
+                                    </li>
+                            )}
+                        </ul>
+                    </div>
                 </div>
             </div>
         )

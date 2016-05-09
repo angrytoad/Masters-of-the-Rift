@@ -92,6 +92,8 @@ var EndMatchPresentation = React.createClass({
             volume: 0.5
         });
 
+        socket.emit('requestUserStats',{session:getSession()})
+
         setTimeout(function(){
             $('.winner-name').fadeOut(300,function(){
                 $('#game').removeClass('blackout');
