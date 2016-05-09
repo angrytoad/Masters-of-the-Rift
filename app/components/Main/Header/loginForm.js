@@ -78,6 +78,7 @@ var LoginForm = React.createClass({
     },
     
     loginSuccessfulEvent: function(data){
+        console.log(data);
         setSession(data.loginId,data.token);
         venti.trigger('changeLoggedState',{loggedIn:true,summoner:data.summonerName,loginId:data.loginId});
     },

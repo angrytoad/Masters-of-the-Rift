@@ -69,6 +69,7 @@ var EndMatch = React.createClass({
          * display portion inside its own component and passed these component states into it. Must more
          * readable!
          */
+        console.log(this.state.scores);
         return(
             <div className="end-match-wrapper">
                 {(

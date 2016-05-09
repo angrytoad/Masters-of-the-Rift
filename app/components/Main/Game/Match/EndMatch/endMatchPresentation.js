@@ -216,6 +216,7 @@ var EndMatchPresentation = React.createClass({
                 <div className="end-match-display">
                     <div className="final-scores row">
                         {Object.keys(this.state.formattedScores).map(function (i, obj) {
+                            console.log(that.state.scores)
                             return (
                                 <FinalScoreDisplay keyName={i} player={that.state.player} score={that.state.formattedScores[i]} rawScore={that.state.scores[i]['score']}/>
                             )

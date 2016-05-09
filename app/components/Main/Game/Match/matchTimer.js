@@ -17,8 +17,8 @@ var MatchTimer = React.createClass({
 
     getInitialState: function(){
         return({
-            timer:120,
-            timeLeft:120,
+            timer:20,
+            timeLeft:20,
             percentageLeft:100,
             lastTenSeconds: new Howl({
                 urls: ['/assets/sounds/countdown.mp3'],

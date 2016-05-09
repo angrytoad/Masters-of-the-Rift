@@ -61,6 +61,7 @@ var MatchAnswers = React.createClass({
             this.setState({
                 submittedAnswers:submittedAnswers
             });
+            console.log(submittedAnswers);
             socket.emit('submitAnswers',{
                 gameId:this.state.matchId,
                 answers:submittedAnswers,

@@ -85,6 +85,7 @@ module.exports = function(io, Models) {
             $matches[$gameId] = $game;
             $matches[$gameId]['answers'] = {};
 
+
             $queue[$tempQueue[0]].socket.emit('matchFoundEvent', {matchId: $gameId});
             $queue[$tempQueue[1]].socket.emit('matchFoundEvent', {matchId: $gameId});
 
@@ -307,7 +308,6 @@ module.exports = function(io, Models) {
             *
             *   desc - Function check if both clients have sumbitted their answers after calling the parseScore function to assess the clients answers and assign them a score
             */
-
             $score = matchEvents.parseAnswers(data, socket, $matches[data.gameId].questions, $matches);
             checkForAllAnswerSubmissions(data,$score);
         });
@@ -344,8 +344,10 @@ module.exports = function(io, Models) {
 
         socket.on('connectionAttemptEvent', function(data)
         {
+            //Function forchecking server connectivity
             socket.emit('connectedEvent', {connected: true});
         });
+
 
 
         socket.on('loginRequest', function(data) {
@@ -439,7 +441,6 @@ module.exports = function(io, Models) {
                         socket.emit('authErrorEvent', {error: $res.msg});
                     } else {
                         if(typeof $queue[data.session.loginId] !== 'undefined'){
-                            console.log(data.session.login)
                             delete $queue[data.session.loginId];
                             io.to('queue-room').emit('requestQueueInformationEvent',{inQueue:getQueueCount().queue,inMatch:getQueueCount().match});
                         }

@@ -65,6 +65,7 @@ var Main = React.createClass({
          * be present in addition to setting the states on this component to ensure the correct
          * things are rendered on the page.
          */
+        console.log(getSession());
         destroySession();
         this.setState({
             loggedIn:false,
@@ -74,6 +75,7 @@ var Main = React.createClass({
         /**
          * Also trigger a venti authErrorEvent so we can quickly tell the header component that it needs to do something
          */
+        console.log(data);
         venti.trigger('authErrorEvent');
     },
 

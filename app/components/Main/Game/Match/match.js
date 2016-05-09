@@ -70,6 +70,11 @@ var Match = React.createClass({
     },
 
     callMatchEnd: function(){
+        socket.emit('submitAnswers',{
+            gameId:this.state.matchId,
+            answers:[0,0,0,0,0],
+            player:this.props.player
+        });
         socket.emit('callMatchEnd',{gameId:this.state.matchId});
     },
 
