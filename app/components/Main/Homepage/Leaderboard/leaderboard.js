@@ -22,7 +22,7 @@ var Leaderboard = React.createClass({
     },
 
     shareTwitter: function(){
-        var url = 'https://twitter.com/intent/tweet?text=Play%20Masters%20of%20the%20Rift%20at%20----ENTER SITE ADDRESS HERE---->';
+        var url = 'https://twitter.com/intent/tweet?text=Play%20Masters%20of%20the%20Rift%20at%20http://dedivps-47985.dedicloud.co.uk/';
         var title = 'Share Masters of the Rift to Twitter!';
         var w = 600;
         var h = 400;

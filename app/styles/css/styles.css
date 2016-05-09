@@ -682,6 +682,11 @@ video#bgvid {
     list-style-type: square!important;
 }
 
+.failed-to-answer{
+    font-size:12px!important;
+    font-weight:bold;
+}
+
 
 /*
 

@@ -20,7 +20,7 @@ var ShareScreen = React.createClass({
     },
 
     shareTwitter: function(){
-        var url = 'https://twitter.com/intent/tweet?text=I ('+this.state.loginId+') just defeated an opponent in Masters of the Rift! - ----ENTER SITE ADDRESS HERE---->';
+        var url = 'https://twitter.com/intent/tweet?text=I ('+this.state.loginId+') just played a game in Masters of the Rift! - http://dedivps-47985.dedicloud.co.uk/';
         var title = 'Share Masters of the Rift to Twitter!';
         var w = 600;
         var h = 400;
