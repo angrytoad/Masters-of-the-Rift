@@ -42,6 +42,7 @@ var FinalScoreDisplay = React.createClass({
                         </div>
                     </div>
                     {Object.keys(this.state.score).map(function (item, i) {
+                        console.log(that.state.score);
                         var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/" + that.state.score[i]['givenAns'] + ".png"
                         if(that.state.score[i]['givenAns'] === 'blue' || that.state.score[i]['givenAns'] === 'red'){
                             return (

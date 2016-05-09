@@ -33,6 +33,14 @@ var Leaderboard = React.createClass({
         return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
     },
 
+    componentDidMount: function(){
+        socket.on('requestLeaderboardStatsEvent',this.requestLeaderboardStats);
+    },
+
+    componentWillUnmount: function(){
+        socket.removeListener('requestLeaderboardStatsEvent',this.requestLeaderboardStats);
+    },
+
     render: function(){
         return(
             <div className="col s5">
