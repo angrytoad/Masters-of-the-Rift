@@ -61,7 +61,6 @@ var MatchAnswers = React.createClass({
             this.setState({
                 submittedAnswers:submittedAnswers
             });
-            console.log(submittedAnswers);
             socket.emit('submitAnswers',{
                 gameId:this.state.matchId,
                 answers:submittedAnswers,
@@ -112,11 +111,22 @@ var MatchAnswers = React.createClass({
     componentDidMount: function(){
         venti.on('checkForCompleteForm',this.checkForCompleteForm);
         venti.on('parentStoreOpponentAnswers',this.storeOpponentAnswers);
+        venti.on('callMatchEnd',this.callMatchEnd);
     },
 
     componentWillUnmount: function(){
         venti.off('checkForCompleteForm',this.checkForCompleteForm);
         venti.off('parentStoreOpponentAnswers',this.storeOpponentAnswers);
+    },
+
+    callMatchEnd: function(){
+        if(!this.state.answersSubmitted) {
+            socket.emit('submitAnswers', {
+                gameId: this.state.matchId,
+                answers: [null, null, null, null, null],
+                player: this.state.player
+            });
+        }
     },
 
     render: function(){

@@ -60,10 +60,13 @@ var FinalCorrectScoreDisplay = React.createClass({
     componentWillMount: function(){
         var that = this;
         {Object.keys(this.state.score).map(function (i, obj) {
-            if(typeof that.state.score[i] !== 'undefined'){
+            if(typeof that.state.score[i][0] !== 'undefined'){
+                console.log(i+' is not undefined!');
                 that.setState({
                     score:that.state.score[i]
                 });
+            }else{
+                console.log(i+' is undefined!');
             }
         })}
     },

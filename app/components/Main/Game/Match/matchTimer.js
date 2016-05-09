@@ -34,6 +34,7 @@ var MatchTimer = React.createClass({
                 that.reduceTime();
             }else{
                 that.callMatchEnd();
+                clearInterval(countDown);
             }
 
 

@@ -89,8 +89,13 @@ var FinalScoreDisplay = React.createClass({
         }else{
             var scoreArray = [0,0,0,0,0];
             return(
-                <div className="col s4">
-                    <h4>{this.props.keyName}'s score</h4>
+                <div className="col s4 answers">
+                    <div className="score-title">
+                        <p className="motr-blue">{this.state.keyName}'s answers</p>
+                        <div className="score">
+                            <span className="motr-blue">SCORE: </span><span className="motr-pink">{this.state.rawScore}</span>
+                        </div>
+                    </div>
                     {Array.apply(null, scoreArray).map(function(item, i){
                         return (
                             <div className="question-answer">

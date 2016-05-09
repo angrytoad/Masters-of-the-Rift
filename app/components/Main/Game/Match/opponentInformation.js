@@ -39,13 +39,11 @@ var OpponentInformation = React.createClass({
     },
 
     answerCountEvent: function(data){
-        console.log(this.state.player);
         if(data.player !== this.state.player) {
             var answerArray = [0,0,0,0,0];
             for (var i = 0; i < data.count; i++) {
                 answerArray[i] = 1;
             }
-            console.log('SETTING PROGRESS FOR '+data.player);
             this.setState({opponentsAnswers: answerArray});
             venti.trigger('parentStoreOpponentAnswers',{opponentAnswers:answerArray});
         }
