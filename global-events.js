@@ -20,6 +20,18 @@ module.exports = function(io, Models) {
     var questions = require('./questions.json');
     var matchEvents = require('./match-events.js');
     venti = require('./venti.min.js');
+    var $dataSent = 0;
+    venti.on('endGameDataSent', function(data) {
+        $dataSent++;
+        if ($dataSent == 2) {
+            delete $matches[data.data.gameId];
+            io.emit('requestQueueInformationEvent',{
+                inQueue:getQueueCount().queue,
+                inMatch:getQueueCount().match
+            });
+            $dataSent = 0;
+        }
+    });
 
     var $matcher = setInterval(matcher, 1000);
 
@@ -132,22 +144,12 @@ module.exports = function(io, Models) {
                     }  
                 }
             });
-            $pUpdated = 0;
-            recordGameToProfilePair(data.gameId, $winner, function() {
-                $pUpdated++;
-                if ($pUpdated == 2) {
-                    delete $matches[data.gameId];
-                    io.emit('requestQueueInformationEvent',{
-                        inQueue:getQueueCount().queue,
-                        inMatch:getQueueCount().match
-                    });
-                }
-            });
             io.to(data.gameId).emit('callMatchEndEvent');
+            recordGameToProfilePair(data.gameId, $winner);
         }
     }
 
-    function recordGameToProfilePair(id, winner, callback) {
+    function recordGameToProfilePair(id, winner) {
 
         Object.keys($matches[id]['answers']).map(function(key) {
             Models.Profiles.findOne({loginId: key}, 'loginId totalGames gamesWon totalScore', function(err, user) {
@@ -163,7 +165,6 @@ module.exports = function(io, Models) {
                                 console.log(err);
                             } else {
                                 console.log('Profile for: ' + key + ' Saved!');
-                                callback();
                             }
                         });
                     } else {
@@ -174,7 +175,6 @@ module.exports = function(io, Models) {
                                 console.log(err);
                             } else {
                                 console.log('Profile for: ' + key + ' Updated!');
-                                callback();
                             }
                         });
                     }
@@ -192,9 +192,8 @@ module.exports = function(io, Models) {
             When we receive this event we want to send back whatever is in the answers game object back to both player
             so they can interpret this information, if a player failed to submit all answers, they will get nothing.
              */
-            //console.log('SCORES ON THE DOORS: ');
-            //console.log($matches[data.gameId]['answers']);
             socket.emit('endGameDataEvent',{scores:$matches[data.gameId]['answers']});
+            venti.trigger('endGameDataSent', {data: data});
         });
         
         socket.on('callMatchEnd', function(data){
