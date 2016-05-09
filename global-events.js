@@ -170,7 +170,11 @@ module.exports = function(io, Models) {
                 }
             });
         });
-
+        delete $matches[id];
+        io.emit('requestQueueInformationEvent',{
+            inQueue:getQueueCount().queue,
+            inMatch:getQueueCount().match
+        });
     }
 
     // On Global Socket Connection
