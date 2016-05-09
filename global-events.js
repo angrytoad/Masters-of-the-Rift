@@ -33,7 +33,6 @@ module.exports = function(io, Models) {
             Models.Profiles.find({}, 'loginId totalGames gamesWon totalScore', {skip:0, limit:25, sort:{totalScore:-1}}, function(err, profiles) {
                 io.emit('requestLeaderboardStatsEvent', {leaders: profiles});
             });
-            //socket.emit('userStatsEvent', {summoner:user.summonerName, loginId:user.loginId, stats:{totalGames: profile.totalGames, totalScore: profile.totalScore, gamesWon: profile.totalScore}});
         }
     });
 
