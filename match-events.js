@@ -5,6 +5,20 @@
 var matchEvents = module.exports = {};
 	matchEvents.parseAnswers = function(data, socket, questions, matches) {
 
+		/*
+		*	class @parseAnswers
+		*
+		*	@param data - Data object containing the gameId for the supplied answers
+		*	@param socket - The socket for the client that submitted the answers
+		*	@param questions - The set of questions for the given game
+		*	@param matches - The object of matches currently ongoing
+		*
+		*	desc - This functions recieves submitted answers from a client and calculates the correct answers from api data before comparing them and returning a relevant score object, details what they got right/wrong and their score
+		*	The method uses a question object to link questions to the relevant property in the api call response that the answr is being checked against.  The questions boil down into 3 categories - player bests, team totals and team properties.
+		*	For each of these categories there is logic to determin the correct answer and compare to the given answer.  The score is totaled up from individual scores for each question set in the questions.json file
+		*	The score object contains question under their id as objects.  THese object contain the answer given and the correct answer.  The score is a property of the return Object
+		*/
+
 		questionObj = {
 			"1": 'winner', //who won
 			"2": 'totalHeal', //Healing
