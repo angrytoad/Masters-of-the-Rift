@@ -25,11 +25,15 @@ var UserDisplay = React.createClass({
 
         socket.on('userStatsEvent',this.userStatsEvent);
         socket.on('matchFoundEvent',this.matchFoundEvent);
+
+        venti.on('userStatsEndMatch',this.matchEndEvent);
     },
 
     componentWillUnmount: function(){
         socket.removeListener('userStatsEvent');
         socket.removeListener('matchFoundEvent',this.matchFoundEvent);
+
+        venti.off('userStatsEndMatch',this.matchEndEvent);
     },
 
     userStatsEvent: function(data){
@@ -56,6 +60,10 @@ var UserDisplay = React.createClass({
 
     matchFoundEvent: function(){
         this.setState({inGame:true});
+    },
+
+    matchEndEvent: function(){
+        this.setState({inGame:false});
     },
 
     render: function(){

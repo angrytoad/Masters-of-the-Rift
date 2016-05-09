@@ -92,12 +92,17 @@ var EndMatchPresentation = React.createClass({
             volume: 0.5
         });
 
-        socket.emit('requestUserStats',{session:getSession()})
-
         setTimeout(function(){
             $('.winner-name').fadeOut(300,function(){
                 $('#game').removeClass('blackout');
                 $('.yes-game').slideUp(1000,function(){
+
+                    that.setState({
+                        formattedScores:{}
+                    });
+                    socket.emit('requestUserStats',{session:getSession()});
+                    venti.trigger('userStatsEndMatch');
+
                     $('.winner-name').remove();
                     venti.trigger('shareScreen');
                 });

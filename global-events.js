@@ -162,7 +162,13 @@ module.exports = function(io, Models) {
                     if (user == null) {
                         // Create a profile
                         console.log('Creating Profile!');
-                        $profile = new Models.Profiles({loginId: key, totalGames: 1, totalScore: $matches[id]['answers'][key].score, gamesWon: (key == winner || winner == 'both')? 1:0});
+
+                        var increment = 0;
+                        if(key == winner || winner == 'both'){
+                            increment = 1;
+                        }
+
+                        $profile = new Models.Profiles({loginId: key, totalGames: 1, totalScore: $matches[id]['answers'][key].score, gamesWon: increment});
                         $profile.save(function(err, profile) {
                             if (err) {
                                 console.log(err);
@@ -173,7 +179,15 @@ module.exports = function(io, Models) {
                     } else {
                         // Add to a profile
                         console.log('Updating Profile!');
-                        Models.Profiles.findOneAndUpdate({loginId: key}, {$set: {totalGames: user.totalGames + 1, gamesWon: user.gamesWon + (key == winner || winner == 'both')? 1:0, totalScore: user.totalScore + $matches[id]['answers'][key].score}}, function (err, user) {
+                        //console.log(winner);
+                        //console.log(key);
+
+                        var increment = 0;
+                        if(key == winner || winner == 'both'){
+                            increment = 1;
+                        }
+
+                        Models.Profiles.findOneAndUpdate({loginId: key}, {$set: {totalGames: user.totalGames + 1, gamesWon: user.gamesWon + increment, totalScore: user.totalScore + $matches[id]['answers'][key].score}}, function (err, user) {
                             if (err) {
                                 console.log(err);
                             } else {
