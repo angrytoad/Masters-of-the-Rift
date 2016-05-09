@@ -42,3 +42,6 @@ mongodb
 
 # The API KEY
 api-key.js
+
+# Socket server
+app/scripts/sockets.js
