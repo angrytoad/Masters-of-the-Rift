@@ -19,6 +19,13 @@ var matchEvents = module.exports = {};
 		*	The score object contains question under their id as objects.  THese object contain the answer given and the correct answer.  The score is a property of the return Object
 		*/
 
+		data.answers.forEach(function (ans) {
+			if (ans == null) {
+				$nullResponse = {score: 0};
+				return $nullResponse;
+			}
+		}); 
+
 		questionObj = {
 			"1": 'winner', //who won
 			"2": 'totalHeal', //Healing
