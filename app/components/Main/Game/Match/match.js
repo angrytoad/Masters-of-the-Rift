@@ -10,7 +10,8 @@ var Match = React.createClass({
             matchId:this.props.matchId,
             gameData:{},
             gameDataReceived:false,
-            matchEnded:false
+            matchEnded:false,
+            shareScreen:false
         })
     },
 
@@ -25,6 +26,7 @@ var Match = React.createClass({
 
     componentDidMount: function(){
         venti.on('callMatchEnd',this.callMatchEnd);
+        venti.on('shareScreen',this.sharingScreen);
 
         socket.on('requiredGameDataEvent',this.requiredGameDataEvent);
         socket.on('callMatchEndEvent',this.closeDownMatch);
@@ -32,6 +34,7 @@ var Match = React.createClass({
 
     componentWillUnmount: function(){
         venti.off('callMatchEnd',this.callMatchEnd);
+        venti.off('shareScreen',this.sharingScreen);
 
         socket.removeListener('requiredGameDataEvent',this.requiredGameDataEvent);
         socket.removeListener('callMatchEndEvent',this.closeDownMatch);
@@ -68,14 +71,26 @@ var Match = React.createClass({
         });
     },
 
+    sharingScreen: function(){
+        this.setState({
+            matchEnded:false,
+            shareScreen:true
+        });
+    },
+
     render: function(){
-        console.log(this.state.gameDataReceived);
         if(this.state.gameDataReceived === true) {
             if(this.state.matchEnded){
                return (
                     <EndMatch game={this.state.gameData} matchId={this.state.matchId} player={this.state.loginId} />
                )
-            }else {
+            }else if(this.state.shareScreen === true) {
+                return(
+                    <ShareScreen loginId={this.state.loginId} />
+                )
+            }
+            else
+            {
                 return (
                     <div className="match-wrapper row">
                         <div className="col s4 left-wrapper">

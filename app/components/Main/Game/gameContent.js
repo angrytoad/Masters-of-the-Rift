@@ -71,6 +71,7 @@ var GameContent = React.createClass({
         
         venti.on('changeQueueStatus',this.changeQueueStatus);
         venti.on('clientLogout',this.clientLogout);
+        venti.on('leaveMatch',this.leaveMatch);
     },
 
     componentWillUnmount: function(){
@@ -79,6 +80,16 @@ var GameContent = React.createClass({
 
         venti.off('changeQueueStatus',this.changeQueueStatus);
         venti.off('clientLogout',this.clientLogout);
+        venti.off('leaveMatch',this.leaveMatch);
+    },
+
+    leaveMatch: function(){
+        this.setState({
+            inGame:false,
+            inQueue:false,
+            matchId:''
+        });
+        $('.no-game').slideDown(500);
     },
 
     render: function(){

@@ -587,6 +587,72 @@ video#bgvid {
     padding: 5px;
 }
 
+.correct-answers{
+    border: 2px solid yellow;
+    box-shadow: 0px 0px 35px yellow;
+    padding: 10px;
+    -webkit-animation: yellow-pulsate 0.5s infinite alternate;
+    -moz-animation: yellow-pulsate 0.5s infinite alternate;
+    -animation: yellow-pulsate 0.5s infinite alternate;
+    border-radius: 10px;
+}
+
+.score-title{
+    height:60px;
+    margin:0px;
+}
+
+.score-title p{
+    margin: 0px;
+    text-align: center;
+    font-size: 1.5em;
+    padding-top: 5px;
+}
+
+.correct-score-title{
+    height:50px;
+}
+
+.correct-score-title h4{
+    margin:0px;
+    text-align: center;
+    text-shadow: 1px 0px 5px yellow;
+}
+
+.question-answer:last-child {
+    margin-bottom: 0px;
+}
+
+.correct-answers-wrapper{
+    display:none;
+}
+
+.blackout{
+    background:black;
+}
+
+.winner-name{
+    width: 600px;
+    position: fixed;
+    left: 50%;
+    margin-left: -300px;
+    background: rgba(0,0,0,0.9);
+    top: 50%;
+    height: 300px;
+    margin-top: -150px;
+    color: white;
+    z-index: 99999999999;
+    font-size: 3em;
+    padding: 50px;
+    text-align: center;
+    border-radius: 200px;
+    border: 8px ridge #A23D97;
+}
+
+.score-title .score{
+    font-weight:bold;
+}
+
 /*
 
 Animation Stuff

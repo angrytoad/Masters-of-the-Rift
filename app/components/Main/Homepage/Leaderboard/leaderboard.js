@@ -24,7 +24,7 @@ var Leaderboard = React.createClass({
 
     shareReddit: function(){
         var url = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location);
-        var title = 'Share Masters of the Rift to Twitter!';
+        var title = 'Share Masters of the Rift to Reddit!';
         var w = 600;
         var h = 400;
 

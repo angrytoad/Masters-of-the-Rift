@@ -6,7 +6,8 @@ var FinalScoreDisplay = React.createClass({
         return({
             score:this.props.score,
             keyName:this.props.keyName,
-            player:this.props.player
+            player:this.props.player,
+            rawScore:this.props.rawScore
         })
     },
 
@@ -20,7 +21,8 @@ var FinalScoreDisplay = React.createClass({
 
     componentDidMount: function(){
         var counter = 0;
-        $('.question-answer').each(function(i,elem){
+        console.log('RAW SCORE '+this.state.rawScore);
+        $('.answers .question-answer').each(function(i,elem){
             counter++;
             setTimeout(function(){
                 $(elem).slideDown(300);
@@ -32,8 +34,13 @@ var FinalScoreDisplay = React.createClass({
         if(Object.keys(this.state.score).length > 0) {
             var that = this;
             return (
-                <div className="col s4">
-                    <p className="motr-blue">{this.state.keyName}'s answers</p>
+                <div className="col s4 answers">
+                    <div className="score-title">
+                        <p className="motr-blue">{this.state.keyName}'s answers</p>
+                        <div className="score">
+                            <span className="motr-blue">SCORE: </span><span className="motr-pink">{this.state.rawScore}</span>
+                        </div>
+                    </div>
                     {Object.keys(this.state.score).map(function (item, i) {
                         var imgString = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/" + that.state.score[i]['givenAns'] + ".png"
                         if(that.state.score[i]['givenAns'] === 'blue' || that.state.score[i]['givenAns'] === 'red'){
