@@ -1,6 +1,17 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @SelectedChampion
+ *
+ * states
+ *  - player: the player object received
+ *
+ *  desc    This component does all of the information display stuff for a players independent stats, the player
+ *          object used contains a huge amount of information about the player that we can look through and
+ *          display, some information will not be presented however as this would make the game
+ *          too easy to players
+ */
 var SelectedChampion = React.createClass({
 
     getInitialState: function(){
@@ -16,6 +27,11 @@ var SelectedChampion = React.createClass({
     },
 
     render: function(){
+        /**
+         * There are two parts to this render, we want to render the items that the player had at the end of the game
+         * as this is vitally important to allow players to work out certain questions such as who had the highest
+         * crit.
+         */
         var roleIcon = '/assets/images/icons/lanes/'+this.state.player.playerObj.timeline.lane+'.png';
         return(
             <div className="col s12">

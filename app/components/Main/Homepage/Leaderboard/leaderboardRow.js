@@ -1,5 +1,15 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @LeaderboardRow
+ *
+ * states
+ *  - data: the individual player row data that will be displayed (from parent)
+ *
+ *  desc    Renders the leaderboard row with the correct information needed to display wins, losses, total score and win
+ *          ratio.
+ */
 var LeaderboardRow = React.createClass({
 
     getInitialState: function(){

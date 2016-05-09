@@ -1,6 +1,16 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @Question
+ *
+ * states
+ *  - question: The question being asked to the player (from parent)
+ *  - players: The players that were sent as part of the game object
+ *
+ *  desc    This component renders the questions by either rendering QuestionTeamDisplay or rendering QuestionTeamChooser
+ *          depending on the type of question that was given.
+ */
 var Question = React.createClass({
 
     getInitialState: function(){

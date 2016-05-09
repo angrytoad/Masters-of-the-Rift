@@ -1,5 +1,25 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @Match
+ *
+ * states
+ *  - loggedIn: is the user logged in? (from parent)
+ *  - summoner: what is the users summoner name? (from parent)
+ *  - loginId: what is the users unique id? (from parent)
+ *  - matchId: what match is the user currently assigned to? (from parent)
+ *  - gameData: object that gets populated with the game data needed to render
+ *  - gameDataReceived: has game data been received 
+ *  - matchEnded: has the match ended?
+ *  - shareScreen: should be we showing the shareScreen at the end of the match?
+ *
+ *  desc    This handles everything required to manage the match state and data between players, depending on various
+ *          conditions, different components will render, in summary there are three key render states, they are
+ *          ShareScreen, EndMatch and Match components. each of these send and receives varying information
+ *          between the server, Match components are the most interesting as they demonstrate a working
+ *          relationship between both clients in the match and server.
+ */
 var Match = React.createClass({
 
     getInitialState: function(){
@@ -25,14 +45,23 @@ var Match = React.createClass({
     },
 
     componentDidMount: function(){
+        /**
+         * Trigger a the correct events when we want to end the match and show the share screen
+         */
         venti.on('callMatchEnd',this.callMatchEnd);
         venti.on('shareScreen',this.sharingScreen);
 
+        /**
+         * Listen for the requiredGameDataEvent in order to give us the information we need to get the match going.
+         */
         socket.on('requiredGameDataEvent',this.requiredGameDataEvent);
         socket.on('callMatchEndEvent',this.closeDownMatch);
     },
 
     componentWillUnmount: function(){
+        /**
+         * Remove listeners for events
+         */
         venti.off('callMatchEnd',this.callMatchEnd);
         venti.off('shareScreen',this.sharingScreen);
 
@@ -54,17 +83,6 @@ var Match = React.createClass({
     },
 
     requiredGameDataEvent: function(data){
-        /*
-            - Object (Object
-              - Teams (Object)
-                - Red (Arrays of Players)
-                    - Player (Object)
-                - Blue (Arrays of Players)
-                    - Player (Object)
-
-
-        */
-        console.log(data);
         this.setState({
             gameDataReceived:true,
             gameData:data
@@ -79,6 +97,16 @@ var Match = React.createClass({
     },
 
     render: function(){
+        /**
+         * If gameData has been received and the match has ended render the EndMatch component, if data has been
+         * received and shareScreen is set to true then render the ShareScreen component, otherwise render
+         * the Match components needed.
+         *
+         * If No data has been received render a waiting message until data has been received, if you are testing this
+         * on your own environment and you are stuck on Waiting on Serve then this typically means that something
+         * has gone wrong on the server end, occasionally there are hiccups with the API endpoint that haven't been
+         * accounted for.
+         */
         if(this.state.gameDataReceived === true) {
             if(this.state.matchEnded){
                return (

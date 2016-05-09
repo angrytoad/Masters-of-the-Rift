@@ -1,5 +1,10 @@
 /** @jsx React.DOM */
 
+/**
+ * class    @RequireLogin
+ *
+ * desc     Tell the user that they must login in order to queue.
+ */
 var RequireLogin = React.createClass({
     render: function(){
         return(

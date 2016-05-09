@@ -1,5 +1,16 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @TeamRoster
+ *
+ * states
+ *  - team: the team that needs to be rendered (from parent)
+ *  - game: the game object (from parent)
+ *
+ *  desc    This component handles the rendering of the team and the passing of data to each team memeber that can be
+ *          emitted to other components in the game.
+ */
 var TeamRoster = React.createClass({
 
     getInitialState: function(){
@@ -10,6 +21,11 @@ var TeamRoster = React.createClass({
     },
 
     render: function(){
+        /**
+         * Render each member of the team as well as their bans each TeamMember component that is rendered gets sent
+         * information that is specific to that player and this is what is used when sending player information to
+         * other components in the match.
+         */
         return(
             <div className="col s6 team-roster">
                 <div className={this.props.classToGive}>

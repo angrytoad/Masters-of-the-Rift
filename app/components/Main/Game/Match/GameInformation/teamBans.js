@@ -1,6 +1,11 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @TeamBans
+ *
+ * desc     Renders the bans for each team
+ */
 var TeamBans = React.createClass({
 
     render: function(){

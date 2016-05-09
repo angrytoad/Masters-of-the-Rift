@@ -1,5 +1,17 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @LoginForm
+ *
+ * states
+ *  - error: any error message that should be displayed
+ *  - is_error: boolean to determine whether messages back from the server are errors or not.
+ *
+ *  desc    This component handles all logging in and registering of new users, one of the cool side-effects of
+ *          deciding to build a login/registration component the REACT way means that when you successfully
+ *          register the form can keep all of your details in it and you can login right away.
+ */
 var LoginForm = React.createClass({
 
     componentDidMount: function(){
@@ -8,7 +20,10 @@ var LoginForm = React.createClass({
             $('#login-form-main').jrumble();
         });
 
-
+        /**
+         * Listen for various authentication events that we might encounter whilst trying to either login or register
+         * All of these events will display different messages and call the appropriate method in this class.
+         */
         socket.on('loginErrorEvent',this.loginErrorEvent);
         socket.on('noUserFoundEvent',this.noUserFoundEvent);
         socket.on('loginFailedEvent',this.loginFailedEvent);
@@ -21,6 +36,9 @@ var LoginForm = React.createClass({
     },
 
     componentWillUnmount: function(){
+        /**
+         * Stop listening for all of the events we described in componentDidMount
+         */
         socket.removeListener('loginErrorEvent');
         socket.removeListener('noUserFoundEvent');
         socket.removeListener('loginFailedEvent');
@@ -65,6 +83,9 @@ var LoginForm = React.createClass({
     },
 
     loginRequest: function(){
+        /**
+         * Make a login request to the server via the loginRequest socket event, ensure all fields are filled out.
+         */
         this.setState({error:'',is_error:true});
         var data = $('#login-form-main').serializeArray();
         var validated = false;
@@ -85,7 +106,6 @@ var LoginForm = React.createClass({
         }
 
         if(counter == 3){
-            console.log('making login request');
             socket.emit('loginRequest',{login:requestObject});
         }else{
             this.setState({error:'Please fill out the required fields.'});
@@ -100,7 +120,6 @@ var LoginForm = React.createClass({
     },
 
     registrationSuccessEvent: function(data){
-        console.log('REGISTERED SUCCESSFULLY');
         this.setState({error:'You have successfully registred, you may now log in',is_error:false})
     },
 
@@ -134,11 +153,19 @@ var LoginForm = React.createClass({
     },
 
     rumbleForm: function(){
+        /**
+         * Rumble the form if an error occurs
+         */
         $('#login-form-main').trigger('startRumble');
         var rumbleTimeout = setTimeout(function(){$('#login-form-main').trigger('stopRumble');}, 200)
     },
 
     render: function(){
+        /**
+         * Render the login form, reasonably straight forward as there isnt much state checking here as if the user
+         * managed to authenticate successfully then the parent component will unmount this one in exchange for
+         * the UserDisplay component.
+         */
         return(
             <div id="login-form" className="header-secondary col s6">
                 <form id="login-form-main">

@@ -1,6 +1,16 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class @ItemDisplay
+ *
+ * states
+ *  - stats: The player stats (from parent)
+ *  - timeline: The timeline object of what happened
+ *
+ *  desc    This component not only renders the items the player had, but provides a basic overview of their in game
+ *          averages whilst in the game.
+ */
 var ItemDisplay = React.createClass({
 
     getInitialState: function(){
@@ -24,6 +34,12 @@ var ItemDisplay = React.createClass({
     },
 
     render: function(){
+        /**
+         * First we need to look for items that the player had and display them, then we need to look at the timeline
+         * data to build an average of what happened over the entire game, at the bottom of this component we
+         * display the players average Creep Kills, Damage Taken, Gold Earned and XP Gained over the
+         * course of the entire match
+         */
         var rows = [];
         for (var i=0; i < 7; i++) {
             if(this.state.stats.hasOwnProperty('item'+i)){

@@ -1,5 +1,17 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @BackgroundMusicControl
+ *
+ * states
+ *  - muted: whether or not the music is currently muted (from local storage)
+ *  - music: the track that is playing in the background (Aurelion Sol's music)
+ *  
+ *  desc    This handles background music in the game, we know some people find it quite annoying sometimes so
+ *          we wanted to make sure that you can mute it if you want to, sounds are not currently mutable
+ *          but may be able to be done in a future update.
+ */
 var BackgroundMusicControl = React.createClass({
 
     getInitialState: function(){
@@ -15,6 +27,9 @@ var BackgroundMusicControl = React.createClass({
     },
 
     toggleMute: function(){
+        /**
+         * Toggles whether the music should or should-not be playing
+         */
         if(this.state.muted){
             this.setState({muted:false});
             this.unmuteSound();
@@ -26,11 +41,17 @@ var BackgroundMusicControl = React.createClass({
     },
 
     muteSound: function() {
+        /**
+         * Ensure we set local storage when we either mute/unmute
+         */
         this.state.music.mute();
         localStorage.setItem('motr-music-mute','1');
     },
 
     unmuteSound: function(){
+        /**
+         * Ensure we set local storage when we either mute/unmute
+         */
         this.state.music.unmute();
         localStorage.setItem('motr-music-mute','0');
     },
@@ -47,19 +68,28 @@ var BackgroundMusicControl = React.createClass({
         }
 
 
-
+        /**
+         * Listen for Venti events
+         */
         venti.on('fadeOutMusic',this.muteSound);
         venti.on('fadeInMusic',this.unmuteSound);
         venti.on('swapTrack',this.swapTrack);
     },
 
     componentWillUnmount: function(){
+        /**
+         * Ensure we stop listening for events in the case that this component might be chosen to be unrendered.
+         */
         venti.off('fadeOutMusic',this.muteSound);
         venti.off('fadeInMusic',this.unmuteSound);
         venti.off('swapTrack',this.swapTrack);
     },
 
     swapTrack: function(data){
+        /**
+         * This is not currently being used but may be utilised in a future update, you will be able to select from
+         * a few music tracks eventually
+         */
         this.setState({
             music: new Howl({
                 urls: ['/assets/sounds/'+data.track],

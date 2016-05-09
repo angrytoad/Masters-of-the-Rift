@@ -1,5 +1,15 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @FinalCorrectScoreDisplay
+ *
+ * states
+ *  - score: correct scores to render (from parent)
+ *
+ *  desc    This function displays the correct answers for the match based of the correct answers that it has been
+ *          given from the server
+ */
 var FinalCorrectScoreDisplay = React.createClass({
 
     getInitialState: function(){
@@ -23,6 +33,9 @@ var FinalCorrectScoreDisplay = React.createClass({
 
         venti.on('reveal-winner',this.revealWinner);
 
+        /**
+         * Play nice animation to reveal the winner and show correct answers with dramatic effect
+         */
         setTimeout(function(){
             $('.correct-answers-wrapper').fadeIn(1000, function(){
                 $('.correct-answers .question-answer').each(function(i,elem){
@@ -48,7 +61,6 @@ var FinalCorrectScoreDisplay = React.createClass({
         var that = this;
         {Object.keys(this.state.score).map(function (i, obj) {
             if(typeof that.state.score[i] !== 'undefined'){
-                console.log('SETTING ANSWER SCORES...');
                 that.setState({
                     score:that.state.score[i]
                 });
@@ -73,8 +85,10 @@ var FinalCorrectScoreDisplay = React.createClass({
     },
 
     render: function(){
+        /**
+         * Render the final correct answers based off what was given by the server.
+         */
         var that = this;
-        console.log(this.state.score);
         return(
             <div className="col s4 correct-answers-wrapper">
                 <div className="correct-score-title">

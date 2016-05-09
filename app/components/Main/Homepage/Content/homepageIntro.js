@@ -1,5 +1,12 @@
 /** @jsx React.DOM */
 
+
+/**
+ * class    @HomepageIntro
+ *
+ * states
+ *  - showingTechnical: Are we showing technical information or not?
+ */
 var HomepageIntro = React.createClass({
 
     getInitialState: function(){
@@ -21,6 +28,10 @@ var HomepageIntro = React.createClass({
     },
 
     render: function(){
+        /**
+         * Do we want to show information that is technical/non-technical to players
+         * all of the homepage intro content goes in here.
+         */
         return(
             <div className="col s7">
                 {(

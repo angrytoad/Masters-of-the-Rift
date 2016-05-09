@@ -1,6 +1,17 @@
 /** @jsx React.DOM */
 
 
+/**
+ * class    @PlayerInformation
+ *
+ * states
+ *  - player: and object that stores the information of the currently selected champion in the game.
+ *
+ *  desc    This component displays information about the selected champion when they are clicked on, this information
+ *          is received from the game object, and a venti event gets triggered in the PlayerInformation component.
+ *          The venti event triggered sends the current player as an object to this component to be shown on
+ *          the left of the match page.
+ */
 var PlayerInformation = React.createClass({
 
     getInitialState: function(){
@@ -24,6 +35,10 @@ var PlayerInformation = React.createClass({
     },
 
     render: function(){
+        /**
+         * Render the player name, last seasons rank and their mastery level with their champion, in addition to their
+         * team
+         */
         if(typeof this.state.player.team !== 'undefined') {
             var $champImg = 'http://ddragon.leagueoflegends.com/cdn/img/champion/loading/'+this.state.player.champion+'_0.jpg';
             return (
