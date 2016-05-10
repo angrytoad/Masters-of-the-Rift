@@ -31,7 +31,7 @@ var ShareScreen = React.createClass({
     },
 
     shareReddit: function(){
-        var url = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location);
+        var url = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location) + '&title=Have%20you%20guys%20checked%20out%20Masters%20of%20the%20Rift%20yet?';
         var title = 'Share Masters of the Rift to Reddit!';
         var w = 600;
         var h = 400;
@@ -67,19 +67,14 @@ var ShareScreen = React.createClass({
                         If you had fun why not share our game with your friends?
                     </p>
                 </div>
-                <div className="col s4">
+                <div className="col s6">
                     <button className="col s12 share twitter-share-button waves-effect waves-light btn-large light-blue twitter-share" onClick={this.shareTwitter}>
                         Twitter
                     </button>
                 </div>
-                <div className="col s4">
+                <div className="col s6">
                     <button className="col s12 share waves-effect waves-light btn-large orange darken-3 reddit-share" onClick={this.shareReddit}>
                         Reddit
-                    </button>
-                </div>
-                <div className="col s4">
-                    <button className="col s12 share waves-effect waves-light btn-large blue darken-3 facebook-share" onClick={this.shareFacebook}>
-                        Facebook
                     </button>
                 </div>
                 <div className="col s12">
