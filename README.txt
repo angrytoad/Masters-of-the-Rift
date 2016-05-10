@@ -1,10 +1,5 @@
-Some instructions for database setup with mongodb
+#Masters of the Rift
 
-
-
-/masters-of-the-rift npm install mongodb
-Install mongodb windows 2008
-Copy the bin folder contents to mongodb folder in app root
-From the mongodb open CMD then run mongod -dbpath 'path/to/app_root/data/db'
-From mongodb CMD run mongo to access db shell
+For a full write-up please visit [this Link](https://docs.google.com/document/d/1OQTJUeE9rWVFVlN1p8xV9mijL09jSobhid-z-MBpcHU).
+There is an online version of the game [running here](http://dedivps-47985.dedicloud.co.uk/)
 
