@@ -104,8 +104,30 @@ module.exports = function(io, Models) {
                 io.to($gameId).emit('requiredGameDataEvent', {playerDetails: $gameDetails.presented, gameData: $gameDetails.teams, questions: qs});
                 $matches[$gameId].questions = qs;
                 $matches[$gameId].gameDetails = $gameDetails;
+                setTimeout(gcMatch, 150000, $gameId);
+                io.to('queue-room').emit('requestQueueInformationEvent',{
+                    inQueue:getQueueCount().queue,
+                    inMatch:getQueueCount().match
+                });
             });
             
+        }
+    }
+
+    function gcMatch($id) {
+        /*
+        *   class @gcMatch
+        *
+        *   @param $id the match id
+        *
+        *   desc - Removes matches after they should have ended
+        */
+        if (typeof $matches[$id] !== "undefined") {
+            delete $matches[$id];
+            io.to('queue-room').emit('requestQueueInformationEvent',{
+                inQueue:getQueueCount().queue,
+                inMatch:getQueueCount().match
+            });
         }
     }
 
