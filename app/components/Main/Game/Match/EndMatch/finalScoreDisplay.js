@@ -98,7 +98,7 @@ var FinalScoreDisplay = React.createClass({
                     </div>
                     {Array.apply(null, scoreArray).map(function(item, i){
                         return (
-                            <div className="question-answer">
+                            <div className="question-answer failed-to-answer">
                                 <h5 className="motr-blue">Question #{i+1}</h5>
                                 <span>Failed to submit an answer</span>
                             </div>

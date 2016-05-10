@@ -22,7 +22,7 @@ var Leaderboard = React.createClass({
     },
 
     shareTwitter: function(){
-        var url = 'https://twitter.com/intent/tweet?text=Play%20Masters%20of%20the%20Rift%20at%20----ENTER SITE ADDRESS HERE---->';
+        var url = 'https://twitter.com/intent/tweet?text=Play%20Masters%20of%20the%20Rift%20at%20http://dedivps-47985.dedicloud.co.uk/';
         var title = 'Share Masters of the Rift to Twitter!';
         var w = 600;
         var h = 400;
@@ -33,7 +33,7 @@ var Leaderboard = React.createClass({
     },
 
     shareReddit: function(){
-        var url = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location);
+        var url = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location) + '&title=Have%20you%20guys%20checked%20out%20Masters%20of%20the%20Rift%20yet?';
         var title = 'Share Masters of the Rift to Reddit!';
         var w = 600;
         var h = 400;
@@ -91,19 +91,14 @@ var Leaderboard = React.createClass({
                 </div>
                 <div className="col s12">
                     <p className="center-align flow-text motr-pink share-title">Share the game!</p>
-                    <div className="col s4">
+                    <div className="col s6">
                         <button className="col s12 share twitter-share-button waves-effect waves-light btn-large light-blue twitter-share" onClick={this.shareTwitter}>
                             Twitter
                         </button>
                     </div>
-                    <div className="col s4">
+                    <div className="col s6">
                         <button className="col s12 share waves-effect waves-light btn-large orange darken-3 reddit-share" onClick={this.shareReddit}>
                             Reddit
-                        </button>
-                    </div>
-                    <div className="col s4">
-                        <button className="col s12 share waves-effect waves-light btn-large blue darken-3 facebook-share" onClick={this.shareFacebook}>
-                            Facebook
                         </button>
                     </div>
                 </div>
