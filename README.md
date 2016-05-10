@@ -8,6 +8,9 @@
 - Sometimes, very occasionally a game may not load, this is possible due to the server not being able to connect to the API and erroring  out, nevertheless it does not tell the client and you are stuck on 'Waiting for server...' if you are stuck on this screen for more than 10 seconds try refreshing the page and queueing again.
 - When in a match, Lane icons for TOP and JUNGLE sometimes do not display, this seems to be a problem with data dragon.
 
+## GETTING SET UP
+We have provided a full set of instructions on how to set up the server on ubuntu 14 over on our [Write Up](https://docs.google.com/document/d/1OQTJUeE9rWVFVlN1p8xV9mijL09jSobhid-z-MBpcHU).
+
 ## What is Masters of the Rift?
 Masters of the rift is a 1v1 online game based on League of Legends. This project was created as part of Riot Games API Challenge 2016 and aims to show how mastery data can be used as part of a broader, more social experience.
 
@@ -34,6 +37,5 @@ The technology stack we decided to use we found has proved to be excellent for b
   - jQuery: Because, well… It’s jQuery.
   - Venti
   
-## GETTING SET UP
-We have provided a full set of instructions on how to set up the server on ubuntu 14 over on our [Write Up](https://docs.google.com/document/d/1OQTJUeE9rWVFVlN1p8xV9mijL09jSobhid-z-MBpcHU).
+
 
