@@ -33,4 +33,7 @@ The technology stack we decided to use we found has proved to be excellent for b
   - CSS3: The page would just look awful otherwise!
   - jQuery: Because, well… It’s jQuery.
   - Venti
+  
+## GETTING SET UP
+We have provided a full set of instructions on how to set up the server on ubuntu 14 over on our [Write Up](https://docs.google.com/document/d/1OQTJUeE9rWVFVlN1p8xV9mijL09jSobhid-z-MBpcHU).
 
